@@ -1,0 +1,82 @@
+@charset "utf-8";
+/* CSS Document */
+
+body { background-image: url(../images/bg_fill.png); background-repeat: repeat}
+h1,h2 { font-weight: lighter}
+h1 { font-size: 1.125em;}
+h2 { font-size: 0.875em;}
+
+.iconfont { position: relative;top: 1px;display: inline-block;font-style: normal;line-height: 1;}
+
+/*header*/
+.header {}
+.header .logo { width: 50%; margin: 0 auto;}
+
+/*main*/
+.main { background-color: #fff; background-image: url(../images/b10.png); background-repeat: no-repeat;  background-position: bottom right; background-size: 100% auto; color: #504d42}
+.main.bgNone { background: #fff none}
+.main::before,.main::after { content: " "; display: block; width: 100%; height: 15px; background-repeat: repeat-x;}
+.main::before {background-image: url(../images/baorder_top.png)}
+.main::after {background-image: url(../images/baorder_bottom.png)}
+
+.tips {}
+.tips a { color: #504d42;}
+.tips a i { color:#d41515}
+
+.op {}
+.op .title {color:#504d42; padding-bottom: 15px}
+.op .title .iconfont { top: 5px}
+.op .title i { color: #d6cdb9; font-size: 1.6em}
+.op .title .num {font-weight: bolder; color:#866d30}
+
+.op .info { padding:0 40px;} 
+
+.op .edit { border: solid 1px #aca8a8; position: relative; line-height: 2em;}
+.op .edit textarea { width:78%; min-height: 6em; padding:10px 11%;}
+.op .edit .ll { width:78%; padding:10px 11%; position: absolute; top: 0; color:#999}
+
+.op .text { /*padding:0 40px;*/ border: solid 1px #aca8a8; position: relative; line-height: 40px;}
+.op .text input[type="text"] { width: 100%; height: 40px;} 
+.op .text.yuan::before { display: block; width: 3em; content: "元"; position: absolute; right: 0; z-index: 1} 
+
+.op img { position: absolute; background-color: #FFFFFF} 
+.op .p1 { top: -1px; left: -1px}  
+.op .p2 { top: -1px; right: -1px}  
+.op .p3 { bottom: -1px; right: -1px}  
+.op .p4 { bottom: -1px; left: -1px}
+
+.op .images {}
+.op .images img { position: static; width: 40%; margin: 0 auto}
+
+.op .button { display: block; height: 34px; line-height: 34px; background-color:#d6cdb9; border-radius: 3px; color:#fff; overflow: hidden;
+background-image:url(../images/s1.png),  url(../images/s2.png);
+ background-position: center left, center right;
+background-repeat: no-repeat, no-repeat}
+
+.op .options {}
+.op .options a { display: block; width: 50%; height: 21px; line-height: 21px; padding: 0 7px; margin-right: 10px; color:#fff; position: relative}
+.op .options a:last-child { margin-right: 0}
+.op .options a span { display: block; height: 21px; line-height: 21px; background-color: #d6cdb9;}
+.op .options a::before ,.op .options a::after { content: " "; display: block; width: 7px; height: 21px; position: absolute; top: 0}
+.op .options a::before { left: 1px; background-image: url(../images/sma1.png)}
+.op .options a::after { right: 1px; background-image: url(../images/sma2.png)}
+
+.op .line { height: 6px; background: url(../images/line.png) center repeat-x}
+
+.op table.rank { border-top: solid 1px #504d42; line-height: 2em}
+.op table.rank th { background-color: #504d42; color:#fff}
+.op table.rank td { padding: 5px; border-bottom: solid 1px #504d42}
+.op table.rank td:nth-child(2) { text-align: center}
+.op table.rank td:nth-child(4) { text-align: right}
+
+/*footer*/
+.footer { margin-top: 30px;}
+.footer img {width: 40%; margin: 0 auto}
+
+
+/*win*/
+.win { position: fixed; top: 0; right: 0; bottom: 0; left:0; z-index: 99; background: rgba(0,0,0,.75);}
+.win .winMain { width: 80%; min-width: 200px; max-width: 355px; padding: 0 10px 20px 10px; border:solid 1px #000; position: absolute; top: 50%; left: 50%; background-color: #fff}
+
+
+

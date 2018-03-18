@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0 minimal-ui"/>
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="yes" name="apple-touch-fullscreen">
+<title>大明寺御花园茶楼</title>
+<link rel="stylesheet" href="/static/common/com[0].css">
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_592768_b157cpj0a517zaor.css">
+<link rel="stylesheet" href="/static/common/com[1].css">
+<script type="text/javascript" src="/static/javascript/jquery-1.11.3.min.js"></script>
+</head>
+
+<body>
+<section class="header pt15 pb20">
+	<img class="logo" src="/static/images/header.png" />
+</section>
+<section class="main">
+	<div class="p30">
+		<!--<div class="tips ar pb20"><a><i class="iconfont icon-wenhao pr5"></i><span>祈福说明</span></a></div>-->
+		<div class="op">
+			<h1 class="title ac"><i class="iconfont icon-yunLeft"></i><span class="pl10 pr10">祈福内容</span><i class="iconfont icon-yunRight"></i></h1>
+			<div class="info">
+				<p class="pt20 pb20">${wish.wish}</p>
+			</div>
+		</div>
+		<div class="op mt20">
+			<h1 class="title ac" style="padding-bottom: 60px;"><i class="iconfont icon-yunLeft"></i><span class="pl10">祈愿人:</span><span class="pr10">${wish.hoper}</span><i class="iconfont icon-yunRight"></i></h1>
+			<a class="button ac mb20" href="result_b.html">默默祈福</a>
+			<div class="text yuan">
+				<input class="ac" type="text" value="100">
+				<img class="p1" src="/static/images/opb1.png" />
+				<img class="p2" src="/static/images/opb2.png" />
+				<img class="p3" src="/static/images/opb3.png" />
+				<img class="p4" src="/static/images/opb4.png" />
+			</div>
+		</div>
+		<div class="op mt20">
+			<h2 class="title ac"><i class="iconfont icon-yunLeft"></i><span class="pl10 pr10">大明寺御花园茶楼功德排位</span><i class="iconfont icon-yunRight"></i></h2>
+			<a class="button ac win-button-open">功德回响</a>
+		</div>
+	</div>
+</section>
+<section>
+	<div class="footer pb30"><img src="/static/images/ewm.png" />
+	</div>
+</section>
+
+<div class="win" style="display: none">
+	<div class="winMain">
+		<div class="op mt20">
+			<h1 class="title ac"><span class="pl10 pr10">是否将祈福内容发给他（不发不填手机号）</span></h1>
+			<div class="text mb15">
+				<input class="ac" type="text" placeholder="手机号">
+				<img class="p1" src="/static/images/opb1.png" />
+				<img class="p2" src="/static/images/opb2.png" />
+				<img class="p3" src="/static/images/opb3.png" />
+				<img class="p4" src="/static/images/opb4.png" />
+			</div>
+			<a class="button ac" href="result_a.html">发给他</a>
+			<p class="ac fs12">或</p>
+			<a class="button ac" href="preview.html">不发，默默祈福</a>
+		</div>
+	</div>
+</div>
+	
+		
+<script>
+function onBridgeReady() {  
+	WeixinJSBridge.call('hideOptionMenu');  
+}  
+
+if (typeof WeixinJSBridge == "undefined") {  
+	if (document.addEventListener) {  
+		document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);  
+	} else if (document.attachEvent) {  
+		document.attachEvent('WeixinJSBridgeReady', onBridgeReady);  
+		document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);  
+	}  
+} else {  
+	onBridgeReady();  
+} 
+</script>
+<script>
+//win
+$(function(){
+	var w = $('.win')
+	var wm = $('.win .winMain')
+	
+	$('.win-button-open').on('click',function(){
+		w.show()
+		var wmw = wm.innerWidth()
+		var wmh = wm.innerHeight()
+		wm.css({
+			marginTop:wmh/2*(0-1),
+			marginLeft:wmw/2*(0-1),
+		})
+		$('body').css('overflow-y','hidden')
+	})
+	w.on('click',function(){
+		w.hide()
+		$('body').css('overflow-y','auto')
+	})
+	wm.on('click',function(){
+		event.stopPropagation();
+	})
+})
+</script>
+</body>
+</html>

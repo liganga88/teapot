@@ -15,26 +15,38 @@
     <!-- 配置资源映射 -->
     <mvc:resources mapping="/static/**" location="/WEB-INF/static/"/>
     <!-- 配置包扫描器 -->
-    <context:component-scan base-package="com.nachepin.mobile.controller"/>
+    <context:component-scan base-package="com.teapot.controller"/>
+
+    <bean id="beetlConfig" class="org.beetl.ext.spring.BeetlGroupUtilConfiguration" init-method="init">
+        <property name="configFileResource" value="classpath:properties/beetl.properties"></property>
+        <property name="tagFactorys">
+            <map>
+                <entry key="page" value-ref="pageTagFactory" />
+            </map>
+        </property>
+    </bean>
+
+    <bean name="pageTagFactory" class="org.beetl.ext.spring.SpringBeanTagFactory">
+        <property name="name" value="pageTag" />
+    </bean>
+
+    <bean id="viewResolver" class="org.beetl.ext.spring.BeetlSpringViewResolver">
+        <property name="contentType" value="text/html;charset=UTF-8"></property>
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".html" />
+    </bean>
     <!-- 配置拦截器 -->
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/app/**" />
+            <mvc:mapping path="/**" />
             <!--<mvc:exclude-mapping path="/swagger-ui.html" />-->
-            <mvc:exclude-mapping path="/app/customer/v1/login" />
-            <bean class="com.nachepin.mobile.interceptor.BeforeLoginInterceptor"></bean>
-        </mvc:interceptor>
-        <mvc:interceptor>
-            <mvc:mapping path="/app/**" />
-            <!--<mvc:exclude-mapping path="/swagger-ui.html" />-->
-            <mvc:exclude-mapping path="/app/customer/v1/login" />
-            <mvc:exclude-mapping path="/app/goods/**" />
-            <bean class="com.nachepin.mobile.interceptor.BeforeLoginInterceptor"></bean>
+            <!--<mvc:exclude-mapping path="/app/customer/v1/login" />-->
+            <bean class="com.teapot.interceptor.LoginInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
 
-    <bean class="springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration" id="swagger2Config"/>
+<!--    <bean class="springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration" id="swagger2Config"/>
     <mvc:resources location="classpath:/META-INF/resources/" mapping="swagger-ui.html"/>
-    <mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/>
+    <mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/>-->
 
 </beans>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teapot.dao.TbWishDao" >
+  <resultMap id="BaseResultMap" type="com.teapot.pojo.TbWish" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="customerId" property="customerid" jdbcType="INTEGER" />
+    <result column="tempId" property="tempid" jdbcType="VARCHAR" />
+    <result column="wish" property="wish" jdbcType="VARCHAR" />
+    <result column="hoper" property="hoper" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    <if test="fields == null" >
+      id, customerId, tempId, wish, hoper, created
+    </if>
+    <if test="fields != null" >
+      ${fields}
+    </if>
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.teapot.pojo.TbWishQuery" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_wish
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="startRow != null" >
+      limit #{startRow} , #{pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    id,customerId,tempId,wish,hoper,created
+    from tb_wish
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_wish
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.teapot.pojo.TbWishQuery" >
+    delete from tb_wish
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.teapot.pojo.TbWish" >
+    insert into tb_wish (id, customerId, tempId, 
+      wish, hoper, created
+      )
+    values (#{id,jdbcType=INTEGER}, #{customerid,jdbcType=INTEGER}, #{tempid,jdbcType=VARCHAR}, 
+      #{wish,jdbcType=VARCHAR}, #{hoper,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.teapot.pojo.TbWish" >
+    insert into tb_wish
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="customerid != null" >
+        customerId,
+      </if>
+      <if test="tempid != null" >
+        tempId,
+      </if>
+      <if test="wish != null" >
+        wish,
+      </if>
+      <if test="hoper != null" >
+        hoper,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="customerid != null" >
+        #{customerid,jdbcType=INTEGER},
+      </if>
+      <if test="tempid != null" >
+        #{tempid,jdbcType=VARCHAR},
+      </if>
+      <if test="wish != null" >
+        #{wish,jdbcType=VARCHAR},
+      </if>
+      <if test="hoper != null" >
+        #{hoper,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.teapot.pojo.TbWishQuery" resultType="java.lang.Integer" >
+    select count(*) from tb_wish
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_wish
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.customerid != null" >
+        customerId = #{record.customerid,jdbcType=INTEGER},
+      </if>
+      <if test="record.tempid != null" >
+        tempId = #{record.tempid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wish != null" >
+        wish = #{record.wish,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hoper != null" >
+        hoper = #{record.hoper,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_wish
+    set id = #{record.id,jdbcType=INTEGER},
+      customerId = #{record.customerid,jdbcType=INTEGER},
+      tempId = #{record.tempid,jdbcType=VARCHAR},
+      wish = #{record.wish,jdbcType=VARCHAR},
+      hoper = #{record.hoper,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.teapot.pojo.TbWish" >
+    update tb_wish
+    <set >
+      <if test="customerid != null" >
+        customerId = #{customerid,jdbcType=INTEGER},
+      </if>
+      <if test="tempid != null" >
+        tempId = #{tempid,jdbcType=VARCHAR},
+      </if>
+      <if test="wish != null" >
+        wish = #{wish,jdbcType=VARCHAR},
+      </if>
+      <if test="hoper != null" >
+        hoper = #{hoper,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.teapot.pojo.TbWish" >
+    update tb_wish
+    set customerId = #{customerid,jdbcType=INTEGER},
+      tempId = #{tempid,jdbcType=VARCHAR},
+      wish = #{wish,jdbcType=VARCHAR},
+      hoper = #{hoper,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -19,7 +19,7 @@ import java.io.InputStreamReader;
 public class WeixinController extends BaseController {
     private static Logger logger = LoggerFactory.getLogger(WeixinController.class);
 
-    @RequestMapping(value = "/{mp}", method = {RequestMethod.POST, RequestMethod.GET})
+    /*@RequestMapping(value = "/{mp}", method = {RequestMethod.POST, RequestMethod.GET})
     public void index(@RequestParam(value = "signature", required = false) String signature,
                       @RequestParam(value = "timestamp", required = false) String timestamp,
                       @RequestParam(value = "nonce", required = false) String nonce,
@@ -66,5 +66,5 @@ public class WeixinController extends BaseController {
         logger.info(mp + ":" + sb.toString());
         String xml = EventHandler.wo.handler(mp, signature, timestamp, nonce, sb.toString());
         renderText(xml);
-    }
+    }*/
 }

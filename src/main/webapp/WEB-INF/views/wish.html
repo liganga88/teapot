@@ -11,33 +11,8 @@
 	<link rel="stylesheet" href="https://at.alicdn.com/t/font_592768_b157cpj0a517zaor.css">
 	<link rel="stylesheet" href="/static/common/com[1].css">
 	<script type="text/javascript" src="/static/javascript/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="/static/javascript/jquery.form.js"></script>
     <script type="text/javascript" src="/static/common/common.js"></script>
-    <script type="text/javascript">
-        $(function(){
-//            Common.ajaxForm($("#form-wish"), null, function(json){
-//                if(json.code == Common.SUCC){
-//                    Common.go("/wish/"+json.data+"/detail.html");
-//                }
-//            });
-
-            var edit = $('.edit')
-            var editLL = edit.find('.ll')
-            var editTT = edit.find('textarea')
-            editLL.click(function () {
-                editLL.hide()
-                editTT.focus()
-            })
-            editTT.focusout(function () {
-                if ($.trim(editTT.val()) == "") {
-                    editLL.show()
-                }
-
-            });
-            $(".btn-send").click(function () {
-                $("#form-wish").submit();
-            });
-        });
-    </script>
 </head>
 
 <body>
@@ -77,16 +52,44 @@
 		</div>
 	</form>
 </section>
+<script type="text/javascript">
+	$(function(){
+		Common.ajaxForm($("#form-wish"), null, function(json){
+			if(json.code == Common.SUCC){
+				Common.go("/wish/"+json.data+"/detail.html");
+			}
+		});
 
+		var edit = $('.edit')
+		var editLL = edit.find('.ll')
+		var editTT = edit.find('textarea')
+		editLL.click(function () {
+			editLL.hide()
+			editTT.focus()
+		})
+		editTT.focusout(function () {
+			if ($.trim(editTT.val()) == "") {
+				editLL.show()
+			}
 
-
-<script>
-    //edit
-    $(function () {
-
-    });
-
+		});
+		/**
+		 *	送上祈福
+		 */
+		$(".btn-send").click(function () {
+			var wish = $("textarea[name=wish]").val();
+			var hoper = $("input[name=hoper]").val();
+			if(!wish){
+				alert("请输入祈福内容!")
+				return
+			}
+			if(!hoper){
+				alert("请输入祈愿人!")
+				return
+			}
+			$("#form-wish").submit();
+		});
+	});
 </script>
-
 </body>
 </html>

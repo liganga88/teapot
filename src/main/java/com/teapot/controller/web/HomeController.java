@@ -16,12 +16,12 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 @RequestMapping("/")
-public class HomeController {
+public class HomeController extends BaseController {
     @Autowired
     private WishService wishService;
 
     /**
-     * Æí¸£Ò³Ãæ
+     * ï¿½?Ò³ï¿½ï¿½
      * @param model
      * @return
      */
@@ -32,7 +32,7 @@ public class HomeController {
     }
 
     /**
-     * Æí¸£´¦Àí
+     * ï¿½?ï¿½ï¿½ï¿½ï¿½
      * @return
      */
     @RequestMapping(value = "/doWish", method = RequestMethod.POST)
@@ -49,5 +49,22 @@ public class HomeController {
         TbWish tbWish = wishService.selectById(id);
         model.addAttribute("wish", tbWish);
         return "detail";
+    }
+
+    @RequestMapping(value = "/wish/{id}/preview.html")
+    public String preview(@PathVariable("id") Integer id, Model model){
+        TbWish tbWish = wishService.selectById(id);
+        model.addAttribute("wish", tbWish);
+        return "preview";
+    }
+
+    @RequestMapping(value = "/wish/resultA.html")
+    public String resulta(Model model){
+        return "result_a";
+    }
+
+    @RequestMapping(value = "/wish/resultB.html")
+    public String resultb(Model model){
+        return "result_b";
     }
 }

@@ -12,6 +12,8 @@ import com.aliyuncs.http.FormatType;
 import com.aliyuncs.http.HttpResponse;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -20,57 +22,61 @@ import java.util.UUID;
 
 /**
  * Created on 17/6/7.
- * ¶ÌĞÅAPI²úÆ·µÄDEMO³ÌĞò,¹¤³ÌÖĞ°üº¬ÁËÒ»¸öSmsDemoÀà£¬Ö±½ÓÍ¨¹ı
- * Ö´ĞĞmainº¯Êı¼´¿ÉÌåÑé¶ÌĞÅ²úÆ·API¹¦ÄÜ(Ö»ĞèÒª½«AKÌæ»»³É¿ªÍ¨ÁËÔÆÍ¨ĞÅ-¶ÌĞÅ²úÆ·¹¦ÄÜµÄAK¼´¿É)
- * ¹¤³ÌÒÀÀµÁË2¸öjar°ü(´æ·ÅÔÚ¹¤³ÌµÄlibsÄ¿Â¼ÏÂ)
+ * çŸ­ä¿¡APIäº§å“çš„DEMOç¨‹åº,å·¥ç¨‹ä¸­åŒ…å«äº†ä¸€ä¸ªSmsDemoç±»ï¼Œç›´æ¥é€šè¿‡
+ * æ‰§è¡Œmainå‡½æ•°å³å¯ä½“éªŒçŸ­ä¿¡äº§å“APIåŠŸèƒ½(åªéœ€è¦å°†AKæ›¿æ¢æˆå¼€é€šäº†äº‘é€šä¿¡-çŸ­ä¿¡äº§å“åŠŸèƒ½çš„AKå³å¯)
+ * å·¥ç¨‹ä¾èµ–äº†2ä¸ªjaråŒ…(å­˜æ”¾åœ¨å·¥ç¨‹çš„libsç›®å½•ä¸‹)
  * 1:aliyun-java-sdk-core.jar
  * 2:aliyun-java-sdk-dysmsapi.jar
  *
- * ±¸×¢:Demo¹¤³Ì±àÂë²ÉÓÃUTF-8
- * ¹ú¼Ê¶ÌĞÅ·¢ËÍÇëÎğ²ÎÕÕ´ËDEMO
+ * å¤‡æ³¨:Demoå·¥ç¨‹ç¼–ç é‡‡ç”¨UTF-8
+ * å›½é™…çŸ­ä¿¡å‘é€è¯·å‹¿å‚ç…§æ­¤DEMO
  */
 public class SmsUtil {
-    //²úÆ·Ãû³Æ:ÔÆÍ¨ĞÅ¶ÌĞÅAPI²úÆ·,¿ª·¢ÕßÎŞĞèÌæ»»
+    private static Logger logger = LoggerFactory.getLogger(SmsUtil.class);
+
+    //äº§å“åç§°:äº‘é€šä¿¡çŸ­ä¿¡APIäº§å“,å¼€å‘è€…æ— éœ€æ›¿æ¢
     static final String product = "Dysmsapi";
-    //²úÆ·ÓòÃû,¿ª·¢ÕßÎŞĞèÌæ»»
+    //äº§å“åŸŸå,å¼€å‘è€…æ— éœ€æ›¿æ¢
     static final String domain = "dysmsapi.aliyuncs.com";
 
-    public static final String TEMPLATE_CODE_WISH = "SMS_127162196";
+    public static final String TEMPLATE_CODE_WISH = "SMS_125300006";
 
-    // TODO ´Ë´¦ĞèÒªÌæ»»³É¿ª·¢Õß×Ô¼ºµÄAK(ÔÚ°¢ÀïÔÆ·ÃÎÊ¿ØÖÆÌ¨Ñ°ÕÒ)
+    // TODO æ­¤å¤„éœ€è¦æ›¿æ¢æˆå¼€å‘è€…è‡ªå·±çš„AK(åœ¨é˜¿é‡Œäº‘è®¿é—®æ§åˆ¶å°å¯»æ‰¾)
     static final String accessKeyId = "LTAInzkxFcUtkVDa";
     static final String accessKeySecret = "XxpfMCoZTabqUauB2jJC1hHsaCJ9fh";
 
-    public static SendSmsResponse sendSms(String phone, String content) throws ClientException {
+    public static SendSmsResponse sendSms(String templateCode, String phone, String content) throws ClientException {
 
-        //¿É×ÔÖúµ÷Õû³¬Ê±Ê±¼ä
+        //å¯è‡ªåŠ©è°ƒæ•´è¶…æ—¶æ—¶é—´
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
         System.setProperty("sun.net.client.defaultReadTimeout", "10000");
 
-        //³õÊ¼»¯acsClient,Ôİ²»Ö§³Öregion»¯
+        //åˆå§‹åŒ–acsClient,æš‚ä¸æ”¯æŒregionåŒ–
         IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
         DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
         IAcsClient acsClient = new DefaultAcsClient(profile);
 
-        //×é×°ÇëÇó¶ÔÏó-¾ßÌåÃèÊö¼û¿ØÖÆÌ¨-ÎÄµµ²¿·ÖÄÚÈİ
+        //ç»„è£…è¯·æ±‚å¯¹è±¡-å…·ä½“æè¿°è§æ§åˆ¶å°-æ–‡æ¡£éƒ¨åˆ†å†…å®¹
         SendSmsRequest request = new SendSmsRequest();
-        //±ØÌî:´ı·¢ËÍÊÖ»úºÅ
+        //å¿…å¡«:å¾…å‘é€æ‰‹æœºå·
         request.setPhoneNumbers(phone);
-        //±ØÌî:¶ÌĞÅÇ©Ãû-¿ÉÔÚ¶ÌĞÅ¿ØÖÆÌ¨ÖĞÕÒµ½
-        request.setSignName("ÑïÖİ´óÃ÷ËÂ");
-        //±ØÌî:¶ÌĞÅÄ£°å-¿ÉÔÚ¶ÌĞÅ¿ØÖÆÌ¨ÖĞÕÒµ½
-        request.setTemplateCode("SMS_127151977");
-        //¿ÉÑ¡:Ä£°åÖĞµÄ±äÁ¿Ìæ»»JSON´®,ÈçÄ£°åÄÚÈİÎª"Ç×°®µÄ${name},ÄúµÄÑéÖ¤ÂëÎª${code}"Ê±,´Ë´¦µÄÖµÎª
-        request.setTemplateParam("{\"name\":\"Tom\", \"code\":\"123\"}");
+        //å¿…å¡«:çŸ­ä¿¡ç­¾å-å¯åœ¨çŸ­ä¿¡æ§åˆ¶å°ä¸­æ‰¾åˆ°
+        request.setSignName("ç´«ç ‚ç‰ˆæƒç½‘");
+        //å¿…å¡«:çŸ­ä¿¡æ¨¡æ¿-å¯åœ¨çŸ­ä¿¡æ§åˆ¶å°ä¸­æ‰¾åˆ°
+        request.setTemplateCode(templateCode);
+        //å¯é€‰:æ¨¡æ¿ä¸­çš„å˜é‡æ›¿æ¢JSONä¸²,å¦‚æ¨¡æ¿å†…å®¹ä¸º"äº²çˆ±çš„${name},æ‚¨çš„éªŒè¯ç ä¸º${code}"æ—¶,æ­¤å¤„çš„å€¼ä¸º
+        request.setTemplateParam(content);
 
-        //Ñ¡Ìî-ÉÏĞĞ¶ÌĞÅÀ©Õ¹Âë(ÎŞÌØÊâĞèÇóÓÃ»§ÇëºöÂÔ´Ë×Ö¶Î)
+        //é€‰å¡«-ä¸Šè¡ŒçŸ­ä¿¡æ‰©å±•ç (æ— ç‰¹æ®Šéœ€æ±‚ç”¨æˆ·è¯·å¿½ç•¥æ­¤å­—æ®µ)
         //request.setSmsUpExtendCode("90997");
 
-        //¿ÉÑ¡:outIdÎªÌá¹©¸øÒµÎñ·½À©Õ¹×Ö¶Î,×îÖÕÔÚ¶ÌĞÅ»ØÖ´ÏûÏ¢ÖĞ½«´ËÖµ´ø»Ø¸øµ÷ÓÃÕß
+        //å¯é€‰:outIdä¸ºæä¾›ç»™ä¸šåŠ¡æ–¹æ‰©å±•å­—æ®µ,æœ€ç»ˆåœ¨çŸ­ä¿¡å›æ‰§æ¶ˆæ¯ä¸­å°†æ­¤å€¼å¸¦å›ç»™è°ƒç”¨è€…
         //request.setOutId("yourOutId");
 
-        //hint ´Ë´¦¿ÉÄÜ»áÅ×³öÒì³££¬×¢Òâcatch
+        //hint æ­¤å¤„å¯èƒ½ä¼šæŠ›å‡ºå¼‚å¸¸ï¼Œæ³¨æ„catch
         SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
+
+        logger.info("çŸ­ä¿¡å‘é€ï¼Œphone={}", phone);
 
         return sendSmsResponse;
     }
@@ -78,30 +84,30 @@ public class SmsUtil {
 
     public static QuerySendDetailsResponse querySendDetails(String bizId) throws ClientException {
 
-        //¿É×ÔÖúµ÷Õû³¬Ê±Ê±¼ä
+        //å¯è‡ªåŠ©è°ƒæ•´è¶…æ—¶æ—¶é—´
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
         System.setProperty("sun.net.client.defaultReadTimeout", "10000");
 
-        //³õÊ¼»¯acsClient,Ôİ²»Ö§³Öregion»¯
+        //åˆå§‹åŒ–acsClient,æš‚ä¸æ”¯æŒregionåŒ–
         IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
         DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
         IAcsClient acsClient = new DefaultAcsClient(profile);
 
-        //×é×°ÇëÇó¶ÔÏó
+        //ç»„è£…è¯·æ±‚å¯¹è±¡
         QuerySendDetailsRequest request = new QuerySendDetailsRequest();
-        //±ØÌî-ºÅÂë
+        //å¿…å¡«-å·ç 
         request.setPhoneNumber("15000000000");
-        //¿ÉÑ¡-Á÷Ë®ºÅ
+        //å¯é€‰-æµæ°´å·
         request.setBizId(bizId);
-        //±ØÌî-·¢ËÍÈÕÆÚ Ö§³Ö30ÌìÄÚ¼ÇÂ¼²éÑ¯£¬¸ñÊ½yyyyMMdd
+        //å¿…å¡«-å‘é€æ—¥æœŸ æ”¯æŒ30å¤©å†…è®°å½•æŸ¥è¯¢ï¼Œæ ¼å¼yyyyMMdd
         SimpleDateFormat ft = new SimpleDateFormat("yyyyMMdd");
         request.setSendDate(ft.format(new Date()));
-        //±ØÌî-Ò³´óĞ¡
+        //å¿…å¡«-é¡µå¤§å°
         request.setPageSize(10L);
-        //±ØÌî-µ±Ç°Ò³Âë´Ó1¿ªÊ¼¼ÆÊı
+        //å¿…å¡«-å½“å‰é¡µç ä»1å¼€å§‹è®¡æ•°
         request.setCurrentPage(1L);
 
-        //hint ´Ë´¦¿ÉÄÜ»áÅ×³öÒì³££¬×¢Òâcatch
+        //hint æ­¤å¤„å¯èƒ½ä¼šæŠ›å‡ºå¼‚å¸¸ï¼Œæ³¨æ„catch
         QuerySendDetailsResponse querySendDetailsResponse = acsClient.getAcsResponse(request);
 
         return querySendDetailsResponse;
@@ -109,20 +115,20 @@ public class SmsUtil {
 
     public static void main(String[] args) throws ClientException, InterruptedException {
 
-        //·¢¶ÌĞÅ
-        SendSmsResponse response = sendSms("15000000000","");
-        System.out.println("¶ÌĞÅ½Ó¿Ú·µ»ØµÄÊı¾İ----------------");
+        //å‘çŸ­ä¿¡
+        SendSmsResponse response = sendSms("SMS_125300006","13858084377","{\"customer\":\"bbb\"}");
+        System.out.println("çŸ­ä¿¡æ¥å£è¿”å›çš„æ•°æ®----------------");
         System.out.println("Code=" + response.getCode());
         System.out.println("Message=" + response.getMessage());
         System.out.println("RequestId=" + response.getRequestId());
         System.out.println("BizId=" + response.getBizId());
 
-        Thread.sleep(3000L);
+        /*Thread.sleep(3000L);
 
-        //²éÃ÷Ï¸
+        //æŸ¥æ˜ç»†
         if(response.getCode() != null && response.getCode().equals("OK")) {
             QuerySendDetailsResponse querySendDetailsResponse = querySendDetails(response.getBizId());
-            System.out.println("¶ÌĞÅÃ÷Ï¸²éÑ¯½Ó¿Ú·µ»ØÊı¾İ----------------");
+            System.out.println("çŸ­ä¿¡æ˜ç»†æŸ¥è¯¢æ¥å£è¿”å›æ•°æ®----------------");
             System.out.println("Code=" + querySendDetailsResponse.getCode());
             System.out.println("Message=" + querySendDetailsResponse.getMessage());
             int i = 0;
@@ -140,7 +146,7 @@ public class SmsUtil {
             }
             System.out.println("TotalCount=" + querySendDetailsResponse.getTotalCount());
             System.out.println("RequestId=" + querySendDetailsResponse.getRequestId());
-        }
+        }*/
 
     }
 }

@@ -24,6 +24,11 @@ public class TbWish implements Serializable {
     private String hoper;
 
     /**
+     * 短信发送的电话号码
+     */
+    private String smsphone;
+
+    /**
      * 创建时间
      */
     private Date created;
@@ -70,6 +75,14 @@ public class TbWish implements Serializable {
         this.hoper = hoper == null ? null : hoper.trim();
     }
 
+    public String getSmsphone() {
+        return smsphone;
+    }
+
+    public void setSmsphone(String smsphone) {
+        this.smsphone = smsphone == null ? null : smsphone.trim();
+    }
+
     public Date getCreated() {
         return created;
     }
@@ -89,6 +102,7 @@ public class TbWish implements Serializable {
         sb.append(", tempid=").append(tempid);
         sb.append(", wish=").append(wish);
         sb.append(", hoper=").append(hoper);
+        sb.append(", smsphone=").append(smsphone);
         sb.append(", created=").append(created);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

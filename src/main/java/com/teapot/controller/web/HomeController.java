@@ -1,9 +1,13 @@
 package com.teapot.controller.web;
 
+import com.aliyuncs.exceptions.ClientException;
 import com.teapot.bean.JsonResult;
 import com.teapot.contants.SessionKeyContants;
 import com.teapot.pojo.TbWish;
 import com.teapot.service.WishService;
+import com.teapot.utils.SmsUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +21,8 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/")
 public class HomeController extends BaseController {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private WishService wishService;
 
@@ -58,8 +64,25 @@ public class HomeController extends BaseController {
         return "preview";
     }
 
-    @RequestMapping(value = "/wish/resultA.html")
-    public String resulta(Model model){
+    @RequestMapping(value = "/wish/{id}/sendMessage")
+    @ResponseBody
+    public JsonResult sendMessage(@RequestParam("phone") String phone, @PathVariable("id") Integer id){
+        TbWish tbWish = wishService.selectById(id);
+        try {
+            String content = "{\"customer\":\"" + tbWish.getHoper() +"\"}";
+            SmsUtil.sendSms(SmsUtil.TEMPLATE_CODE_WISH, phone,content);
+
+            wishService.updateSmsPhone(id, phone);
+        } catch (ClientException e) {
+            logger.error("短信发送失败");
+        }
+        return JsonResult.ok();
+    }
+
+    @RequestMapping(value = "/wish/{id}/resultA.html")
+    public String resulta(@PathVariable("id") Integer id, Model model){
+        TbWish tbWish = wishService.selectById(id);
+        model.addAttribute("wish", tbWish);
         return "result_a";
     }
 

@@ -31,4 +31,11 @@ public class WishServiceImpl implements WishService {
         TbWish tbWish = wishDao.selectByPrimaryKey(id);
         return tbWish;
     }
+
+    public void updateSmsPhone(Integer id, String phone){
+        TbWish tbWish = new TbWish();
+        tbWish.setId(id);
+        tbWish.setSmsphone(phone);
+        wishDao.updateByPrimaryKeySelective(tbWish);
+    }
 }

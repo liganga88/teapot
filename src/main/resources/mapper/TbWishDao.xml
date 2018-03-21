@@ -7,6 +7,7 @@
     <result column="tempId" property="tempid" jdbcType="VARCHAR" />
     <result column="wish" property="wish" jdbcType="VARCHAR" />
     <result column="hoper" property="hoper" jdbcType="VARCHAR" />
+    <result column="smsPhone" property="smsphone" jdbcType="VARCHAR" />
     <result column="created" property="created" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -69,7 +70,7 @@
   </sql>
   <sql id="Base_Column_List" >
     <if test="fields == null" >
-      id, customerId, tempId, wish, hoper, created
+      id, customerId, tempId, wish, hoper, smsPhone, created
     </if>
     <if test="fields != null" >
       ${fields}
@@ -94,7 +95,7 @@
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
-    id,customerId,tempId,wish,hoper,created
+    id,customerId,tempId,wish,hoper,smsPhone,created
     from tb_wish
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -110,11 +111,11 @@
   </delete>
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.teapot.pojo.TbWish" >
     insert into tb_wish (id, customerId, tempId, 
-      wish, hoper, created
-      )
+      wish, hoper, smsPhone, 
+      created)
     values (#{id,jdbcType=INTEGER}, #{customerid,jdbcType=INTEGER}, #{tempid,jdbcType=VARCHAR}, 
-      #{wish,jdbcType=VARCHAR}, #{hoper,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}
-      )
+      #{wish,jdbcType=VARCHAR}, #{hoper,jdbcType=VARCHAR}, #{smsphone,jdbcType=VARCHAR}, 
+      #{created,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.teapot.pojo.TbWish" >
     insert into tb_wish
@@ -133,6 +134,9 @@
       </if>
       <if test="hoper != null" >
         hoper,
+      </if>
+      <if test="smsphone != null" >
+        smsPhone,
       </if>
       <if test="created != null" >
         created,
@@ -153,6 +157,9 @@
       </if>
       <if test="hoper != null" >
         #{hoper,jdbcType=VARCHAR},
+      </if>
+      <if test="smsphone != null" >
+        #{smsphone,jdbcType=VARCHAR},
       </if>
       <if test="created != null" >
         #{created,jdbcType=TIMESTAMP},
@@ -183,6 +190,9 @@
       <if test="record.hoper != null" >
         hoper = #{record.hoper,jdbcType=VARCHAR},
       </if>
+      <if test="record.smsphone != null" >
+        smsPhone = #{record.smsphone,jdbcType=VARCHAR},
+      </if>
       <if test="record.created != null" >
         created = #{record.created,jdbcType=TIMESTAMP},
       </if>
@@ -198,6 +208,7 @@
       tempId = #{record.tempid,jdbcType=VARCHAR},
       wish = #{record.wish,jdbcType=VARCHAR},
       hoper = #{record.hoper,jdbcType=VARCHAR},
+      smsPhone = #{record.smsphone,jdbcType=VARCHAR},
       created = #{record.created,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -218,6 +229,9 @@
       <if test="hoper != null" >
         hoper = #{hoper,jdbcType=VARCHAR},
       </if>
+      <if test="smsphone != null" >
+        smsPhone = #{smsphone,jdbcType=VARCHAR},
+      </if>
       <if test="created != null" >
         created = #{created,jdbcType=TIMESTAMP},
       </if>
@@ -230,6 +244,7 @@
       tempId = #{tempid,jdbcType=VARCHAR},
       wish = #{wish,jdbcType=VARCHAR},
       hoper = #{hoper,jdbcType=VARCHAR},
+      smsPhone = #{smsphone,jdbcType=VARCHAR},
       created = #{created,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>

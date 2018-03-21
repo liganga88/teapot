@@ -11,6 +11,8 @@
 	<link rel="stylesheet" href="https://at.alicdn.com/t/font_592768_b157cpj0a517zaor.css">
 	<link rel="stylesheet" href="/static/common/com[1].css">
 	<script type="text/javascript" src="/static/javascript/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="/static/javascript/jquery.form.js"></script>
+	<script type="text/javascript" src="/static/common/common.js"></script>
 </head>
 
 <body>
@@ -27,7 +29,7 @@
 			</div>
 		</div>
 		<div class="op mt20">
-			<h1 class="title ac" style="padding-bottom: 60px;"><i class="iconfont icon-yunLeft"></i><span class="pl10">祈愿人:</span><span class="pr10">${wish.wish}</span><i class="iconfont icon-yunRight"></i></h1>
+			<h1 class="title ac" style="padding-bottom: 60px;"><i class="iconfont icon-yunLeft"></i><span class="pl10">祈愿人:</span><span class="pr10">${wish.hoper}</span><i class="iconfont icon-yunRight"></i></h1>
 			<p class="ac">你可以默默祈福，也可以短信发送给对方。</p>
 
 		</div>
@@ -53,13 +55,13 @@
 		<div class="op mt20">
 			<h1 class="title ac"><span class="pl10 pr10">你可以默默祈福，也可以短信发送给对方。</span></h1>
 			<div class="text mb15">
-				<input class="ac" type="text" placeholder="手机号">
+				<input class="ac" name="phone" type="text" placeholder="手机号">
 				<img class="p1" src="/static/images/opb1.png" />
 				<img class="p2" src="/static/images/opb2.png" />
 				<img class="p3" src="/static/images/opb3.png" />
 				<img class="p4" src="/static/images/opb4.png" />
 			</div>
-			<a class="button ac" href="/wish/resultA.html">发给他</a>
+			<a class="button ac btn-sendSms">发给他</a>
 			<p class="ac fs12">或</p>
 			<a class="button ac" href="preview.html">不发，默默祈福</a>
 		</div>
@@ -119,6 +121,19 @@
 		wm.on('click',function(){
 			event.stopPropagation();
 		})
+
+		$(".btn-sendSms").on("click", function(){
+			var phone = $("input[name=phone]").val();
+			if (!Common.Rules.mobile.test(phone)) {
+				alert("请输入正确的手机号");
+				return;
+			}
+			Common.post("/wish/${wish.id}/sendMessage", {phone:phone}, function(json){
+				if(json.code == Common.SUCC){
+					Common.go("/wish/${wish.id}/resultA.html");
+				}
+			});
+		});
 	})
 </script>
 </body>

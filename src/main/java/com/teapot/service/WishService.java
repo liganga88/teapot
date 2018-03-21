@@ -8,4 +8,5 @@ import com.teapot.pojo.TbWish;
 public interface WishService {
     Integer addWish(String wish, String hoper, String tempId);
     TbWish selectById(Integer id);
+    void updateSmsPhone(Integer id, String phone);
 }

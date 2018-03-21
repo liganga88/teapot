@@ -7,22 +7,22 @@ public class TbCoupon implements Serializable {
     private Integer id;
 
     /**
-     * ÓÅ»İÈ¯Ä£°æID
+     * ä¼˜æƒ åˆ¸æ¨¡ç‰ˆID
      */
     private Integer templateid;
 
     /**
-     * ¿Í»§ID
+     * å®¢æˆ·ID
      */
     private Integer customerid;
 
     /**
-     * ×´Ì¬
+     * çŠ¶æ€
      */
     private Byte state;
 
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date created;
 

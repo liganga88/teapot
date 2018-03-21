@@ -477,6 +477,76 @@ public class TbWishQuery {
             return (Criteria) this;
         }
 
+        public Criteria andSmsphoneIsNull() {
+            addCriterion("smsPhone is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSmsphoneIsNotNull() {
+            addCriterion("smsPhone is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSmsphoneEqualTo(String value) {
+            addCriterion("smsPhone =", value, "smsphone");
+            return (Criteria) this;
+        }
+
+        public Criteria andSmsphoneNotEqualTo(String value) {
+            addCriterion("smsPhone <>", value, "smsphone");
+            return (Criteria) this;
+        }
+
+        public Criteria andSmsphoneGreaterThan(String value) {
+            addCriterion("smsPhone >", value, "smsphone");
+            return (Criteria) this;
+        }
+
+        public Criteria andSmsphoneGreaterThanOrEqualTo(String value) {
+            addCriterion("smsPhone >=", value, "smsphone");
+            return (Criteria) this;
+        }
+
+        public Criteria andSmsphoneLessThan(String value) {
+            addCriterion("smsPhone <", value, "smsphone");
+            return (Criteria) this;
+        }
+
+        public Criteria andSmsphoneLessThanOrEqualTo(String value) {
+            addCriterion("smsPhone <=", value, "smsphone");
+            return (Criteria) this;
+        }
+
+        public Criteria andSmsphoneLike(String value) {
+            addCriterion("smsPhone like", value, "smsphone");
+            return (Criteria) this;
+        }
+
+        public Criteria andSmsphoneNotLike(String value) {
+            addCriterion("smsPhone not like", value, "smsphone");
+            return (Criteria) this;
+        }
+
+        public Criteria andSmsphoneIn(List<String> values) {
+            addCriterion("smsPhone in", values, "smsphone");
+            return (Criteria) this;
+        }
+
+        public Criteria andSmsphoneNotIn(List<String> values) {
+            addCriterion("smsPhone not in", values, "smsphone");
+            return (Criteria) this;
+        }
+
+        public Criteria andSmsphoneBetween(String value1, String value2) {
+            addCriterion("smsPhone between", value1, value2, "smsphone");
+            return (Criteria) this;
+        }
+
+        public Criteria andSmsphoneNotBetween(String value1, String value2) {
+            addCriterion("smsPhone not between", value1, value2, "smsphone");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatedIsNull() {
             addCriterion("created is null");
             return (Criteria) this;

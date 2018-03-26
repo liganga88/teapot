@@ -47,6 +47,7 @@ public class SmsUtil {
 
     public static SendSmsResponse sendSms(String templateCode, String phone, String content) throws ClientException {
 
+        logger.info("短信发送开始，phone={}, content={}", phone, content);
         //可自助调整超时时间
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
         System.setProperty("sun.net.client.defaultReadTimeout", "10000");
@@ -82,7 +83,7 @@ public class SmsUtil {
     }
 
 
-    public static QuerySendDetailsResponse querySendDetails(String bizId) throws ClientException {
+    public static QuerySendDetailsResponse querySendDetails(String phone, String bizId) throws ClientException {
 
         //可自助调整超时时间
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
@@ -96,7 +97,7 @@ public class SmsUtil {
         //组装请求对象
         QuerySendDetailsRequest request = new QuerySendDetailsRequest();
         //必填-号码
-        request.setPhoneNumber("15000000000");
+        request.setPhoneNumber(phone);
         //可选-流水号
         request.setBizId(bizId);
         //必填-发送日期 支持30天内记录查询，格式yyyyMMdd
@@ -116,18 +117,19 @@ public class SmsUtil {
     public static void main(String[] args) throws ClientException, InterruptedException {
 
         //发短信
-        SendSmsResponse response = sendSms("SMS_125300006","13858084377","{\"customer\":\"bbb\"}");
+        String phone = "13858084377";
+        SendSmsResponse response = sendSms("SMS_125300006",phone,"{\"customer\":\"&#x8001;&#x5A46;\"}");
         System.out.println("短信接口返回的数据----------------");
         System.out.println("Code=" + response.getCode());
         System.out.println("Message=" + response.getMessage());
         System.out.println("RequestId=" + response.getRequestId());
         System.out.println("BizId=" + response.getBizId());
 
-        /*Thread.sleep(3000L);
+        Thread.sleep(3000L);
 
         //查明细
         if(response.getCode() != null && response.getCode().equals("OK")) {
-            QuerySendDetailsResponse querySendDetailsResponse = querySendDetails(response.getBizId());
+            QuerySendDetailsResponse querySendDetailsResponse = querySendDetails(phone, response.getBizId());
             System.out.println("短信明细查询接口返回数据----------------");
             System.out.println("Code=" + querySendDetailsResponse.getCode());
             System.out.println("Message=" + querySendDetailsResponse.getMessage());
@@ -146,7 +148,7 @@ public class SmsUtil {
             }
             System.out.println("TotalCount=" + querySendDetailsResponse.getTotalCount());
             System.out.println("RequestId=" + querySendDetailsResponse.getRequestId());
-        }*/
+        }
 
     }
 }

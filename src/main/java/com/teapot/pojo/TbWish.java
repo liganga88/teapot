@@ -9,27 +9,27 @@ public class TbWish implements Serializable {
     private Integer customerid;
 
     /**
-     * ÁÙÊ±ÓÃ»§ID
+     * ä¸´æ—¶ç”¨æˆ·ID
      */
     private String tempid;
 
     /**
-     * Æí¸£ÄÚÈİ
+     * ç¥ˆç¦å†…å®¹
      */
     private String wish;
 
     /**
-     * ÆíÔ¸ÈË
+     * ç¥ˆæ„¿äºº
      */
     private String hoper;
 
     /**
-     * ¶ÌĞÅ·¢ËÍµÄµç»°ºÅÂë
+     * çŸ­ä¿¡å‘é€çš„ç”µè¯å·ç 
      */
     private String smsphone;
 
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date created;
 

@@ -4,9 +4,14 @@
   <resultMap id="BaseResultMap" type="com.teapot.pojo.TbOrder" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="customerId" property="customerid" jdbcType="INTEGER" />
+    <result column="tempId" property="tempid" jdbcType="VARCHAR" />
     <result column="money" property="money" jdbcType="INTEGER" />
     <result column="sendPhone" property="sendphone" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="TINYINT" />
     <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="payType" property="paytype" jdbcType="TINYINT" />
+    <result column="payNo" property="payno" jdbcType="VARCHAR" />
+    <result column="payTime" property="paytime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -68,7 +73,7 @@
   </sql>
   <sql id="Base_Column_List" >
     <if test="fields == null" >
-      id, customerId, money, sendPhone, created
+      id, customerId, tempId, money, sendPhone, state, created, payType, payNo, payTime
     </if>
     <if test="fields != null" >
       ${fields}
@@ -93,7 +98,7 @@
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
-    id,customerId,money,sendPhone,created
+    id,customerId,tempId,money,sendPhone,state,created,payType,payNo,payTime
     from tb_order
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -108,10 +113,14 @@
     </if>
   </delete>
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.teapot.pojo.TbOrder" >
-    insert into tb_order (id, customerId, money, 
-      sendPhone, created)
-    values (#{id,jdbcType=INTEGER}, #{customerid,jdbcType=INTEGER}, #{money,jdbcType=INTEGER}, 
-      #{sendphone,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP})
+    insert into tb_order (id, customerId, tempId, 
+      money, sendPhone, state, 
+      created, payType, payNo, 
+      payTime)
+    values (#{id,jdbcType=INTEGER}, #{customerid,jdbcType=INTEGER}, #{tempid,jdbcType=VARCHAR}, 
+      #{money,jdbcType=INTEGER}, #{sendphone,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, 
+      #{created,jdbcType=TIMESTAMP}, #{paytype,jdbcType=TINYINT}, #{payno,jdbcType=VARCHAR}, 
+      #{paytime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.teapot.pojo.TbOrder" >
     insert into tb_order
@@ -122,14 +131,29 @@
       <if test="customerid != null" >
         customerId,
       </if>
+      <if test="tempid != null" >
+        tempId,
+      </if>
       <if test="money != null" >
         money,
       </if>
       <if test="sendphone != null" >
         sendPhone,
       </if>
+      <if test="state != null" >
+        state,
+      </if>
       <if test="created != null" >
         created,
+      </if>
+      <if test="paytype != null" >
+        payType,
+      </if>
+      <if test="payno != null" >
+        payNo,
+      </if>
+      <if test="paytime != null" >
+        payTime,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -139,14 +163,29 @@
       <if test="customerid != null" >
         #{customerid,jdbcType=INTEGER},
       </if>
+      <if test="tempid != null" >
+        #{tempid,jdbcType=VARCHAR},
+      </if>
       <if test="money != null" >
         #{money,jdbcType=INTEGER},
       </if>
       <if test="sendphone != null" >
         #{sendphone,jdbcType=VARCHAR},
       </if>
+      <if test="state != null" >
+        #{state,jdbcType=TINYINT},
+      </if>
       <if test="created != null" >
         #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paytype != null" >
+        #{paytype,jdbcType=TINYINT},
+      </if>
+      <if test="payno != null" >
+        #{payno,jdbcType=VARCHAR},
+      </if>
+      <if test="paytime != null" >
+        #{paytime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -165,14 +204,29 @@
       <if test="record.customerid != null" >
         customerId = #{record.customerid,jdbcType=INTEGER},
       </if>
+      <if test="record.tempid != null" >
+        tempId = #{record.tempid,jdbcType=VARCHAR},
+      </if>
       <if test="record.money != null" >
         money = #{record.money,jdbcType=INTEGER},
       </if>
       <if test="record.sendphone != null" >
         sendPhone = #{record.sendphone,jdbcType=VARCHAR},
       </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=TINYINT},
+      </if>
       <if test="record.created != null" >
         created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.paytype != null" >
+        payType = #{record.paytype,jdbcType=TINYINT},
+      </if>
+      <if test="record.payno != null" >
+        payNo = #{record.payno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paytime != null" >
+        payTime = #{record.paytime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -183,9 +237,14 @@
     update tb_order
     set id = #{record.id,jdbcType=INTEGER},
       customerId = #{record.customerid,jdbcType=INTEGER},
+      tempId = #{record.tempid,jdbcType=VARCHAR},
       money = #{record.money,jdbcType=INTEGER},
       sendPhone = #{record.sendphone,jdbcType=VARCHAR},
-      created = #{record.created,jdbcType=TIMESTAMP}
+      state = #{record.state,jdbcType=TINYINT},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      payType = #{record.paytype,jdbcType=TINYINT},
+      payNo = #{record.payno,jdbcType=VARCHAR},
+      payTime = #{record.paytime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -196,14 +255,29 @@
       <if test="customerid != null" >
         customerId = #{customerid,jdbcType=INTEGER},
       </if>
+      <if test="tempid != null" >
+        tempId = #{tempid,jdbcType=VARCHAR},
+      </if>
       <if test="money != null" >
         money = #{money,jdbcType=INTEGER},
       </if>
       <if test="sendphone != null" >
         sendPhone = #{sendphone,jdbcType=VARCHAR},
       </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=TINYINT},
+      </if>
       <if test="created != null" >
         created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paytype != null" >
+        payType = #{paytype,jdbcType=TINYINT},
+      </if>
+      <if test="payno != null" >
+        payNo = #{payno,jdbcType=VARCHAR},
+      </if>
+      <if test="paytime != null" >
+        payTime = #{paytime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -211,9 +285,14 @@
   <update id="updateByPrimaryKey" parameterType="com.teapot.pojo.TbOrder" >
     update tb_order
     set customerId = #{customerid,jdbcType=INTEGER},
+      tempId = #{tempid,jdbcType=VARCHAR},
       money = #{money,jdbcType=INTEGER},
       sendPhone = #{sendphone,jdbcType=VARCHAR},
-      created = #{created,jdbcType=TIMESTAMP}
+      state = #{state,jdbcType=TINYINT},
+      created = #{created,jdbcType=TIMESTAMP},
+      payType = #{paytype,jdbcType=TINYINT},
+      payNo = #{payno,jdbcType=VARCHAR},
+      payTime = #{paytime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

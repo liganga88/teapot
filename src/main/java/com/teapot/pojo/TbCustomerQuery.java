@@ -536,11 +536,6 @@ public class TbCustomerQuery {
             addCriterion("created not between", value1, value2, "created");
             return (Criteria) this;
         }
-
-        public Criteria andTempIdEqualTo(String value) {
-            addCriterion("tempId =", value, "tempId");
-            return (Criteria) this;
-        }
     }
 
     public static class Criteria extends GeneratedCriteria {

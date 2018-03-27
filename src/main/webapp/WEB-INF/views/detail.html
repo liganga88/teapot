@@ -36,7 +36,7 @@
 		<div class="op mt10">
 			<h2 class="title ac"><i class="iconfont icon-yunLeft"></i><span class="pl10 pr10 fb">大明寺御花园茶楼功德排位</span><i class="iconfont icon-yunRight"></i></h2>
 			<div class="text yuan mb10">
-				<input class="ac" type="text" value="100">
+				<input class="ac" name="money" type="text" value="100">
 				<img class="p1" src="/static/images/opb1.png" />
 				<img class="p2" src="/static/images/opb2.png" />
 				<img class="p3" src="/static/images/opb3.png" />
@@ -63,7 +63,7 @@
 			</div>
 			<a class="button ac btn-sendSms">发给他</a>
 			<p class="ac fs12">或</p>
-			<a class="button ac" href="preview.html">不发，默默祈福</a>
+			<a class="button ac btn-noSend">不发，默默祈福</a>
 		</div>
 	</div>
 </div>
@@ -105,6 +105,15 @@
 		var wm = $('.win .winMain')
 
 		$('.win-button-open').on('click',function(){
+			var money = $("input[name=money]").val();
+			if (!money) {
+				alert("请输入功德金");
+				return;
+			}
+			if (isNaN(money)) {
+				alert("请输入正确的功德金");
+				return;
+			}
 			w.show()
 			var wmw = wm.innerWidth()
 			var wmh = wm.innerHeight()
@@ -128,11 +137,26 @@
 				alert("请输入正确的手机号");
 				return;
 			}
+			var money = $("input[name=money]").val();
 			Common.post("/wish/${wish.id}/sendMessage", {phone:phone}, function(json){
 				if(json.code == Common.SUCC){
-					Common.go("/wish/${wish.id}/resultA.html");
+
 				}
 			});
+			if (money > 0) {
+				Common.go("/trade/order?payment=" + money)
+			} else {
+				Common.go("/wish/${wish.id}/preview.html");
+			}
+		});
+
+		$(".btn-noSend").on("click", function(){
+			var money = $("input[name=money]").val();
+			if (money > 0) {
+				Common.go("/trade/order?payment=" + money)
+			} else {
+				Common.go("/wish/${wish.id}/preview.html");
+			}
 		});
 	})
 </script>

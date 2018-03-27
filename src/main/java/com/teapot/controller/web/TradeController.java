@@ -44,11 +44,11 @@ public class TradeController extends BaseController {
      * @return
      */
     @RequestMapping("order")
-    public String order(@RequestParam("payment") Double payment, HttpSession session, RedirectAttributes redirectAttributes){
+    public String doOrder(@RequestParam("payment") Double payment, HttpSession session, RedirectAttributes redirectAttributes){
         String tempId = (String) session.getAttribute(SessionKeyContants.SESSION_TEMP_CUSTOMER);
         TbOrder order = orderService.newOrder(tempId, payment);
         redirectAttributes.addFlashAttribute("orderId", order.getId());
-        return "redirect:toPayment";
+        return "redirect:toPayment.html";
     }
 
     @RequestMapping("toPayment.hmtl")

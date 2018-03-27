@@ -6,12 +6,12 @@ public class TbCouponTemplate implements Serializable {
     private Integer id;
 
     /**
-     * ÓÅ»İÈ¯Ãû³Æ
+     * ä¼˜æƒ åˆ¸åç§°
      */
     private String name;
 
     /**
-     * ×´Ì¬
+     * çŠ¶æ€
      */
     private Byte state;
 

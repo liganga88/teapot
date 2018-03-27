@@ -51,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
 
         TbOrder order = new TbOrder();
 //        order.setCustomerid(customer.getId());
-        order.setTempId(tempId);
+        order.setTempid(tempId);
         order.setMoney((int) (money * 100));
         order.setState(OrderStateContants.CREATED);
         order.setCreated(new Date());
@@ -69,8 +69,8 @@ public class OrderServiceImpl implements OrderService {
         Integer orderId = Integer.parseInt(outTradeNo.replace(alipayConfig.getTradePrefix(), ""));
         TbOrder order = orderDao.selectByPrimaryKey(orderId);
 
-        order.setPayType(payType);
-        order.setPayNo(tradeNo);
+        order.setPaytype(payType);
+        order.setPayno(tradeNo);
         order.setState(OrderStateContants.PAID);
         orderDao.updateByPrimaryKey(order);
     }

@@ -7,32 +7,49 @@ public class TbOrder implements Serializable {
     private Integer id;
 
     /**
-     * �ͻ�ID
+     * 客户ID
      */
     private Integer customerid;
 
     /**
-     * ���
+     * 客户临时编号
+     */
+    private String tempid;
+
+    /**
+     * 金额
      */
     private Integer money;
 
     /**
-     * ���͵��ֻ��
+     * 发送的手机号
      */
     private String sendphone;
 
-    private String tempId;
-
+    /**
+     * 状态 0:待支付 1:已支付
+     */
     private Byte state;
 
     /**
-     * ����ʱ��
+     * 创建时间
      */
     private Date created;
 
-    private Byte payType;
+    /**
+     * 支付类型 1:支付宝支付 2:微信支付
+     */
+    private Byte paytype;
 
-    private String payNo;
+    /**
+     * 支付宝单号或微信支付单号
+     */
+    private String payno;
+
+    /**
+     * 支付时间
+     */
+    private Date paytime;
 
     private static final long serialVersionUID = 1L;
 
@@ -52,6 +69,14 @@ public class TbOrder implements Serializable {
         this.customerid = customerid;
     }
 
+    public String getTempid() {
+        return tempid;
+    }
+
+    public void setTempid(String tempid) {
+        this.tempid = tempid == null ? null : tempid.trim();
+    }
+
     public Integer getMoney() {
         return money;
     }
@@ -66,14 +91,6 @@ public class TbOrder implements Serializable {
 
     public void setSendphone(String sendphone) {
         this.sendphone = sendphone == null ? null : sendphone.trim();
-    }
-
-    public String getTempId() {
-        return tempId;
-    }
-
-    public void setTempId(String tempId) {
-        this.tempId = tempId;
     }
 
     public Byte getState() {
@@ -92,20 +109,28 @@ public class TbOrder implements Serializable {
         this.created = created;
     }
 
-    public Byte getPayType() {
-        return payType;
+    public Byte getPaytype() {
+        return paytype;
     }
 
-    public void setPayType(Byte payType) {
-        this.payType = payType;
+    public void setPaytype(Byte paytype) {
+        this.paytype = paytype;
     }
 
-    public String getPayNo() {
-        return payNo;
+    public String getPayno() {
+        return payno;
     }
 
-    public void setPayNo(String payNo) {
-        this.payNo = payNo;
+    public void setPayno(String payno) {
+        this.payno = payno == null ? null : payno.trim();
+    }
+
+    public Date getPaytime() {
+        return paytime;
+    }
+
+    public void setPaytime(Date paytime) {
+        this.paytime = paytime;
     }
 
     @Override
@@ -116,9 +141,14 @@ public class TbOrder implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", customerid=").append(customerid);
+        sb.append(", tempid=").append(tempid);
         sb.append(", money=").append(money);
         sb.append(", sendphone=").append(sendphone);
+        sb.append(", state=").append(state);
         sb.append(", created=").append(created);
+        sb.append(", paytype=").append(paytype);
+        sb.append(", payno=").append(payno);
+        sb.append(", paytime=").append(paytime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

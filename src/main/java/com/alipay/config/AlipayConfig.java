@@ -90,7 +90,7 @@ public class AlipayConfig {
     private String ALIPAY_PUBLIC_KEY;
 
     // 签名方式
-    @Value("${alipay.sign_type}")
+    @Value("${alipay.sign.type}")
     private String signType;
 
     // 返回格式

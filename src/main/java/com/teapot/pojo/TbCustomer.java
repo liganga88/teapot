@@ -7,28 +7,26 @@ public class TbCustomer implements Serializable {
     private Integer id;
 
     /**
-     * ����
+     * 姓名
      */
     private String name;
 
     private String phone;
 
     /**
-     * ΢��Ψһ��ʶ
+     * 微信唯一标识
      */
     private String openid;
 
     /**
-     * ״̬
+     * 状态
      */
     private Byte state;
 
     /**
-     * ����ʱ��
+     * 创建时间
      */
     private Date created;
-
-    private String tempId;
 
     private static final long serialVersionUID = 1L;
 
@@ -78,14 +76,6 @@ public class TbCustomer implements Serializable {
 
     public void setCreated(Date created) {
         this.created = created;
-    }
-
-    public String getTempId() {
-        return tempId;
-    }
-
-    public void setTempId(String tempId) {
-        this.tempId = tempId;
     }
 
     @Override

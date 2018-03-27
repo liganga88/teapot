@@ -108,7 +108,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.teapot.pojo.TbCustomer" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.teapot.pojo.TbCustomer" >
     insert into tb_customer (id, name, phone, 
       openid, state, created
       )

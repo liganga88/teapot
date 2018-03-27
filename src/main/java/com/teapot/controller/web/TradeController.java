@@ -1,23 +1,26 @@
 package com.teapot.controller.web;
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.domain.AlipayTradeWapPayModel;
+import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.alipay.config.AlipayConfig;
-import com.alipay.util.AlipayNotify;
-import com.alipay.util.AlipaySubmit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.teapot.contants.PayTypeContants;
+import com.teapot.contants.SessionKeyContants;
+import com.teapot.pojo.TbOrder;
+import com.teapot.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
-import java.nio.charset.Charset;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -32,10 +35,77 @@ public class TradeController extends BaseController {
     @Autowired
     private AlipayConfig alipayConfig;
 
+    @Autowired
+    private OrderService orderService;
+
+    /**
+     * 下单处理
+     * @param payment
+     * @return
+     */
+    @RequestMapping("order")
+    public String order(@RequestParam("payment") Double payment, HttpSession session, RedirectAttributes redirectAttributes){
+        String tempId = (String) session.getAttribute(SessionKeyContants.SESSION_TEMP_CUSTOMER);
+        TbOrder order = orderService.newOrder(tempId, payment);
+        redirectAttributes.addFlashAttribute("orderId", order.getId());
+        return "redirect:toPayment";
+    }
+
+    @RequestMapping("toPayment.hmtl")
+    public String toPayment(@RequestParam("orderId") Integer orderId, Model model){
+        model.addAttribute("orderId", orderId);
+        return "toPayment";
+    }
+
     @RequestMapping(value = "alipay", produces = "text/html; charset=utf-8")
     @ResponseBody
-    public String alipay(@RequestParam("tradeNo") String tradeNo, @RequestParam("payment") String payment){
-        Map<String, String> sParaTemp = new HashMap<String, String>();
+    public String alipay(@PathVariable("orderId") Integer orderId){
+
+        TbOrder order = orderService.selectById(orderId);
+
+        // 销售产品码 必填
+        String product_code = "QUICK_WAP_WAY";
+
+        /**********************/
+        // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，开发者无需关注签名与验签
+        //调用RSA签名方式
+        AlipayClient client = new DefaultAlipayClient(alipayConfig.getURL(), alipayConfig.getAppid(), alipayConfig.getRSA_PRIVATE_KEY(),
+                alipayConfig.getFORMAT(), alipayConfig.getInputCharset(), alipayConfig.getALIPAY_PUBLIC_KEY(), alipayConfig.getSignType());
+        AlipayTradeWapPayRequest alipay_request = new AlipayTradeWapPayRequest();
+
+        // 封装请求支付信息
+        AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
+        model.setOutTradeNo(alipayConfig.getTradePrefix() + order.getId());
+        model.setSubject("功德金");
+        Double payment = order.getMoney() / 100d;
+        model.setTotalAmount(payment.toString());
+//        model.setBody(body);
+        model.setTimeoutExpress(alipayConfig.getTimeoutExpress());
+        model.setProductCode(product_code);
+        alipay_request.setBizModel(model);
+        // 设置异步通知地址
+        alipay_request.setNotifyUrl(alipayConfig.getNotifyUrl());
+        // 设置同步地址
+        alipay_request.setReturnUrl(alipayConfig.getReturnUrl());
+
+        // form表单生产
+        String form = "";
+        try {
+            // 调用SDK生成表单
+            form = client.pageExecute(alipay_request).getBody();
+//            response.setContentType("text/html;charset=" + AlipayConfig.CHARSET);
+//            response.getWriter().write(form);//直接将完整的表单html输出到页面
+//            response.getWriter().flush();
+//            response.getWriter().close();
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+        }
+
+        return form;
+
+        /*Map<String, String> sParaTemp = new HashMap<String, String>();
+        sParaTemp.put("app_id", alipayConfig.getAppid());
+
         sParaTemp.put("service", alipayConfig.getService());
         sParaTemp.put("partner", alipayConfig.getPartner());
         sParaTemp.put("seller_id", alipayConfig.getSellerId());
@@ -57,7 +127,7 @@ public class TradeController extends BaseController {
         // 建立请求
         String html = AlipaySubmit.buildRequest(sParaTemp, alipayConfig, "get", "确认");
 //        renderHtml(html);
-        return html;
+        return html;*/
 //        HttpHeaders headers = new HttpHeaders();
 //        headers.setPragma("no-cache");
 //        headers.setCacheControl("no-cache");
@@ -68,9 +138,7 @@ public class TradeController extends BaseController {
     }
 
     @RequestMapping("return_url.html")
-    public String returnCheck(@RequestParam("trade_no") String tradeNo, @RequestParam("out_trade_no") String orderNo,
-                              @RequestParam("total_fee") String totalFee, @RequestParam("buyer_email") String buyerEmail,
-                              @RequestParam("trade_status") String tradeStatus) {
+    public String returnCheck(@RequestParam("trade_no") String tradeNo, @RequestParam("out_trade_no") String orderNo) {
         //获取支付宝POST过来反馈信息
         Map<String,String> params = new HashMap<String,String>();
         Map requestParams = getHttpServletRequest().getParameterMap();
@@ -87,7 +155,12 @@ public class TradeController extends BaseController {
             params.put(name, valueStr);
         }
 
-        boolean dealResult = dealAlipayReturn(params, orderNo, totalFee, tradeStatus, tradeNo, buyerEmail);
+        boolean verify_result = false;
+        try {
+            verify_result = AlipaySignature.rsaCheckV1(params, alipayConfig.getALIPAY_PUBLIC_KEY(), alipayConfig.getInputCharset(), alipayConfig.getSignType());
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+        }
 
         return  "redirect:/paySuccess";
 
@@ -95,12 +168,11 @@ public class TradeController extends BaseController {
 
     @RequestMapping(value = "notify_url.html", produces = "text/plain; charset=utf-8")
     public String notifyCheck(@RequestParam("trade_no") String tradeNo, @RequestParam("out_trade_no") String orderNo,
-                            @RequestParam("total_fee") String totalFee, @RequestParam("buyer_email") String buyerEmail,
-                            @RequestParam("trade_status") String tradeStatus) {
+                                  @RequestParam("trade_status") String tradeStatus) {
         //获取支付宝POST过来反馈信息
-        Map<String,String> params = new HashMap<String,String>();
+        Map<String, String> params = new HashMap<String, String>();
         Map requestParams = getHttpServletRequest().getParameterMap();
-        for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
+        for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
             String name = (String) iter.next();
             String[] values = (String[]) requestParams.get(name);
             String valueStr = "";
@@ -113,9 +185,22 @@ public class TradeController extends BaseController {
             params.put(name, valueStr);
         }
 
-        boolean dealResult = dealAlipayReturn(params, orderNo, totalFee, tradeStatus, tradeNo, buyerEmail);
+        boolean verify_result = false;
+        try {
+            verify_result = AlipaySignature.rsaCheckV1(params, alipayConfig.getALIPAY_PUBLIC_KEY(), alipayConfig.getInputCharset(), alipayConfig.getSignType());
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+        }
+//        boolean dealResult = dealAlipayReturn(params, orderNo, totalFee, tradeStatus, tradeNo, buyerEmail);
+        if (verify_result) {
+            if (tradeStatus.equals("TRADE_FINISHED") || tradeStatus.equals("TRADE_SUCCESS")) {
+                orderService.paid(tradeNo, orderNo, PayTypeContants.ALIPAY);
+            }
 
-        return "success";
+            return "success";
+        } else {
+            return "fail";
+        }
     }
 
     /**
@@ -131,9 +216,9 @@ public class TradeController extends BaseController {
      */
     private boolean dealAlipayReturn(Map<String, String> params, String orderNo, String totalFee, String tradeStatus,
                                      String alipayTradeNo, String buyerEmail) {
-        boolean verifyResult = AlipayNotify.verify(params, alipayConfig);
-        if (!verifyResult)
-            return false;
+//        boolean verifyResult = AlipayNotify.verify(params, alipayConfig);
+//        if (!verifyResult)
+//            return false;
 //        String tradeIds = orderNo.replace(tradePrefix, "");
 //        String[] strIds = tradeIds.split("_");
 //

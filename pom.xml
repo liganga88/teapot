@@ -245,6 +245,7 @@
             <artifactId>mybatis-generator-maven-plugin</artifactId>
             <version>${mybatis-generator.version}</version>
         </dependency>
+        <!-- 阿里云短信平台 -->
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
@@ -255,12 +256,33 @@
             <artifactId>aliyun-java-sdk-core</artifactId>
             <version>3.3.1</version>
         </dependency>
+        <!-- 支付宝支付SDK -->
+        <dependency>
+            <groupId>com.alipay</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>1.5</version>
+        </dependency>
         <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
             <version>1.6.1</version>
         </dependency>
     </dependencies>
+
+    <!-- 微信支付SDK -->
+    <scm>
+        <url>https://github.com/wxpay/WXPay-SDK-Java</url>
+        <connection>git@github.com:wxpay/WXPay-SDK-Java.git</connection>
+        <developerConnection>https://github.com/wxpay/WXPay-SDK-Java</developerConnection>
+    </scm>
+    <developers>
+        <developer>
+            <name>wxpay</name>
+            <email>wxpay1888@foxmail.com</email>
+            <url>http://wxpay.github.io</url>
+        </developer>
+    </developers>
+
     <build>
         <finalName>teapot</finalName>
 

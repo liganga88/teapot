@@ -77,7 +77,12 @@ public class SmsUtil {
         //hint 此处可能会抛出异常，注意catch
         SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
 
-        logger.info("短信发送，phone={}", phone);
+        if ("ok".equalsIgnoreCase(sendSmsResponse.getCode())) {
+            logger.info("短信发送成功:phone={}", phone);
+        } else {
+            logger.error("短信发送失败:phone={},context={},code={},message={}",
+                    new String[]{phone, content, sendSmsResponse.getCode(), sendSmsResponse.getMessage()});
+        }
 
         return sendSmsResponse;
     }

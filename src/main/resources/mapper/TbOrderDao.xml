@@ -107,7 +107,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.teapot.pojo.TbOrder" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.teapot.pojo.TbOrder" >
     insert into tb_order (id, customerId, money, 
       sendPhone, created)
     values (#{id,jdbcType=INTEGER}, #{customerid,jdbcType=INTEGER}, #{money,jdbcType=INTEGER}, 

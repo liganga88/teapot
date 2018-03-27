@@ -7,14 +7,14 @@ public class TbCustomer implements Serializable {
     private Integer id;
 
     /**
-     * ÐÕÃû
+     * ï¿½ï¿½ï¿½ï¿½
      */
     private String name;
 
     private String phone;
 
     /**
-     * Î¢ÐÅÎ¨Ò»±êÊ¶
+     * Î¢ï¿½ï¿½Î¨Ò»ï¿½ï¿½Ê¶
      */
     private String openid;
 
@@ -24,9 +24,11 @@ public class TbCustomer implements Serializable {
     private Byte state;
 
     /**
-     * ´´½¨Ê±¼ä
+     * ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
      */
     private Date created;
+
+    private String tempId;
 
     private static final long serialVersionUID = 1L;
 
@@ -76,6 +78,14 @@ public class TbCustomer implements Serializable {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public String getTempId() {
+        return tempId;
+    }
+
+    public void setTempId(String tempId) {
+        this.tempId = tempId;
     }
 
     @Override

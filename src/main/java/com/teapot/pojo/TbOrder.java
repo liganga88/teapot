@@ -7,24 +7,32 @@ public class TbOrder implements Serializable {
     private Integer id;
 
     /**
-     * ¿Í»§ID
+     * ï¿½Í»ï¿½ID
      */
     private Integer customerid;
 
     /**
-     * ½ð¶î
+     * ï¿½ï¿½ï¿½
      */
     private Integer money;
 
     /**
-     * ·¢ËÍµÄÊÖ»úºÅ
+     * ï¿½ï¿½ï¿½Íµï¿½ï¿½Ö»ï¿½ï¿½
      */
     private String sendphone;
 
+    private String tempId;
+
+    private Byte state;
+
     /**
-     * ´´½¨Ê±¼ä
+     * ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
      */
     private Date created;
+
+    private Byte payType;
+
+    private String payNo;
 
     private static final long serialVersionUID = 1L;
 
@@ -60,12 +68,44 @@ public class TbOrder implements Serializable {
         this.sendphone = sendphone == null ? null : sendphone.trim();
     }
 
+    public String getTempId() {
+        return tempId;
+    }
+
+    public void setTempId(String tempId) {
+        this.tempId = tempId;
+    }
+
+    public Byte getState() {
+        return state;
+    }
+
+    public void setState(Byte state) {
+        this.state = state;
+    }
+
     public Date getCreated() {
         return created;
     }
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public Byte getPayType() {
+        return payType;
+    }
+
+    public void setPayType(Byte payType) {
+        this.payType = payType;
+    }
+
+    public String getPayNo() {
+        return payNo;
+    }
+
+    public void setPayNo(String payNo) {
+        this.payNo = payNo;
     }
 
     @Override

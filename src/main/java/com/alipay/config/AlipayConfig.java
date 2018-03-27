@@ -28,23 +28,6 @@ public class AlipayConfig {
     @Value("${alipay.key}")
     private String key;
 
-    // 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-    @Value("${alipay.notify_url}")
-    private String notifyUrl;
-
-    // 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-
-    @Value("${alipay.return_url}")
-    private String returnUrl;
-
-    // 签名方式
-    @Value("${alipay.sign_type}")
-    private String signType;
-
-    // 字符编码格式 目前支持 gbk 或 utf-8
-    @Value("${alipay.input_charset}")
-    private String inputCharset;
-
     // 支付类型 ，无需修改
     @Value("${alipay.payment_type}")
     private String paymentType;
@@ -76,6 +59,51 @@ public class AlipayConfig {
     //卖家支付宝账号名称
     @Value("${alipay.seller_name}")
     private String sellerName;
+
+
+    // 支付宝分配给开发者的应用ID
+    @Value("${alipay.appid}")
+    private String appid;
+
+    // 私钥 pkcs8格式的
+    @Value("${alipay.private.key}")
+    private String RSA_PRIVATE_KEY;
+
+    // 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
+    @Value("${alipay.notify_url}")
+    private String notifyUrl;
+
+    // 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
+    @Value("${alipay.return_url}")
+    private String returnUrl;
+
+    // 请求网关地址
+    @Value("${alipay.url}")
+    private String URL;
+
+    // 字符编码格式 目前支持 gbk 或 utf-8
+    @Value("${alipay.input_charset}")
+    private String inputCharset;
+
+    // 支付宝公钥
+    @Value("${alipay.public.key}")
+    private String ALIPAY_PUBLIC_KEY;
+
+    // 签名方式
+    @Value("${alipay.sign_type}")
+    private String signType;
+
+    // 返回格式
+    @Value("${alipay.format}")
+    private String FORMAT;
+
+    // 超时时间 可空
+    @Value("${alipay.timeout.express}")
+    private String timeoutExpress;
+
+    // 付款时给支付宝的订单号前缀
+    @Value("${alipay.trade.prefix}")
+    private String tradePrefix;
 
     public String getPartner() {
         return partner;
@@ -131,6 +159,34 @@ public class AlipayConfig {
 
     public String getSellerName() {
         return sellerName;
+    }
+
+    public String getAppid() {
+        return appid;
+    }
+
+    public String getRSA_PRIVATE_KEY() {
+        return RSA_PRIVATE_KEY;
+    }
+
+    public String getURL() {
+        return URL;
+    }
+
+    public String getALIPAY_PUBLIC_KEY() {
+        return ALIPAY_PUBLIC_KEY;
+    }
+
+    public String getFORMAT() {
+        return FORMAT;
+    }
+
+    public String getTimeoutExpress() {
+        return timeoutExpress;
+    }
+
+    public String getTradePrefix() {
+        return tradePrefix;
     }
 }
 

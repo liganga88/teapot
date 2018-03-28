@@ -9,6 +9,7 @@ import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.alipay.config.AlipayConfig;
 import com.teapot.contants.PayTypeContants;
 import com.teapot.contants.SessionKeyContants;
+import com.teapot.controller.BaseController;
 import com.teapot.pojo.TbOrder;
 import com.teapot.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +45,9 @@ public class TradeController extends BaseController {
      * @return
      */
     @RequestMapping("order")
-    public String doOrder(@RequestParam("payment") Double payment, HttpSession session, RedirectAttributes redirectAttributes){
+    public String doOrder(@RequestParam("wishId") Integer wishId, @RequestParam("payment") Double payment, HttpSession session, RedirectAttributes redirectAttributes) {
         String tempId = (String) session.getAttribute(SessionKeyContants.SESSION_TEMP_CUSTOMER);
-        TbOrder order = orderService.newOrder(tempId, payment);
+        TbOrder order = orderService.newOrder(wishId ,tempId, payment);
         redirectAttributes.addFlashAttribute("orderId", order.getId());
         return "redirect:toPayment.html";
     }
@@ -54,7 +55,7 @@ public class TradeController extends BaseController {
     @RequestMapping("toPayment.hmtl")
     public String toPayment(@RequestParam("orderId") Integer orderId, Model model){
         model.addAttribute("orderId", orderId);
-        return "toPayment";
+        return "web/toPayment";
     }
 
     @RequestMapping(value = "alipay", produces = "text/html; charset=utf-8")

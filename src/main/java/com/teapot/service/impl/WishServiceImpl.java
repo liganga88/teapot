@@ -2,12 +2,14 @@ package com.teapot.service.impl;
 
 import com.teapot.dao.TbWishDao;
 import com.teapot.pojo.TbWish;
+import com.teapot.pojo.TbWishQuery;
 import com.teapot.service.WishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/3/17.
@@ -37,5 +39,11 @@ public class WishServiceImpl implements WishService {
         tbWish.setId(id);
         tbWish.setSmsphone(phone);
         wishDao.updateByPrimaryKeySelective(tbWish);
+    }
+
+    public List<TbWish> selectAll() {
+        TbWishQuery query = new TbWishQuery();
+        List<TbWish> wishs = wishDao.selectByExample(query);
+        return wishs;
     }
 }

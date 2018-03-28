@@ -3,6 +3,7 @@ package com.teapot.controller.web;
 import com.aliyuncs.exceptions.ClientException;
 import com.teapot.bean.JsonResult;
 import com.teapot.contants.SessionKeyContants;
+import com.teapot.controller.BaseController;
 import com.teapot.pojo.TbWish;
 import com.teapot.service.WishService;
 import com.teapot.utils.SmsUtil;
@@ -34,7 +35,7 @@ public class HomeController extends BaseController {
     @RequestMapping(value = "/wish.html")
     public String wish(Model model) {
 
-        return "wish";
+        return "web/wish";
     }
 
     /**
@@ -54,14 +55,14 @@ public class HomeController extends BaseController {
     public String wishDetail(@PathVariable("id") Integer id, Model model){
         TbWish tbWish = wishService.selectById(id);
         model.addAttribute("wish", tbWish);
-        return "detail";
+        return "web/detail";
     }
 
     @RequestMapping(value = "/wish/{id}/preview.html")
     public String preview(@PathVariable("id") Integer id, Model model){
         TbWish tbWish = wishService.selectById(id);
         model.addAttribute("wish", tbWish);
-        return "preview";
+        return "web/preview";
     }
 
     @RequestMapping(value = "/wish/{id}/sendMessage")
@@ -83,11 +84,11 @@ public class HomeController extends BaseController {
     public String resulta(@PathVariable("id") Integer id, Model model){
         TbWish tbWish = wishService.selectById(id);
         model.addAttribute("wish", tbWish);
-        return "result_a";
+        return "web/result_a";
     }
 
     @RequestMapping(value = "/wish/resultB.html")
     public String resultb(Model model){
-        return "result_b";
+        return "web/result_b";
     }
 }

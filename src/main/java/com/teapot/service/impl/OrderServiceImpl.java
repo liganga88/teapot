@@ -4,10 +4,8 @@ import com.alipay.config.AlipayConfig;
 import com.teapot.contants.OrderStateContants;
 import com.teapot.dao.TbCustomerDao;
 import com.teapot.dao.TbOrderDao;
-import com.teapot.pojo.TbCustomer;
-import com.teapot.pojo.TbCustomerQuery;
-import com.teapot.pojo.TbOrder;
-import com.teapot.pojo.TbOrderQuery;
+import com.teapot.dao.TbWishDao;
+import com.teapot.pojo.*;
 import com.teapot.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,9 +28,12 @@ public class OrderServiceImpl implements OrderService {
     private TbOrderDao orderDao;
 
     @Autowired
+    private TbWishDao wishDao;
+
+    @Autowired
     private AlipayConfig alipayConfig;
 
-    public TbOrder newOrder(String tempId, Double money) {
+    public TbOrder newOrder(Integer wishId, String tempId, Double money) {
 
 /*        TbCustomerQuery customerQuery = new TbCustomerQuery();
         TbCustomerQuery.Criteria customerCriteria = customerQuery.createCriteria();
@@ -49,12 +50,19 @@ public class OrderServiceImpl implements OrderService {
             customerDao.insert(customer);
         }*/
 
+        TbWish wish = wishDao.selectByPrimaryKey(wishId);
+        if (wish == null) {
+            throw new IllegalArgumentException();
+        }
+
         TbOrder order = new TbOrder();
 //        order.setCustomerid(customer.getId());
         order.setTempid(tempId);
         order.setMoney((int) (money * 100));
         order.setState(OrderStateContants.CREATED);
         order.setCreated(new Date());
+        order.setHoper(wish.getHoper());
+        order.setWishId(wishId);
         orderDao.insert(order);
 
         return order;
@@ -73,5 +81,25 @@ public class OrderServiceImpl implements OrderService {
         order.setPayno(tradeNo);
         order.setState(OrderStateContants.PAID);
         orderDao.updateByPrimaryKey(order);
+    }
+
+    public List<TbOrder> selectAllPaid() {
+        TbOrderQuery query = new TbOrderQuery();
+        TbOrderQuery.Criteria criteria = query.createCriteria();
+        criteria.andStateEqualTo(OrderStateContants.PAID);
+        List<TbOrder> orders = orderDao.selectByExample(query);
+
+        return orders;
+    }
+
+    public List<TbOrder> selectTopOrder(Integer limit) {
+        TbOrderQuery query = new TbOrderQuery();
+        TbOrderQuery.Criteria criteria = query.createCriteria();
+        criteria.andStateEqualTo(OrderStateContants.PAID);
+        query.setOrderByClause("money desc");
+        query.setPageNo(1);
+        query.setPageSize(limit);
+        List<TbOrder> orders = orderDao.selectByExample(query);
+        return orders;
     }
 }

@@ -39,9 +39,16 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**" />
+            <mvc:exclude-mapping path="/admin/*"/>
             <!--<mvc:exclude-mapping path="/swagger-ui.html" />-->
             <!--<mvc:exclude-mapping path="/app/customer/v1/login" />-->
             <bean class="com.teapot.interceptor.LoginInterceptor"></bean>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/*" />
+            <mvc:exclude-mapping path="/admin/login.html" />
+            <mvc:exclude-mapping path="/admin/doLogin" />
+            <bean class="com.teapot.interceptor.AdminInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
 

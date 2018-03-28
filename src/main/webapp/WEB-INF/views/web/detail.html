@@ -144,7 +144,7 @@
 				}
 			});
 			if (money > 0) {
-				Common.go("/trade/order?payment=" + money)
+				Common.go("/trade/order?wishId=${wish.id}&payment=" + money)
 			} else {
 				Common.go("/wish/${wish.id}/preview.html");
 			}
@@ -153,7 +153,7 @@
 		$(".btn-noSend").on("click", function(){
 			var money = $("input[name=money]").val();
 			if (money > 0) {
-				Common.go("/trade/order?payment=" + money)
+				Common.go("/trade/order?wishId=${wish.id}&payment=" + money)
 			} else {
 				Common.go("/wish/${wish.id}/preview.html");
 			}

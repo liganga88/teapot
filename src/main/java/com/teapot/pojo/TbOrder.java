@@ -21,6 +21,8 @@ public class TbOrder implements Serializable {
      */
     private Integer money;
 
+    private String hoper;
+
     /**
      * 发送的手机号
      */
@@ -30,6 +32,8 @@ public class TbOrder implements Serializable {
      * 状态 0:待支付 1:已支付
      */
     private Byte state;
+
+    private Integer wishId;
 
     /**
      * 创建时间
@@ -85,6 +89,14 @@ public class TbOrder implements Serializable {
         this.money = money;
     }
 
+    public String getHoper() {
+        return hoper;
+    }
+
+    public void setHoper(String hoper) {
+        this.hoper = hoper;
+    }
+
     public String getSendphone() {
         return sendphone;
     }
@@ -99,6 +111,14 @@ public class TbOrder implements Serializable {
 
     public void setState(Byte state) {
         this.state = state;
+    }
+
+    public Integer getWishId() {
+        return wishId;
+    }
+
+    public void setWishId(Integer wishId) {
+        this.wishId = wishId;
     }
 
     public Date getCreated() {

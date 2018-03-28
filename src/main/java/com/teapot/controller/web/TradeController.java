@@ -48,17 +48,17 @@ public class TradeController extends BaseController {
     public String doOrder(@RequestParam("wishId") Integer wishId, @RequestParam("payment") Double payment, HttpSession session, RedirectAttributes redirectAttributes) {
         String tempId = (String) session.getAttribute(SessionKeyContants.SESSION_TEMP_CUSTOMER);
         TbOrder order = orderService.newOrder(wishId ,tempId, payment);
-        redirectAttributes.addFlashAttribute("orderId", order.getId());
-        return "redirect:toPayment.html";
+//        redirectAttributes.addFlashAttribute("orderId", order.getId());
+        return "redirect:" + order.getId() + "/toPayment.html";
     }
 
-    @RequestMapping("toPayment.hmtl")
-    public String toPayment(@RequestParam("orderId") Integer orderId, Model model){
+    @RequestMapping("{orderId}/toPayment.html")
+    public String toPayment(@PathVariable("orderId") Integer orderId, Model model){
         model.addAttribute("orderId", orderId);
         return "web/toPayment";
     }
 
-    @RequestMapping(value = "alipay", produces = "text/html; charset=utf-8")
+    @RequestMapping(value = "{orderId}/alipay", produces = "text/html; charset=utf-8")
     @ResponseBody
     public String alipay(@PathVariable("orderId") Integer orderId){
 
@@ -78,8 +78,8 @@ public class TradeController extends BaseController {
         AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
         model.setOutTradeNo(alipayConfig.getTradePrefix() + order.getId());
         model.setSubject("功德金");
-        Double payment = order.getMoney() / 100d;
-        model.setTotalAmount(payment.toString());
+//        model.setTotalAmount(order.getMoney().toString());
+        model.setTotalAmount("0.01");
 //        model.setBody(body);
         model.setTimeoutExpress(alipayConfig.getTimeoutExpress());
         model.setProductCode(product_code);
@@ -163,7 +163,10 @@ public class TradeController extends BaseController {
             e.printStackTrace();
         }
 
-        return  "redirect:/paySuccess";
+        Integer orderId = Integer.parseInt(orderNo.replace(alipayConfig.getTradePrefix(), ""));
+        TbOrder order = orderService.selectById(orderId);
+
+        return  "redirect:/wish/" + order.getWishid() + "/resultA.html";
 
     }
 

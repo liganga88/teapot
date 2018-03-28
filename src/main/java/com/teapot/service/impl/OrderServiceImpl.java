@@ -62,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
         order.setState(OrderStateContants.CREATED);
         order.setCreated(new Date());
         order.setHoper(wish.getHoper());
-        order.setWishId(wishId);
+        order.setWishid(wishId);
         orderDao.insert(order);
 
         return order;

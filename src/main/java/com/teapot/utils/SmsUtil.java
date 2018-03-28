@@ -34,7 +34,7 @@ public class SmsUtil {
     //产品域名,开发者无需替换
     static final String domain = "dysmsapi.aliyuncs.com";
 
-    public static final String TEMPLATE_CODE_WISH = "SMS_125300006";
+    public static final String TEMPLATE_CODE_WISH = "SMS_129745607";
 
     // TODO 此处需要替换成开发者自己的AK(在阿里云访问控制台寻找)
     static final String accessKeyId = "LTAInzkxFcUtkVDa";

@@ -12,6 +12,8 @@
     <result column="payType" property="paytype" jdbcType="TINYINT" />
     <result column="payNo" property="payno" jdbcType="VARCHAR" />
     <result column="payTime" property="paytime" jdbcType="TIMESTAMP" />
+    <result column="hoper" property="hoper" jdbcType="VARCHAR" />
+    <result column="wishId" property="wishid" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -73,7 +75,8 @@
   </sql>
   <sql id="Base_Column_List" >
     <if test="fields == null" >
-      id, customerId, tempId, money, sendPhone, state, created, payType, payNo, payTime
+      id, customerId, tempId, money, sendPhone, state, created, payType, payNo, payTime, 
+      hoper, wishId
     </if>
     <if test="fields != null" >
       ${fields}
@@ -98,7 +101,7 @@
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
-    id,customerId,tempId,money,sendPhone,state,created,payType,payNo,payTime
+    id,customerId,tempId,money,sendPhone,state,created,payType,payNo,payTime,hoper,wishId
     from tb_order
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -116,11 +119,13 @@
     insert into tb_order (id, customerId, tempId, 
       money, sendPhone, state, 
       created, payType, payNo, 
-      payTime)
+      payTime, hoper, wishId
+      )
     values (#{id,jdbcType=INTEGER}, #{customerid,jdbcType=INTEGER}, #{tempid,jdbcType=VARCHAR}, 
       #{money,jdbcType=INTEGER}, #{sendphone,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, 
       #{created,jdbcType=TIMESTAMP}, #{paytype,jdbcType=TINYINT}, #{payno,jdbcType=VARCHAR}, 
-      #{paytime,jdbcType=TIMESTAMP})
+      #{paytime,jdbcType=TIMESTAMP}, #{hoper,jdbcType=VARCHAR}, #{wishid,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.teapot.pojo.TbOrder" >
     insert into tb_order
@@ -155,6 +160,12 @@
       <if test="paytime != null" >
         payTime,
       </if>
+      <if test="hoper != null" >
+        hoper,
+      </if>
+      <if test="wishid != null" >
+        wishId,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -186,6 +197,12 @@
       </if>
       <if test="paytime != null" >
         #{paytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hoper != null" >
+        #{hoper,jdbcType=VARCHAR},
+      </if>
+      <if test="wishid != null" >
+        #{wishid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -228,6 +245,12 @@
       <if test="record.paytime != null" >
         payTime = #{record.paytime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.hoper != null" >
+        hoper = #{record.hoper,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wishid != null" >
+        wishId = #{record.wishid,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -244,7 +267,9 @@
       created = #{record.created,jdbcType=TIMESTAMP},
       payType = #{record.paytype,jdbcType=TINYINT},
       payNo = #{record.payno,jdbcType=VARCHAR},
-      payTime = #{record.paytime,jdbcType=TIMESTAMP}
+      payTime = #{record.paytime,jdbcType=TIMESTAMP},
+      hoper = #{record.hoper,jdbcType=VARCHAR},
+      wishId = #{record.wishid,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -279,6 +304,12 @@
       <if test="paytime != null" >
         payTime = #{paytime,jdbcType=TIMESTAMP},
       </if>
+      <if test="hoper != null" >
+        hoper = #{hoper,jdbcType=VARCHAR},
+      </if>
+      <if test="wishid != null" >
+        wishId = #{wishid,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -292,7 +323,9 @@
       created = #{created,jdbcType=TIMESTAMP},
       payType = #{paytype,jdbcType=TINYINT},
       payNo = #{payno,jdbcType=VARCHAR},
-      payTime = #{paytime,jdbcType=TIMESTAMP}
+      payTime = #{paytime,jdbcType=TIMESTAMP},
+      hoper = #{hoper,jdbcType=VARCHAR},
+      wishId = #{wishid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -21,8 +21,6 @@ public class TbOrder implements Serializable {
      */
     private Integer money;
 
-    private String hoper;
-
     /**
      * 发送的手机号
      */
@@ -32,8 +30,6 @@ public class TbOrder implements Serializable {
      * 状态 0:待支付 1:已支付
      */
     private Byte state;
-
-    private Integer wishId;
 
     /**
      * 创建时间
@@ -54,6 +50,16 @@ public class TbOrder implements Serializable {
      * 支付时间
      */
     private Date paytime;
+
+    /**
+     * 祈愿人
+     */
+    private String hoper;
+
+    /**
+     * 祈福单ID
+     */
+    private Integer wishid;
 
     private static final long serialVersionUID = 1L;
 
@@ -89,14 +95,6 @@ public class TbOrder implements Serializable {
         this.money = money;
     }
 
-    public String getHoper() {
-        return hoper;
-    }
-
-    public void setHoper(String hoper) {
-        this.hoper = hoper;
-    }
-
     public String getSendphone() {
         return sendphone;
     }
@@ -111,14 +109,6 @@ public class TbOrder implements Serializable {
 
     public void setState(Byte state) {
         this.state = state;
-    }
-
-    public Integer getWishId() {
-        return wishId;
-    }
-
-    public void setWishId(Integer wishId) {
-        this.wishId = wishId;
     }
 
     public Date getCreated() {
@@ -153,6 +143,22 @@ public class TbOrder implements Serializable {
         this.paytime = paytime;
     }
 
+    public String getHoper() {
+        return hoper;
+    }
+
+    public void setHoper(String hoper) {
+        this.hoper = hoper == null ? null : hoper.trim();
+    }
+
+    public Integer getWishid() {
+        return wishid;
+    }
+
+    public void setWishid(Integer wishid) {
+        this.wishid = wishid;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -169,6 +175,8 @@ public class TbOrder implements Serializable {
         sb.append(", paytype=").append(paytype);
         sb.append(", payno=").append(payno);
         sb.append(", paytime=").append(paytime);
+        sb.append(", hoper=").append(hoper);
+        sb.append(", wishid=").append(wishid);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

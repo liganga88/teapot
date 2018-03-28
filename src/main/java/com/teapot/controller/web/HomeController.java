@@ -70,8 +70,9 @@ public class HomeController extends BaseController {
     public JsonResult sendMessage(@RequestParam("phone") String phone, @PathVariable("id") Integer id){
         TbWish tbWish = wishService.selectById(id);
         try {
-            String content = "{\"customer\":\"" + tbWish.getHoper() +"\"}";
-            SmsUtil.sendSms(SmsUtil.TEMPLATE_CODE_WISH, phone,content);
+//            String content = "{\"customer\":\"" + tbWish.getHoper() +"\"}";
+            String content = "";
+            SmsUtil.sendSms(SmsUtil.TEMPLATE_CODE_WISH, phone, content);
 
             wishService.updateSmsPhone(id, phone);
         } catch (ClientException e) {

@@ -776,6 +776,136 @@ public class TbOrderQuery {
             addCriterion("payTime not between", value1, value2, "paytime");
             return (Criteria) this;
         }
+
+        public Criteria andHoperIsNull() {
+            addCriterion("hoper is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoperIsNotNull() {
+            addCriterion("hoper is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoperEqualTo(String value) {
+            addCriterion("hoper =", value, "hoper");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoperNotEqualTo(String value) {
+            addCriterion("hoper <>", value, "hoper");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoperGreaterThan(String value) {
+            addCriterion("hoper >", value, "hoper");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoperGreaterThanOrEqualTo(String value) {
+            addCriterion("hoper >=", value, "hoper");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoperLessThan(String value) {
+            addCriterion("hoper <", value, "hoper");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoperLessThanOrEqualTo(String value) {
+            addCriterion("hoper <=", value, "hoper");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoperLike(String value) {
+            addCriterion("hoper like", value, "hoper");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoperNotLike(String value) {
+            addCriterion("hoper not like", value, "hoper");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoperIn(List<String> values) {
+            addCriterion("hoper in", values, "hoper");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoperNotIn(List<String> values) {
+            addCriterion("hoper not in", values, "hoper");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoperBetween(String value1, String value2) {
+            addCriterion("hoper between", value1, value2, "hoper");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoperNotBetween(String value1, String value2) {
+            addCriterion("hoper not between", value1, value2, "hoper");
+            return (Criteria) this;
+        }
+
+        public Criteria andWishidIsNull() {
+            addCriterion("wishId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWishidIsNotNull() {
+            addCriterion("wishId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWishidEqualTo(Integer value) {
+            addCriterion("wishId =", value, "wishid");
+            return (Criteria) this;
+        }
+
+        public Criteria andWishidNotEqualTo(Integer value) {
+            addCriterion("wishId <>", value, "wishid");
+            return (Criteria) this;
+        }
+
+        public Criteria andWishidGreaterThan(Integer value) {
+            addCriterion("wishId >", value, "wishid");
+            return (Criteria) this;
+        }
+
+        public Criteria andWishidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("wishId >=", value, "wishid");
+            return (Criteria) this;
+        }
+
+        public Criteria andWishidLessThan(Integer value) {
+            addCriterion("wishId <", value, "wishid");
+            return (Criteria) this;
+        }
+
+        public Criteria andWishidLessThanOrEqualTo(Integer value) {
+            addCriterion("wishId <=", value, "wishid");
+            return (Criteria) this;
+        }
+
+        public Criteria andWishidIn(List<Integer> values) {
+            addCriterion("wishId in", values, "wishid");
+            return (Criteria) this;
+        }
+
+        public Criteria andWishidNotIn(List<Integer> values) {
+            addCriterion("wishId not in", values, "wishid");
+            return (Criteria) this;
+        }
+
+        public Criteria andWishidBetween(Integer value1, Integer value2) {
+            addCriterion("wishId between", value1, value2, "wishid");
+            return (Criteria) this;
+        }
+
+        public Criteria andWishidNotBetween(Integer value1, Integer value2) {
+            addCriterion("wishId not between", value1, value2, "wishid");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

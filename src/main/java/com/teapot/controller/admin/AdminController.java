@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -39,14 +40,16 @@ public class AdminController extends BaseController {
     }
 
     @RequestMapping("/doLogin")
-    @ResponseBody
-    public JsonResult doLogin(@RequestParam("username") String username,
+    public String doLogin(@RequestParam("username") String username,
                               @RequestParam("password") String password,
-                              @RequestParam("passcode") String passcode, HttpSession session){
+                              @RequestParam("passcode") String passcode,
+                          HttpSession session, RedirectAttributes redirectAttributes){
 
         String vcode = getVerifyCode();
         if (!passcode.equalsIgnoreCase(vcode)) {
-            return JsonResult.error("验证码不正确");
+//            return JsonResult.error("验证码不正确");
+            redirectAttributes.addFlashAttribute("message", "验证码不正确");
+            return "redirect:login.html";
         }
 
         TbUser user = userService.selectByUsername(username);
@@ -60,9 +63,12 @@ public class AdminController extends BaseController {
         if (user != null && user.getPassword().equals(pw)) {
             setCurUser(user);
             session.setMaxInactiveInterval(24 * 60 * 60);
-            return JsonResult.ok();
+//            return JsonResult.ok();
+            return "redirect:rank.html";
         } else {
-            return JsonResult.error("用户名或密码错误");
+//            return JsonResult.error("用户名或密码错误");
+            redirectAttributes.addFlashAttribute("message", "用户名或密码错误");
+            return "redirect:login.html";
         }
     }
 

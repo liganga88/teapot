@@ -32,7 +32,7 @@
 
     <bean id="viewResolver" class="org.beetl.ext.spring.BeetlSpringViewResolver">
         <property name="contentType" value="text/html;charset=UTF-8"></property>
-        <property name="prefix" value="/WEB-INF/views/" />
+        <!--<property name="prefix" value="/WEB-INF/views/" />-->
         <property name="suffix" value=".html" />
     </bean>
     <!-- 配置拦截器 -->
@@ -48,6 +48,7 @@
             <mvc:mapping path="/admin/*" />
             <mvc:exclude-mapping path="/admin/login.html" />
             <mvc:exclude-mapping path="/admin/doLogin" />
+            <mvc:exclude-mapping path="/admin/rank.html" />
             <bean class="com.teapot.interceptor.AdminInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>

@@ -79,6 +79,7 @@ public class OrderServiceImpl implements OrderService {
 
         order.setPaytype(payType);
         order.setPayno(tradeNo);
+        order.setPaytime(new Date());
         order.setState(OrderStateContants.PAID);
         orderDao.updateByPrimaryKey(order);
     }

@@ -1,4 +1,4 @@
-package com.teapot.controller.admin;
+package com.teapot.controller.web;
 
 import com.teapot.controller.BaseController;
 import com.teapot.utils.CreateImageCode;
@@ -19,7 +19,7 @@ import java.io.IOException;
  * @author yujing 2017年2月7日
  */
 @Controller
-@RequestMapping("/web/verify")
+@RequestMapping("/verify")
 public class VerifyCodeController extends BaseController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	/**
@@ -33,7 +33,7 @@ public class VerifyCodeController extends BaseController {
 	 * @return
 	 * @throws IOException
 	 */
-	@RequestMapping(value = "/v1/getcode", method = RequestMethod.GET)
+	@RequestMapping(value = "/getcode", method = RequestMethod.GET)
 	public void getcode(@RequestParam("width") Integer width, 
 								@RequestParam("height") Integer height, 
 								HttpServletResponse resp) throws IOException {

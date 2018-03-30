@@ -71,15 +71,4 @@ public class AdminController extends BaseController {
             return "redirect:login.html";
         }
     }
-
-    @RequestMapping("rank.html")
-    public String rank(Model model){
-        List<TbOrder> orders = orderService.selectAllPaid();
-        model.addAttribute("orders", orders);
-
-        List<TbOrder> topOrders = orderService.selectTopOrder(2);
-        model.addAttribute("topOrders", topOrders);
-
-        return "admin/rank";
-    }
 }

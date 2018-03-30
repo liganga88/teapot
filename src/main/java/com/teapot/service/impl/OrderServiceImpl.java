@@ -86,6 +86,7 @@ public class OrderServiceImpl implements OrderService {
 
     public List<TbOrder> selectAllPaid() {
         TbOrderQuery query = new TbOrderQuery();
+        query.setOrderByClause("money desc");
         TbOrderQuery.Criteria criteria = query.createCriteria();
         criteria.andStateEqualTo(OrderStateContants.PAID);
         List<TbOrder> orders = orderDao.selectByExample(query);

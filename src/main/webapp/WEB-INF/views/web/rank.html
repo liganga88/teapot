@@ -23,9 +23,9 @@
 			<h1 class="title ac"><i class="iconfont icon-yunLeft"></i><span class="pl10 pr10">我的最高排位</span><span class="num pr10">080</span><i class="iconfont icon-yunRight"></i></h1>
 			<div>
 				<table class="rank" width="100%" cellpadding="0" cellspacing="0">
-					<%for(item in topOrders){%>
+					<%for(item in myOrders){%>
 					<tr>
-						<td>${item.id,numberFormat="000"}</td>
+						<td>${item.rank,numberFormat="000"}</td>
 						<td>${item.created,'yyyy年MM月dd日'}</td>
 						<td>${item.hoper}</td>
 						<td>${item.money}元</td>
@@ -33,7 +33,7 @@
 					<%}%>
 				</table>
 			</div>
-			<a class="button ac mt10 mb30" href="../web/result_a.html">查看我的大明寺功德牌位</a>
+			<a class="button ac mt10 mb30" href="result_a.html">查看我的大明寺功德牌位</a>
 			<div class="pb30">
 				<table class="rank" width="100%" cellpadding="0" cellspacing="0">
 					<tr>
@@ -44,7 +44,7 @@
 					</tr>
 					<%for(item in orders){%>
 					<tr>
-						<td>${item.id,numberFormat="000"}</td>
+						<td>${item.rank,numberFormat="000"}</td>
 						<td>${item.created,'yyyy年MM月dd日'}</td>
 						<td>${item.hoper}</td>
 						<td>${item.money}元</td>

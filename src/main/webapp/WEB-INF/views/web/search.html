@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>查询</title>
+    <script type="text/javascript" src="/static/javascript/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="/static/javascript/jquery.form.js"></script>
+    <script type="text/javascript" src="/static/common/common.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $(".btn-search").click(function () {
+                var phone = $("input[name=phone]").val();
+                if (!phone) {
+                    alert("请输入手机号码");
+                    return;
+                }
+                Common.post("/customer/checkPhone", {phone: phone}, function (json) {
+                    if (json.code == Common.SUCC) {
+                        Common.go("/customer/rank.html?phone=" + phone);
+                    } else {
+                        alert(json.message);
+                    }
+                });
+            });
+        });
+
+    </script>
+</head>
+<body>
+    手机号<input name="phone" type="text"/>
+    <input type="button" class="btn-search" value="确定">
+</body>
+</html>

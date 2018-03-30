@@ -7,24 +7,26 @@
     <script type="text/javascript" src="/static/javascript/jquery.form.js"></script>
     <script type="text/javascript" src="/static/common/common.js"></script>
     <script type="text/javascript">
-        $(".btn-search").click(function () {
-            var phone = $("input[name=phone]").val();
-            if (!phone) {
-                alert("请输入手机号码");
-                return;
-            }
-            Common.post("/customer/checkPhone", {phone: phone}, function (json) {
-                if (json.code == Common.SUCC) {
-                    Common.go("/customer/rank.html?phone=" + phone);
-                } else {
-                    alert(json.message);
+        $(function(){
+            $(".btn-pay").click(function () {
+                var phone = $("input[name=phone]").val();
+                if (!phone) {
+                    alert("请输入手机号码");
+                    return;
                 }
+                Common.post("/customer/newByPhone", {phone: phone}, function (json) {
+                    if (json.code == Common.SUCC) {
+                        Common.go("/trade/${orderId}/alipay");
+                    } else {
+                        alert(json.message);
+                    }
+                });
             });
         });
     </script>
 </head>
 <body>
     留下手机号 <input type="text" name="phone" />
-    <a href="/trade/${orderId}/alipay">支付宝支付</a>
+    <input type="button" class="btn-pay" value="支付宝支付" />
 </body>
 </html>

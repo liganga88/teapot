@@ -67,7 +67,7 @@ public class CustomerController extends BaseController {
         }
         model.addAttribute("myOrders", myOrders);
 
-        return "rank";
+        return "web/rank";
     }
 
     @RequestMapping("search.html")

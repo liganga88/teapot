@@ -12,6 +12,8 @@ import com.teapot.contants.SessionKeyContants;
 import com.teapot.controller.BaseController;
 import com.teapot.pojo.TbOrder;
 import com.teapot.service.OrderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +34,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/trade")
 public class TradeController extends BaseController {
-
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private AlipayConfig alipayConfig;
 
@@ -45,10 +47,10 @@ public class TradeController extends BaseController {
      * @return
      */
     @RequestMapping("order")
-    public String doOrder(@RequestParam("wishId") Integer wishId, @RequestParam("payment") Double payment, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String doOrder(@RequestParam("wishId") Integer wishId, @RequestParam("payment") Integer payment, HttpSession session) {
         String tempId = (String) session.getAttribute(SessionKeyContants.SESSION_TEMP_CUSTOMER);
         TbOrder order = orderService.newOrder(wishId ,tempId, payment);
-//        redirectAttributes.addFlashAttribute("orderId", order.getId());
+
         return "redirect:" + order.getId() + "/toPayment.html";
     }
 
@@ -140,6 +142,7 @@ public class TradeController extends BaseController {
 
     @RequestMapping("return_url.html")
     public String returnCheck(@RequestParam("trade_no") String tradeNo, @RequestParam("out_trade_no") String orderNo) {
+        logger.info("支付宝同步回调开始:trade_no={},out_trade_no={}", tradeNo, orderNo);
         //获取支付宝POST过来反馈信息
         Map<String,String> params = new HashMap<String,String>();
         Map requestParams = getHttpServletRequest().getParameterMap();
@@ -161,18 +164,24 @@ public class TradeController extends BaseController {
             verify_result = AlipaySignature.rsaCheckV1(params, alipayConfig.getALIPAY_PUBLIC_KEY(), alipayConfig.getInputCharset(), alipayConfig.getSignType());
         } catch (AlipayApiException e) {
             e.printStackTrace();
+            logger.info("支付宝同步回调验证错误:trade_no={},message={}", tradeNo, e.getMessage());
         }
 
         Integer orderId = Integer.parseInt(orderNo.replace(alipayConfig.getTradePrefix(), ""));
         TbOrder order = orderService.selectById(orderId);
 
+        logger.info("支付宝同步回调结束:trade_no={},verify_result={}", tradeNo, verify_result);
+
         return  "redirect:/wish/" + order.getWishid() + "/resultA.html";
 
     }
 
-    @RequestMapping(value = "notify_url.html", produces = "text/plain; charset=utf-8")
+    @RequestMapping(value = "notify_url.html", produces = "text/html; charset=utf-8")
+    @ResponseBody
     public String notifyCheck(@RequestParam("trade_no") String tradeNo, @RequestParam("out_trade_no") String orderNo,
                                   @RequestParam("trade_status") String tradeStatus) {
+        logger.info("支付宝异步回调开始:trade_no={},out_trade_no={}, trade_status={}", new String[]{tradeNo, orderNo, tradeStatus});
+
         //获取支付宝POST过来反馈信息
         Map<String, String> params = new HashMap<String, String>();
         Map requestParams = getHttpServletRequest().getParameterMap();
@@ -195,52 +204,18 @@ public class TradeController extends BaseController {
         } catch (AlipayApiException e) {
             e.printStackTrace();
         }
-//        boolean dealResult = dealAlipayReturn(params, orderNo, totalFee, tradeStatus, tradeNo, buyerEmail);
+
+        String result = null;
         if (verify_result) {
             if (tradeStatus.equals("TRADE_FINISHED") || tradeStatus.equals("TRADE_SUCCESS")) {
                 orderService.paid(tradeNo, orderNo, PayTypeContants.ALIPAY);
             }
 
-            return "success";
+            result = "success";
         } else {
-            return "fail";
+            result = "fail";
         }
-    }
-
-    /**
-     * 支付宝回调处理 (请不要修改)
-     *
-     * @param params        支付宝回调参数
-     * @param orderNo       业务订单号
-     * @param totalFee      金额
-     * @param tradeStatus   支付宝交易状态
-     * @param alipayTradeNo 支付宝交易号
-     * @param buyerEmail    付款的支付宝帐号
-     * @return 处理结果
-     */
-    private boolean dealAlipayReturn(Map<String, String> params, String orderNo, String totalFee, String tradeStatus,
-                                     String alipayTradeNo, String buyerEmail) {
-//        boolean verifyResult = AlipayNotify.verify(params, alipayConfig);
-//        if (!verifyResult)
-//            return false;
-//        String tradeIds = orderNo.replace(tradePrefix, "");
-//        String[] strIds = tradeIds.split("_");
-//
-//        long alipayPayment = new BigDecimal(totalFee).multiply(new BigDecimal(100)).longValue();
-//
-//        // 计算得出通知验证结果
-//        if ((tradeStatus.equals("TRADE_FINISHED") || tradeStatus.equals("TRADE_SUCCESS"))) {// 验证成功
-//            for(String strId : strIds) {
-//                Integer tid = Integer.parseInt(strId);
-//                Trade trade = orderService.getTrade(tid);
-//                if (StrKit.isBlank(trade.getAlipayNo())) {
-//                    orderService.paid(tid, alipayTradeNo, buyerEmail);
-//                }
-//            }
-//            return true;
-//        } else {
-//            return false;
-//        }
-        return true;
+        logger.info("支付宝异步回调结束:trade_no={},result={}", tradeNo, result);
+        return result;
     }
 }

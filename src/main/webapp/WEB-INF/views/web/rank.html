@@ -20,7 +20,7 @@
 	</div>
 	<div class="pl30 pr30">
 		<div class="op mt20">
-			<h1 class="title ac"><i class="iconfont icon-yunLeft"></i><span class="pl10 pr10">我的最高排位</span><span class="num pr10">080</span><i class="iconfont icon-yunRight"></i></h1>
+			<h1 class="title ac"><i class="iconfont icon-yunLeft"></i><span class="pl10 pr10">我的最高排位</span><span class="num pr10">${myOrders[0].rank!0,numberFormat="000"}</span><i class="iconfont icon-yunRight"></i></h1>
 			<div>
 				<table class="rank" width="100%" cellpadding="0" cellspacing="0">
 					<%for(item in myOrders){%>

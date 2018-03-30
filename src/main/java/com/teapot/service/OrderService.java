@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Administrator on 2018-3-27.
  */
 public interface OrderService {
-    TbOrder newOrder(Integer wishId, String tempId, Double money);
+    TbOrder newOrder(Integer wishId, String tempId, Integer money);
 
     TbOrder selectById(Integer id);
 

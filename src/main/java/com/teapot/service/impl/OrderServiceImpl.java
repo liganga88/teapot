@@ -33,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private AlipayConfig alipayConfig;
 
-    public TbOrder newOrder(Integer wishId, String tempId, Integer money) {
+    public TbOrder newOrder(Integer wishId, String tempId, Double money) {
 
 /*        TbCustomerQuery customerQuery = new TbCustomerQuery();
         TbCustomerQuery.Criteria customerCriteria = customerQuery.createCriteria();
@@ -58,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
         TbOrder order = new TbOrder();
 //        order.setCustomerid(customer.getId());
         order.setTempid(tempId);
-        order.setMoney(money);
+        order.setMoney((int)(money * 100));
         order.setState(OrderStateContants.CREATED);
         order.setCreated(new Date());
         order.setHoper(wish.getHoper());

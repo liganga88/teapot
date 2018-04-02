@@ -7,10 +7,12 @@ import com.alipay.api.domain.AlipayTradeWapPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.alipay.config.AlipayConfig;
+import com.teapot.contants.CouponTypeContants;
 import com.teapot.contants.PayTypeContants;
 import com.teapot.contants.SessionKeyContants;
 import com.teapot.controller.BaseController;
 import com.teapot.pojo.TbOrder;
+import com.teapot.service.CouponService;
 import com.teapot.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,13 +43,16 @@ public class TradeController extends BaseController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private CouponService couponService;
+
     /**
      * 下单处理
      * @param payment
      * @return
      */
     @RequestMapping("order")
-    public String doOrder(@RequestParam("wishId") Integer wishId, @RequestParam("payment") Integer payment, HttpSession session) {
+    public String doOrder(@RequestParam("wishId") Integer wishId, @RequestParam("payment") Double payment, HttpSession session) {
         String tempId = (String) session.getAttribute(SessionKeyContants.SESSION_TEMP_CUSTOMER);
         TbOrder order = orderService.newOrder(wishId ,tempId, payment);
 
@@ -80,8 +85,9 @@ public class TradeController extends BaseController {
         AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
         model.setOutTradeNo(alipayConfig.getTradePrefix() + order.getId());
         model.setSubject("功德金");
-//        model.setTotalAmount(order.getMoney().toString());
-        model.setTotalAmount("0.01");
+        Double money = (order.getMoney() / 100d);
+        model.setTotalAmount(money.toString());
+//        model.setTotalAmount("0.01");
 //        model.setBody(body);
         model.setTimeoutExpress(alipayConfig.getTimeoutExpress());
         model.setProductCode(product_code);
@@ -209,6 +215,7 @@ public class TradeController extends BaseController {
         if (verify_result) {
             if (tradeStatus.equals("TRADE_FINISHED") || tradeStatus.equals("TRADE_SUCCESS")) {
                 orderService.paid(tradeNo, orderNo, PayTypeContants.ALIPAY);
+                couponService.newCoupon(orderNo, CouponTypeContants.CHATANG);
             }
 
             result = "success";

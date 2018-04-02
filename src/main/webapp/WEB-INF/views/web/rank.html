@@ -28,7 +28,7 @@
 						<td>${item.rank,numberFormat="000"}</td>
 						<td>${item.created,'yyyy年MM月dd日'}</td>
 						<td>${item.hoper}</td>
-						<td>${item.money}元</td>
+						<td>${item.money/100, numberFormat="##.##"}元</td>
 					</tr>
 					<%}%>
 				</table>
@@ -47,7 +47,7 @@
 						<td>${item.rank,numberFormat="000"}</td>
 						<td>${item.created,'yyyy年MM月dd日'}</td>
 						<td>${item.hoper}</td>
-						<td>${item.money}元</td>
+						<td>${item.money /100, numberFormat="##.##"}元</td>
 					</tr>
 					<%}%>
 				</table>

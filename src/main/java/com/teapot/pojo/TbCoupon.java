@@ -17,7 +17,7 @@ public class TbCoupon implements Serializable {
     private Integer customerid;
 
     /**
-     * 状态
+     * 状态(0:未使用 1:已使用)
      */
     private Byte state;
 
@@ -25,6 +25,16 @@ public class TbCoupon implements Serializable {
      * 创建时间
      */
     private Date created;
+
+    /**
+     * 验证码
+     */
+    private String token;
+
+    /**
+     * 使用时间
+     */
+    private Date usedtime;
 
     private static final long serialVersionUID = 1L;
 
@@ -68,6 +78,22 @@ public class TbCoupon implements Serializable {
         this.created = created;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token == null ? null : token.trim();
+    }
+
+    public Date getUsedtime() {
+        return usedtime;
+    }
+
+    public void setUsedtime(Date usedtime) {
+        this.usedtime = usedtime;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -79,6 +105,8 @@ public class TbCoupon implements Serializable {
         sb.append(", customerid=").append(customerid);
         sb.append(", state=").append(state);
         sb.append(", created=").append(created);
+        sb.append(", token=").append(token);
+        sb.append(", usedtime=").append(usedtime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -7,6 +7,8 @@
     <result column="customerId" property="customerid" jdbcType="INTEGER" />
     <result column="state" property="state" jdbcType="TINYINT" />
     <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+    <result column="usedTime" property="usedtime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -68,7 +70,7 @@
   </sql>
   <sql id="Base_Column_List" >
     <if test="fields == null" >
-      id, templateId, customerId, state, created
+      id, templateId, customerId, state, created, token, usedTime
     </if>
     <if test="fields != null" >
       ${fields}
@@ -93,7 +95,7 @@
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
-    id,templateId,customerId,state,created
+    id,templateId,customerId,state,created,token,usedTime
     from tb_coupon
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -109,9 +111,11 @@
   </delete>
   <insert id="insert" parameterType="com.teapot.pojo.TbCoupon" >
     insert into tb_coupon (id, templateId, customerId, 
-      state, created)
+      state, created, token, 
+      usedTime)
     values (#{id,jdbcType=INTEGER}, #{templateid,jdbcType=INTEGER}, #{customerid,jdbcType=INTEGER}, 
-      #{state,jdbcType=TINYINT}, #{created,jdbcType=TIMESTAMP})
+      #{state,jdbcType=TINYINT}, #{created,jdbcType=TIMESTAMP}, #{token,jdbcType=VARCHAR}, 
+      #{usedtime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.teapot.pojo.TbCoupon" >
     insert into tb_coupon
@@ -131,6 +135,12 @@
       <if test="created != null" >
         created,
       </if>
+      <if test="token != null" >
+        token,
+      </if>
+      <if test="usedtime != null" >
+        usedTime,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -147,6 +157,12 @@
       </if>
       <if test="created != null" >
         #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="token != null" >
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="usedtime != null" >
+        #{usedtime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -174,6 +190,12 @@
       <if test="record.created != null" >
         created = #{record.created,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.token != null" >
+        token = #{record.token,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usedtime != null" >
+        usedTime = #{record.usedtime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -185,7 +207,9 @@
       templateId = #{record.templateid,jdbcType=INTEGER},
       customerId = #{record.customerid,jdbcType=INTEGER},
       state = #{record.state,jdbcType=TINYINT},
-      created = #{record.created,jdbcType=TIMESTAMP}
+      created = #{record.created,jdbcType=TIMESTAMP},
+      token = #{record.token,jdbcType=VARCHAR},
+      usedTime = #{record.usedtime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -205,6 +229,12 @@
       <if test="created != null" >
         created = #{created,jdbcType=TIMESTAMP},
       </if>
+      <if test="token != null" >
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="usedtime != null" >
+        usedTime = #{usedtime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -213,7 +243,9 @@
     set templateId = #{templateid,jdbcType=INTEGER},
       customerId = #{customerid,jdbcType=INTEGER},
       state = #{state,jdbcType=TINYINT},
-      created = #{created,jdbcType=TIMESTAMP}
+      created = #{created,jdbcType=TIMESTAMP},
+      token = #{token,jdbcType=VARCHAR},
+      usedTime = #{usedtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

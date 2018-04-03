@@ -576,6 +576,66 @@ public class TbCouponQuery {
             addCriterion("usedTime not between", value1, value2, "usedtime");
             return (Criteria) this;
         }
+
+        public Criteria andOrderidIsNull() {
+            addCriterion("orderId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderidIsNotNull() {
+            addCriterion("orderId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderidEqualTo(Integer value) {
+            addCriterion("orderId =", value, "orderid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderidNotEqualTo(Integer value) {
+            addCriterion("orderId <>", value, "orderid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderidGreaterThan(Integer value) {
+            addCriterion("orderId >", value, "orderid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("orderId >=", value, "orderid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderidLessThan(Integer value) {
+            addCriterion("orderId <", value, "orderid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderidLessThanOrEqualTo(Integer value) {
+            addCriterion("orderId <=", value, "orderid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderidIn(List<Integer> values) {
+            addCriterion("orderId in", values, "orderid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderidNotIn(List<Integer> values) {
+            addCriterion("orderId not in", values, "orderid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderidBetween(Integer value1, Integer value2) {
+            addCriterion("orderId between", value1, value2, "orderid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderidNotBetween(Integer value1, Integer value2) {
+            addCriterion("orderId not between", value1, value2, "orderid");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

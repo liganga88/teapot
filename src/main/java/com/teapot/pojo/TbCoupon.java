@@ -36,7 +36,10 @@ public class TbCoupon implements Serializable {
      */
     private Date usedtime;
 
-    private Integer orderId;
+    /**
+     * 产生优惠券的订单ID
+     */
+    private Integer orderid;
 
     private static final long serialVersionUID = 1L;
 
@@ -96,12 +99,12 @@ public class TbCoupon implements Serializable {
         this.usedtime = usedtime;
     }
 
-    public Integer getOrderId() {
-        return orderId;
+    public Integer getOrderid() {
+        return orderid;
     }
 
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
+    public void setOrderid(Integer orderid) {
+        this.orderid = orderid;
     }
 
     @Override
@@ -117,6 +120,7 @@ public class TbCoupon implements Serializable {
         sb.append(", created=").append(created);
         sb.append(", token=").append(token);
         sb.append(", usedtime=").append(usedtime);
+        sb.append(", orderid=").append(orderid);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

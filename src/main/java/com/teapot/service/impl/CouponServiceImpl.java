@@ -48,10 +48,9 @@ public class CouponServiceImpl implements CouponService {
         String token;
         TbCouponQuery query = new TbCouponQuery();
         TbCouponQuery.Criteria criteria = query.createCriteria();
-        criteria.andStateEqualTo((byte)0);
         while (true) {
             token = randomStr(6);
-            //todo andtoken
+            criteria.andTokenEqualTo(token);
             List<TbCoupon> coupons = couponDao.selectByExample(query);
             if (coupons.size() <= 0) {
                 break;
@@ -75,6 +74,7 @@ public class CouponServiceImpl implements CouponService {
             coupon.setCustomerid(order.getCustomerid());
             coupon.setCreated(new Date());
             coupon.setState((byte) 0);
+            coupon.setOrderId(orderId);
             String token = getToken();
             coupon.setToken(token);
             couponDao.insert(coupon);
@@ -86,11 +86,48 @@ public class CouponServiceImpl implements CouponService {
         TbCouponQuery query = new TbCouponQuery();
         TbCouponQuery.Criteria criteria = query.createCriteria();
         criteria.andStateEqualTo((byte)0);
-        //todo andtoken
+        criteria.andTokenEqualTo(token);
 
         TbCoupon coupon = new TbCoupon();
         coupon.setState((byte)1);
-        coupon.setUsedTime(new Date());
+        coupon.setUsedtime(new Date());
         couponDao.updateByExampleSelective(coupon, query);
+    }
+
+    @Override
+    public TbCoupon selectByToken(String token) {
+        TbCouponQuery query = new TbCouponQuery();
+        TbCouponQuery.Criteria criteria = query.createCriteria();
+        criteria.andTokenEqualTo(token);
+        List<TbCoupon> coupons = couponDao.selectByExample(query);
+        TbCoupon coupon = null;
+        if(coupons.size() > 0){
+            coupon = coupons.get(0);
+        }
+        return coupon;
+    }
+
+    @Override
+    public TbCoupon selectById(Integer id) {
+        TbCoupon coupon = couponDao.selectByPrimaryKey(id);
+        return coupon;
+    }
+
+    @Override
+    public void useCouponById(Integer id) {
+        TbCoupon coupon = new TbCoupon();
+        coupon.setState((byte)1);
+        coupon.setUsedtime(new Date());
+        coupon.setId(id);
+        couponDao.updateByPrimaryKeySelective(coupon);
+    }
+
+    @Override
+    public List<TbCoupon> selectByOrderId(Integer orderId) {
+        TbCouponQuery query = new TbCouponQuery();
+        TbCouponQuery.Criteria criteria = query.createCriteria();
+        //todo andOrderId
+        List<TbCoupon> coupons = couponDao.selectByExample(query);
+        return coupons;
     }
 }

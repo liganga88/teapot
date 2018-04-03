@@ -52,6 +52,8 @@ h2 { font-size: 0.875em;}
 background-image:url(../images/s1.png),  url(../images/s2.png);
  background-position: center left, center right;
 background-repeat: no-repeat, no-repeat}
+.op .button2 { display: block; height: 34px; line-height: 34px; background-color:#a79f8a; border-radius: 3px; color:#fff; overflow: hidden;}
+.op .button3 { display: block; height: 34px; line-height: 34px; margin: 4px 0; background-color:#a79f8a; border-radius: 3px; color:#fff; overflow: hidden;}
 
 .op .options {}
 .op .options a { display: block; width: 50%; height: 21px; line-height: 21px; padding: 0 7px; margin-right: 10px; color:#fff; position: relative}
@@ -68,6 +70,11 @@ background-repeat: no-repeat, no-repeat}
 .op table.rank td { padding: 5px; border-bottom: solid 1px #504d42}
 .op table.rank td:nth-child(2) { text-align: center}
 .op table.rank td:nth-child(4) { text-align: right}
+
+.op .col2img {}
+.op .col2img ul {}
+.op .col2img li { width: 50%; text-align: center}
+.op .col2img li img { position: static; display: inline-block}
 
 /*footer*/
 .footer { margin-top: 30px;}

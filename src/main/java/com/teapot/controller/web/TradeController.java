@@ -102,48 +102,11 @@ public class TradeController extends BaseController {
         try {
             // 调用SDK生成表单
             form = client.pageExecute(alipay_request).getBody();
-//            response.setContentType("text/html;charset=" + AlipayConfig.CHARSET);
-//            response.getWriter().write(form);//直接将完整的表单html输出到页面
-//            response.getWriter().flush();
-//            response.getWriter().close();
         } catch (AlipayApiException e) {
             e.printStackTrace();
         }
 
         return form;
-
-        /*Map<String, String> sParaTemp = new HashMap<String, String>();
-        sParaTemp.put("app_id", alipayConfig.getAppid());
-
-        sParaTemp.put("service", alipayConfig.getService());
-        sParaTemp.put("partner", alipayConfig.getPartner());
-        sParaTemp.put("seller_id", alipayConfig.getSellerId());
-        sParaTemp.put("_input_charset", alipayConfig.getInputCharset());
-        sParaTemp.put("payment_type", alipayConfig.getPaymentType());
-        sParaTemp.put("notify_url", alipayConfig.getNotifyUrl());
-        sParaTemp.put("return_url", alipayConfig.getReturnUrl());
-        sParaTemp.put("anti_phishing_key", alipayConfig.getAntiPhishingKey());
-        sParaTemp.put("exter_invoke_ip", alipayConfig.getExterInvokeIp());
-        sParaTemp.put("it_b_pay", alipayConfig.getItBPay());
-        sParaTemp.put("out_trade_no", tradeNo);
-        sParaTemp.put("subject", "纳车品交易");
-        sParaTemp.put("total_fee", payment);
-        sParaTemp.put("body", "纳车品交易");
-        // 其他业务参数根据在线开发文档，
-        // 添加参数.文档地址:https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.O9yorI&treeId=62&articleId=103740&docType=1
-        // 如sParaTemp.put("参数名","参数值");
-
-        // 建立请求
-        String html = AlipaySubmit.buildRequest(sParaTemp, alipayConfig, "get", "确认");
-//        renderHtml(html);
-        return html;*/
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setPragma("no-cache");
-//        headers.setCacheControl("no-cache");
-//        headers.setExpires(0L);
-//        MediaType type = new MediaType(MediaType.TEXT_HTML, Charset.forName("UTF-8"));
-//        headers.setContentType(type);
-//        return new ResponseEntity<String>(html,headers, HttpStatus.OK);
     }
 
     @RequestMapping("return_url.html")

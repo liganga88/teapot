@@ -1,5 +1,6 @@
 package com.teapot.controller.web;
 
+import com.aliyuncs.exceptions.ClientException;
 import com.teapot.bean.JsonResult;
 import com.teapot.contants.SessionKeyContants;
 import com.teapot.controller.BaseController;
@@ -9,9 +10,14 @@ import com.teapot.pojo.TbOrder;
 import com.teapot.service.CustomerService;
 import com.teapot.service.OrderService;
 import com.teapot.utils.BeanUtils;
+import com.teapot.utils.SmsUtil;
+import org.apache.commons.lang3.RandomUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,6 +33,8 @@ import java.util.List;
 @RequestMapping("/customer")
 public class CustomerController extends BaseController {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private OrderService orderService;
 
@@ -34,9 +42,9 @@ public class CustomerController extends BaseController {
     private CustomerService customerService;
 
     @RequestMapping("rank.html")
-    public String rank(@RequestParam("phone") String phone, Model model){
+    public String rank(Model model, HttpSession session){
 
-        TbCustomer customer = customerService.selectByPhone(phone);
+        TbCustomer customer = (TbCustomer) session.getAttribute(SessionKeyContants.SESSION_CUR_CUSTOMER);
 
         //所有功德金及排位
         List<TbOrder> orders = orderService.selectAllPaid();
@@ -77,11 +85,18 @@ public class CustomerController extends BaseController {
 
     @RequestMapping("checkPhone")
     @ResponseBody
-    public JsonResult checkPhone(@RequestParam("phone") String phone) {
+    public JsonResult checkPhone(@RequestParam("phone") String phone,
+                                 @RequestParam("code") String code, HttpSession session) {
+        String sessionCode = (String) session.getAttribute(SessionKeyContants.SESSION_SMS_CODE);
+        if (!sessionCode.equals(code)) {
+            return JsonResult.error("验证码不正确");
+        }
         TbCustomer customer = customerService.selectByPhone(phone);
         if (customer == null) {
             return JsonResult.error("该手机用户不存在");
         } else {
+            session.setAttribute(SessionKeyContants.SESSION_CUR_CUSTOMER, customer);
+            session.removeAttribute(SessionKeyContants.SESSION_SMS_CODE);
             return JsonResult.ok();
         }
     }
@@ -92,6 +107,23 @@ public class CustomerController extends BaseController {
         String tempId = (String) session.getAttribute(SessionKeyContants.SESSION_TEMP_CUSTOMER);
         customerService.newByPhone(phone, tempId);
 
+        return JsonResult.ok();
+    }
+
+    @RequestMapping(value = "sendSms")
+    @ResponseBody
+    public JsonResult sendMessage(@RequestParam("phone") String phone, HttpSession session){
+
+        String smscode = String.valueOf(RandomUtils.nextInt(100000, 999999));
+        session.setAttribute(SessionKeyContants.SESSION_SMS_CODE, smscode);
+        String content = "{\"code\":\"" + smscode + "\"}";
+
+        try {
+            SmsUtil.sendSms(SmsUtil.TEMPLATE_CODE_YANZ, phone, content);
+
+        } catch (ClientException e) {
+            logger.error("短信发送失败");
+        }
         return JsonResult.ok();
     }
 }

@@ -36,6 +36,8 @@ public class TbCoupon implements Serializable {
      */
     private Date usedtime;
 
+    private Integer orderId;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -92,6 +94,14 @@ public class TbCoupon implements Serializable {
 
     public void setUsedtime(Date usedtime) {
         this.usedtime = usedtime;
+    }
+
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
 
     @Override

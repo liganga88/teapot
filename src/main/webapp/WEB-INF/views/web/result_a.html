@@ -21,16 +21,21 @@
 	<div class="pl30 pr30">
 		<div class="op mt20">
 			<h1 class="title ac fb" style="padding-bottom: 5px"><span class="pl10">您已祈福完成。</span></h1>
+			<%if(!isEmpty(wish.smsphone)){%>
 			<p class="ac ac">平台已将祈福内容发往<span class="pl5 pr5">${wish.smsphone}</span>用户</p>
+			<%}%>
 			<div class="images pt10 pb10">
 				<img src="/static/images/ewm.png" width="" />
 			</div>
-			<p class="ac p20 fb">2018年4月1日 12点~3点可向往大明寺御花园茶楼禅茶一味茶堂卷两张。</p>
-			<h2 class="title ac"><i class="iconfont icon-yunLeft"></i><span class="pl10 pr10">茶堂卷</span><span class="num pr10">99231011</span><i class="iconfont icon-yunRight"></i></h2>
-			<h2 class="title ac"><i class="iconfont icon-yunLeft"></i><span class="pl10 pr10">茶堂卷</span><span class="num pr10">99231012</span><i class="iconfont icon-yunRight"></i></h2>
+			<%if(!isEmpty(coupons)){%>
+			<p class="ac p20 fb">2018年4月10日 12点~3点可向往大明寺御花园茶楼禅茶一味茶堂卷。</p>
+			<%for(item in coupons){%>
+			<h2 class="title ac"><i class="iconfont icon-yunLeft"></i><span class="pl10 pr10">茶堂卷</span><span class="num pr10">${item.token}</span><i class="iconfont icon-yunRight"></i></h2>
+			<%}%>
+			<%}%>
 			<div class="line pt15 pb10"></div>
-			<p class="ac p20 fb">2018年4月1日 12点~3点可向往大明寺御花园茶楼岛领取佛茶一包。</p>
-			<h2 class="title ac"><i class="iconfont icon-yunLeft"></i><span class="pl10 pr10">领取码</span><span class="num pr10">88231011</span><i class="iconfont icon-yunRight"></i></h2>
+			<p class="ac p20 fb">2018年4月10日 12点~3点可向往大明寺御花园茶楼岛领取佛茶一份。</p>
+			<!--<h2 class="title ac"><i class="iconfont icon-yunLeft"></i><span class="pl10 pr10">领取码</span><span class="num pr10">88231011</span><i class="iconfont icon-yunRight"></i></h2>-->
 		</div>
 	</div>
 	<div>

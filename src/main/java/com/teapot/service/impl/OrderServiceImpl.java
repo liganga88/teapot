@@ -33,6 +33,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private AlipayConfig alipayConfig;
 
+    @Override
     public TbOrder newOrder(Integer wishId, String tempId, Double money) {
 
 /*        TbCustomerQuery customerQuery = new TbCustomerQuery();
@@ -68,11 +69,13 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+    @Override
     public TbOrder selectById(Integer id) {
         TbOrder order = orderDao.selectByPrimaryKey(id);
         return order;
     }
 
+    @Override
     public void paid(String tradeNo, String outTradeNo, Byte payType){
         Integer orderId = Integer.parseInt(outTradeNo.replace(alipayConfig.getTradePrefix(), ""));
         TbOrder order = orderDao.selectByPrimaryKey(orderId);
@@ -84,6 +87,7 @@ public class OrderServiceImpl implements OrderService {
         orderDao.updateByPrimaryKey(order);
     }
 
+    @Override
     public List<TbOrder> selectAllPaid() {
         TbOrderQuery query = new TbOrderQuery();
         query.setOrderByClause("money desc");
@@ -94,6 +98,7 @@ public class OrderServiceImpl implements OrderService {
         return orders;
     }
 
+    @Override
     public List<TbOrder> selectTopOrder(Integer limit) {
         TbOrderQuery query = new TbOrderQuery();
         TbOrderQuery.Criteria criteria = query.createCriteria();
@@ -103,5 +108,17 @@ public class OrderServiceImpl implements OrderService {
         query.setPageSize(limit);
         List<TbOrder> orders = orderDao.selectByExample(query);
         return orders;
+    }
+
+    @Override
+    public TbOrder selectByWishId(Integer wishId) {
+        TbOrderQuery query = new TbOrderQuery();
+        TbOrderQuery.Criteria criteria = query.createCriteria();
+        criteria.andWishidEqualTo(wishId);
+        List<TbOrder> orders = orderDao.selectByExample(query);
+        if (orders.size() > 0) {
+            return orders.get(0);
+        }
+        return null;
     }
 }

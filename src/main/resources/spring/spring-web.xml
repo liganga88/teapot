@@ -51,6 +51,10 @@
             <mvc:exclude-mapping path="/admin/rank.html" />
             <bean class="com.teapot.interceptor.AdminInterceptor"></bean>
         </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/customer/rank.html" />
+            <bean class="com.teapot.interceptor.WebLoginInterceptor"></bean>
+        </mvc:interceptor>
     </mvc:interceptors>
 
 <!--    <bean class="springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration" id="swagger2Config"/>

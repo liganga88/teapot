@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0 minimal-ui"/>
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta content="yes" name="apple-touch-fullscreen">
+	<title>紫金文化</title>
+	<link rel="stylesheet" href="/static/common/com[0].css">
+	<link rel="stylesheet" href="https://at.alicdn.com/t/font_592768_b157cpj0a517zaor.css">
+	<link rel="stylesheet" href="/static/common/com[1].css">
+	<script type="text/javascript" src="/static/javascript/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="/static/common/common.js"></script>
+</head>
+
+<body>
+<section class="main bgNone">
+	<div style="padding-top: 20px;">
+		<img src="/static/images/t.png" style="margin: 0 auto">
+	</div>
+	<div class="pl30 pr30">
+		<div class="op mt20">
+			<h1 class="title ac fb"><span class="pl10">输入茶堂卷代码：</span></h1>
+			<div class="text mb15">
+				<input class="ac" name="code" type="text" placeholder="茶堂卷代码">
+				<img class="p1" src="/static/images/opb1.png" />
+				<img class="p2" src="/static/images/opb2.png" />
+				<img class="p3" src="/static/images/opb3.png" />
+				<img class="p4" src="/static/images/opb4.png" />
+			</div>
+			<a class="button2 ac win-button-open">查验</a>
+		</div>
+	</div>
+	<div>
+		<img src="/static/images/qf2.png" width="100%">
+	</div>
+</section>
+	
+<div class="win" style="display: none">
+	<div class="winMain">
+		<div class="op mt20">
+			<h1 class="title ac mb10"><span class="pl10 pr10 span-result">茶堂卷有效，现在使用。</span></h1>
+			<a class="button2 ac mb15 btn-ok" href="#">确认</a>
+			<a class="button2 ac win-button-close" >取消</a>
+		</div>
+	</div>
+</div>
+
+<script>
+function onBridgeReady() {  
+	WeixinJSBridge.call('hideOptionMenu');  
+}  
+
+if (typeof WeixinJSBridge == "undefined") {  
+	if (document.addEventListener) {  
+		document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);  
+	} else if (document.attachEvent) {  
+		document.attachEvent('WeixinJSBridgeReady', onBridgeReady);  
+		document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);  
+	}  
+} else {  
+	onBridgeReady();  
+} 
+	
+//win
+$(function(){
+	var w = $('.win')
+	var wm = $('.win .winMain')
+	
+	$('.win-button-open').on('click',function(){
+		var code = $("input[name=code]").val();
+		if(!code){
+			alert("请输入茶堂卷代码");
+			return;
+		}
+		Common.post("/coupon/check",{code:code}, function(json){
+			if(json.data == 0){
+				$(".span-result").text("茶堂券无效，未有此券码。");
+				$(".btn-ok").hide();
+			}else if(json.data == 1){
+				$(".span-result").text("茶堂券有效，现在使用。");
+				$(".btn-ok").show();
+			}else if(json.data == 2){
+				$(".span-result").text("茶堂券无效，已经使用过。");
+				$(".btn-ok").hide();
+			}
+
+			w.show()
+			var wmw = wm.innerWidth()
+			var wmh = wm.innerHeight()
+			wm.css({
+				marginTop:wmh/2*(0-1),
+				marginLeft:wmw/2*(0-1),
+			})
+			$('body').css('overflow-y','hidden')
+		});
+
+	})
+	$('.win-button-close').on('click',function(){
+		w.hide()
+		$('body').css('overflow-y','auto')
+	})
+	w.on('click',function(){
+		w.hide()
+		$('body').css('overflow-y','auto')
+	})
+	wm.on('click',function(){
+		event.stopPropagation();
+	})
+
+	$(".btn-ok").click(function () {
+		var code = $("input[name=code]").val();
+		Common.post("/coupon/use", {code: code}, function (json) {
+			if (json.code == Common.SUCC) {
+				alert("成功使用茶堂券");
+				Common.refresh();
+			} else {
+				alert(json.message);
+			}
+		});
+	});
+})
+</script>
+</body>
+</html>

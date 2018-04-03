@@ -1,14 +1,20 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-cmn-Hans">
 <head>
-    <meta charset="UTF-8">
-    <title>支付方式</title>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0 minimal-ui"/>
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <title>紫金文化</title>
+    <link rel="stylesheet" href="/static/common/com[0].css">
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_592768_b157cpj0a517zaor.css">
+    <link rel="stylesheet" href="/static/common/com[1].css">
     <script type="text/javascript" src="/static/javascript/jquery-1.11.3.min.js"></script>
-    <script type="text/javascript" src="/static/javascript/jquery.form.js"></script>
     <script type="text/javascript" src="/static/common/common.js"></script>
     <script type="text/javascript">
-        $(function(){
-            $(".btn-pay").click(function () {
+        $(function () {
+            $(".btn-alipay").click(function () {
                 var phone = $("input[name=phone]").val();
                 if (!phone) {
                     alert("请输入手机号码");
@@ -25,8 +31,51 @@
         });
     </script>
 </head>
+
 <body>
-    留下手机号 <input type="text" name="phone" />
-    <input type="button" class="btn-pay" value="支付宝支付" />
+<section class="main bgNone">
+    <div style="padding-top: 20px;">
+        <img src="/static/images/t.png" style="margin: 0 auto">
+    </div>
+    <div class="pl30 pr30">
+        <div class="op mt20">
+            <h1 class="title ac fb"><span class="pl10">你的手机号：</span></h1>
+
+            <div class="text mb5">
+                <input class="ac" name="phone" type="text" placeholder="手机号码">
+                <img class="p1" src="/static/images/opb1.png"/>
+                <img class="p2" src="/static/images/opb2.png"/>
+                <img class="p3" src="/static/images/opb3.png"/>
+                <img class="p4" src="/static/images/opb4.png"/>
+            </div>
+            <p class="ac fs12 mb30">你的功德将留在大明寺的功德榜上，通过手机号即可查询。</p>
+            <ul class="EC col2img">
+                <li class="col mr10 btn-alipay"><img src="/static/images/zhifubao.png" height="34px"/>
+                </li>
+                <li class="col"><img src="/static/images/weizhifu.png" height="34px"/>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div>
+        <img src="/static/images/qf2.png" width="100%">
+    </div>
+</section>
+<script>
+    function onBridgeReady() {
+        WeixinJSBridge.call('hideOptionMenu');
+    }
+
+    if (typeof WeixinJSBridge == "undefined") {
+        if (document.addEventListener) {
+            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+        } else if (document.attachEvent) {
+            document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+        }
+    } else {
+        onBridgeReady();
+    }
+</script>
 </body>
 </html>

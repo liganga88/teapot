@@ -1,10 +1,16 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-cmn-Hans">
 <head>
-    <meta charset="UTF-8">
-    <title>查询</title>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0 minimal-ui"/>
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <title>紫金文化</title>
+    <link rel="stylesheet" href="/static/common/com[0].css">
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_592768_b157cpj0a517zaor.css">
+    <link rel="stylesheet" href="/static/common/com[1].css">
     <script type="text/javascript" src="/static/javascript/jquery-1.11.3.min.js"></script>
-    <script type="text/javascript" src="/static/javascript/jquery.form.js"></script>
     <script type="text/javascript" src="/static/common/common.js"></script>
     <script type="text/javascript">
         $(function(){
@@ -14,9 +20,36 @@
                     alert("请输入手机号码");
                     return;
                 }
-                Common.post("/customer/checkPhone", {phone: phone}, function (json) {
+                if (!Common.Rules.mobile.test(phone)) {
+                    alert("请输入正确的手机号");
+                    return;
+                }
+                var checkCode = $("input[name=checkCode]").val();
+                if (!checkCode) {
+                    alert("请输入验证码");
+                    return;
+                }
+                Common.post("/customer/checkPhone", {phone: phone, code:checkCode}, function (json) {
                     if (json.code == Common.SUCC) {
-                        Common.go("/customer/rank.html?phone=" + phone);
+                        Common.go("/customer/rank.html");
+                    } else {
+                        alert(json.message);
+                    }
+                });
+            });
+
+            $(".btn-sms").click(function () {
+                var phone = $("input[name=phone]").val();
+                if (!phone) {
+                    alert("请输入手机号码");
+                    return;
+                }
+                if (!Common.Rules.mobile.test(phone)) {
+                    alert("请输入正确的手机号");
+                    return;
+                }
+                Common.post("/customer/sendSms", {phone: phone}, function (json) {
+                    if (json.code == Common.SUCC) {
                     } else {
                         alert(json.message);
                     }
@@ -26,8 +59,56 @@
 
     </script>
 </head>
+
 <body>
-    手机号<input name="phone" type="text"/>
-    <input type="button" class="btn-search" value="确定">
+<section class="main bgNone">
+    <div style="padding-top: 20px;">
+        <img src="/static/images/t.png" style="margin: 0 auto">
+    </div>
+    <div class="pl30 pr30">
+        <div class="op mt20">
+            <h1 class="title ac fb"><span class="pl10">输入你的手机号：</span></h1>
+            <div class="text mb15">
+                <input class="ac" type="text" name="phone" placeholder="你的手机号">
+                <img class="p1" src="/static/images/opb1.png" />
+                <img class="p2" src="/static/images/opb2.png" />
+                <img class="p3" src="/static/images/opb3.png" />
+                <img class="p4" src="/static/images/opb4.png" />
+            </div>
+            <div class="EC mb30">
+                <div class="text col mr10">
+                    <input class="ac" type="text" name="checkCode" placeholder="验证码">
+                    <img class="p1" src="/static/images/opb1.png" />
+                    <img class="p2" src="/static/images/opb2.png" />
+                    <img class="p3" src="/static/images/opb3.png" />
+                    <img class="p4" src="/static/images/opb4.png" />
+                </div>
+                <div>
+                    <a class="button3 ac pl10 pr10 btn-sms">获取验证码</a>
+                </div>
+            </div>
+            <a class="button2 ac btn-search">查看你的祈福</a>
+        </div>
+    </div>
+    <div>
+        <img src="/static/images/qf2.png" width="100%">
+    </div>
+</section>
+<script>
+    function onBridgeReady() {
+        WeixinJSBridge.call('hideOptionMenu');
+    }
+
+    if (typeof WeixinJSBridge == "undefined") {
+        if (document.addEventListener) {
+            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+        } else if (document.attachEvent) {
+            document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+        }
+    } else {
+        onBridgeReady();
+    }
+</script>
 </body>
 </html>

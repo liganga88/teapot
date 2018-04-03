@@ -17,4 +17,6 @@ public interface OrderService {
     void paid(String tradeNo, String outTradeNo, Byte payType);
 
     List<TbOrder> selectTopOrder(Integer limit);
+
+    TbOrder selectByWishId(Integer wishId);
 }

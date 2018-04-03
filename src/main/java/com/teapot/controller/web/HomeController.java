@@ -4,7 +4,11 @@ import com.aliyuncs.exceptions.ClientException;
 import com.teapot.bean.JsonResult;
 import com.teapot.contants.SessionKeyContants;
 import com.teapot.controller.BaseController;
+import com.teapot.pojo.TbCoupon;
+import com.teapot.pojo.TbOrder;
 import com.teapot.pojo.TbWish;
+import com.teapot.service.CouponService;
+import com.teapot.service.OrderService;
 import com.teapot.service.WishService;
 import com.teapot.utils.SmsUtil;
 import org.slf4j.Logger;
@@ -15,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/3/16.
@@ -26,6 +31,12 @@ public class HomeController extends BaseController {
 
     @Autowired
     private WishService wishService;
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private CouponService couponService;
 
     /**
      * �?ҳ��
@@ -85,6 +96,14 @@ public class HomeController extends BaseController {
     public String resulta(@PathVariable("id") Integer id, Model model){
         TbWish tbWish = wishService.selectById(id);
         model.addAttribute("wish", tbWish);
+
+        TbOrder order = orderService.selectByWishId(id);
+        model.addAttribute("order", order);
+
+        if (order != null) {
+            List<TbCoupon> coupons = couponService.selectByOrderId(order.getId());
+            model.addAttribute("coupons", coupons);
+        }
         return "web/result_a";
     }
 

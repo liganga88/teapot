@@ -78,6 +78,29 @@ public class CustomerController extends BaseController {
         return "web/rank";
     }
 
+    @RequestMapping("allRank.html")
+    public String allRank(Model model){
+        //所有功德金及排位
+        List<TbOrder> orders = orderService.selectAllPaid();
+        List<OrderDto> orderDtos = BeanUtils.copyObjectList(orders, OrderDto.class);
+        //设置排位(同金额，排位并列)
+        for (int i = 0; i < orderDtos.size(); i++) {
+            OrderDto preOrder = null;
+            if (i > 1) {
+                preOrder = orderDtos.get(i - 1);
+            }
+            OrderDto curOrder = orderDtos.get(i);
+            if (preOrder != null && preOrder.getMoney() == curOrder.getMoney()) {
+                curOrder.setRank(preOrder.getRank());
+            } else {
+                curOrder.setRank(i + 1);
+            }
+        }
+        model.addAttribute("orders", orderDtos);
+
+        return "web/all_rank";
+    }
+
     @RequestMapping("search.html")
     public String search(){
         return "web/search";

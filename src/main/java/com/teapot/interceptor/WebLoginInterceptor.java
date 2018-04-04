@@ -18,7 +18,7 @@ public class WebLoginInterceptor extends HandlerInterceptorAdapter {
         HttpSession session = request.getSession();
         TbCustomer customer = (TbCustomer) session.getAttribute(SessionKeyContants.SESSION_CUR_CUSTOMER);
         if(customer == null){
-            response.sendRedirect("/customer/search.html");
+            response.sendRedirect("/customer/allRank.html");
             return false;
         }
 

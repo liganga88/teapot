@@ -111,4 +111,5 @@ public class HomeController extends BaseController {
     public String resultb(Model model){
         return "web/result_b";
     }
+
 }

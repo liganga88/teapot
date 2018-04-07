@@ -74,7 +74,7 @@ public class CouponServiceImpl implements CouponService {
             coupon.setCustomerid(order.getCustomerid());
             coupon.setCreated(new Date());
             coupon.setState((byte) 0);
-            coupon.setOrderId(orderId);
+            coupon.setOrderid(orderId);
             String token = getToken();
             coupon.setToken(token);
             couponDao.insert(coupon);
@@ -126,7 +126,7 @@ public class CouponServiceImpl implements CouponService {
     public List<TbCoupon> selectByOrderId(Integer orderId) {
         TbCouponQuery query = new TbCouponQuery();
         TbCouponQuery.Criteria criteria = query.createCriteria();
-        //todo andOrderId
+        criteria.andOrderidEqualTo(orderId);
         List<TbCoupon> coupons = couponDao.selectByExample(query);
         return coupons;
     }

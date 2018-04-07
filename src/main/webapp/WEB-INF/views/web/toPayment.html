@@ -20,6 +20,9 @@
                     alert("请输入手机号码");
                     return;
                 }
+                phone = phone.replace(/ /g,"");
+                phone = phone.replace(/-/g,"");
+                $("input[name=phone]").val(phone);
                 Common.post("/customer/newByPhone", {phone: phone}, function (json) {
                     if (json.code == Common.SUCC) {
                         Common.go("/trade/${orderId}/alipay");

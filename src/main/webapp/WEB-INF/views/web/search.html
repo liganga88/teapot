@@ -20,6 +20,9 @@
                     alert("请输入手机号码");
                     return;
                 }
+                phone = phone.replace(/ /g,"");
+                phone = phone.replace(/-/g,"");
+                $("input[name=phone]").val(phone);
                 if (!Common.Rules.mobile.test(phone)) {
                     alert("请输入正确的手机号");
                     return;

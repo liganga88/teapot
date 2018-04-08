@@ -22,7 +22,7 @@ public class CouponController extends BaseController {
 
     @RequestMapping("toUse.html")
     public String toUse(){
-        return "web/coupon/check";
+        return "web/coupon/toUse";
     }
 
     @RequestMapping("check")

@@ -23,10 +23,10 @@
                 phone = phone.replace(/ /g,"");
                 phone = phone.replace(/-/g,"");
                 $("input[name=phone]").val(phone);
-                if (!Common.Rules.mobile.test(phone)) {
-                    alert("请输入正确的手机号");
-                    return;
-                }
+//                if (!Common.Rules.mobile.test(phone)) {
+//                    alert("请输入正确的手机号");
+//                    return;
+//                }
                 var checkCode = $("input[name=checkCode]").val();
                 if (!checkCode) {
                     alert("请输入验证码");
@@ -47,10 +47,13 @@
                     alert("请输入手机号码");
                     return;
                 }
-                if (!Common.Rules.mobile.test(phone)) {
-                    alert("请输入正确的手机号");
-                    return;
-                }
+                phone = phone.replace(/ /g,"");
+                phone = phone.replace(/-/g,"");
+                $("input[name=phone]").val(phone);
+//                if (!Common.Rules.mobile.test(phone)) {
+//                    alert("请输入正确的手机号");
+//                    return;
+//                }
                 Common.post("/customer/sendSms", {phone: phone}, function (json) {
                     if (json.code == Common.SUCC) {
                     } else {

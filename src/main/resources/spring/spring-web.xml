@@ -55,6 +55,10 @@
             <mvc:mapping path="/customer/rank.html" />
             <bean class="com.teapot.interceptor.WebLoginInterceptor"></bean>
         </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/wish/preview/result.html" />
+            <bean class="com.teapot.interceptor.beforePreviewInterceptor"></bean>
+        </mvc:interceptor>
     </mvc:interceptors>
 
 <!--    <bean class="springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration" id="swagger2Config"/>

@@ -124,6 +124,19 @@ public class CustomerController extends BaseController {
         }
     }
 
+    @RequestMapping("checkPePhone")
+    @ResponseBody
+    public JsonResult checkPePhone(@RequestParam("phone") String phone,
+                                 @RequestParam("code") String code, HttpSession session) {
+        String sessionCode = (String) session.getAttribute(SessionKeyContants.SESSION_SMS_CODE);
+        if (!sessionCode.equals(code)) {
+            return JsonResult.error("验证码不正确");
+        }
+        session.setAttribute(SessionKeyContants.SESSION_TEMP_PREVIEW, phone);
+        session.removeAttribute(SessionKeyContants.SESSION_SMS_CODE);
+        return JsonResult.ok();
+    }
+
     @RequestMapping("newByPhone")
     @ResponseBody
     public JsonResult newByPhone(@RequestParam("phone") String phone, HttpSession session) {

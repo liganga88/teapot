@@ -32,9 +32,9 @@
                     alert("请输入验证码");
                     return;
                 }
-                Common.post("/customer/checkPhone", {phone: phone, code:checkCode}, function (json) {
+                Common.post("/customer/checkPePhone", {phone: phone, code:checkCode}, function (json) {
                     if (json.code == Common.SUCC) {
-                        Common.go("/customer/rank.html");
+                        Common.go("/wish/preview/result.html");
                     } else {
                         alert(json.message);
                     }
@@ -90,7 +90,7 @@
                     <a class="button3 ac pl10 pr10 btn-sms">获取验证码</a>
                 </div>
             </div>
-            <a class="button2 ac btn-search">查看你的功德榜</a>
+            <a class="button2 ac btn-search">查看你的祈福</a>
         </div>
     </div>
     <div>

@@ -46,4 +46,14 @@ public class WishServiceImpl implements WishService {
         List<TbWish> wishs = wishDao.selectByExample(query);
         return wishs;
     }
+
+    @Override
+    public List<TbWish> selectBySmsPhone(String phone) {
+        TbWishQuery query = new TbWishQuery();
+        query.setOrderByClause("id desc");
+        TbWishQuery.Criteria criteria = query.createCriteria();
+        criteria.andSmsphoneEqualTo(phone);
+        List<TbWish> wishs = wishDao.selectByExample(query);
+        return wishs;
+    }
 }

@@ -76,6 +76,19 @@ public class HomeController extends BaseController {
         return "web/preview";
     }
 
+    @RequestMapping(value = "/wish/preview/search.html")
+    public String previewSearch(){
+        return "web/previewSearch";
+    }
+
+    @RequestMapping(value = "/wish/preview/result.html")
+    public String previewResult(Model model, HttpSession session){
+        String phone = (String) session.getAttribute(SessionKeyContants.SESSION_TEMP_PREVIEW);
+        List<TbWish> wishs = wishService.selectBySmsPhone(phone);
+        model.addAttribute("wishs", wishs);
+        return "web/previewResult";
+    }
+
     @RequestMapping(value = "/wish/{id}/sendMessage")
     @ResponseBody
     public JsonResult sendMessage(@RequestParam("phone") String phone, @PathVariable("id") Integer id){

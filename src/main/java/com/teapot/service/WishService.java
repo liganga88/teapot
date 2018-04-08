@@ -12,4 +12,5 @@ public interface WishService {
     TbWish selectById(Integer id);
     void updateSmsPhone(Integer id, String phone);
     List<TbWish> selectAll();
+    List<TbWish> selectBySmsPhone(String phone);
 }

@@ -55,6 +55,9 @@ public class TradeController extends BaseController {
     @Value("wxpay.notify_url")
     private String wx_notify_url;
 
+    @Value("wxpay.trade.prefix")
+    private String wxPrefix;
+
     /**
      * 下单处理
      * @param payment
@@ -231,18 +234,17 @@ public class TradeController extends BaseController {
         H5ScencInfo.H5 h5_info = new H5ScencInfo.H5();
         h5_info.setType("Wap");
         //此域名必须在商户平台--"产品中心"--"开发配置"中添加
-        h5_info.setWap_url("https://pay.qq.com");
-        h5_info.setWap_name("腾讯充值");
+        h5_info.setWap_url("http://m.zijinwenchuang.com/");
+        h5_info.setWap_name("大明寺紫砂文化馆");
         sceneInfo.setH5_info(h5_info);
 
         Map<String, String> params = WxPayApiConfigKit.getWxPayApiConfig()
-                .setAttach("IJPay H5支付测试  -By Javen")
-                .setBody("IJPay H5支付测试  -By Javen")
+                .setBody("功德金")
                 .setSpbillCreateIp(ip)
-                .setTotalFee("520")
+                .setTotalFee(order.getMoney().toString())
                 .setTradeType(WxPayApi.TradeType.MWEB)
                 .setNotifyUrl(wx_notify_url)
-                .setOutTradeNo(String.valueOf(System.currentTimeMillis()))
+                .setOutTradeNo(wxPrefix + order.getId())
                 .setSceneInfo(h5_info.toString())
                 .build();
 
@@ -270,8 +272,10 @@ public class TradeController extends BaseController {
         return "redirect:" + mweb_url;
     }
 
-    public void pay_notify() {
-        //获取所有的参数
+    @RequestMapping(value = "wx_notify_url.html", produces = "text/html; charset=utf-8")
+    @ResponseBody
+    public String pay_notify() {
+/*        //获取所有的参数
         StringBuffer sbf=new StringBuffer();
 
         Enumeration<String> en=getParaNames();
@@ -280,11 +284,11 @@ public class TradeController extends BaseController {
             sbf.append(o.toString()+"="+getPara(o.toString()));
         }
 
-        log.error("支付通知参数："+sbf.toString());
+        log.error("支付通知参数："+sbf.toString());*/
 
         // 支付结果通用通知文档: https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_7
-        String xmlMsg = HttpKit.readData(getRequest());
-        System.out.println("支付通知="+xmlMsg);
+        String xmlMsg = HttpKit.readData(getHttpServletRequest());
+        logger.info("支付通知=" + xmlMsg);
         Map<String, String> params = PaymentKit.xmlToMap(xmlMsg);
 
 //		String appid  = params.get("appid");
@@ -309,7 +313,7 @@ public class TradeController extends BaseController {
 
         /////////////////////////////以下是附加参数///////////////////////////////////
 
-        String attach      = params.get("attach");
+//        String attach      = params.get("attach");
 //		String fee_type      = params.get("fee_type");
 //		String is_subscribe      = params.get("is_subscribe");
 //		String err_code      = params.get("err_code");
@@ -320,21 +324,19 @@ public class TradeController extends BaseController {
         // 避免已经成功、关闭、退款的订单被再次更新
 //		Order order = Order.dao.getOrderByTransactionId(transaction_id);
 //		if (order==null) {
-        if(PaymentKit.verifyNotify(params, WxPayApiConfigKit.getWxPayApiConfig().getPaternerKey())){
+        if (PaymentKit.verifyNotify(params, WxPayApiConfigKit.getWxPayApiConfig().getPaternerKey())) {
             if (("SUCCESS").equals(result_code)) {
                 //更新订单信息
-                log.warn("更新订单信息:"+attach);
+//                logger.warn("更新订单信息:" + attach);
 
                 //发送通知等
-
                 Map<String, String> xml = new HashMap<String, String>();
                 xml.put("return_code", "SUCCESS");
                 xml.put("return_msg", "OK");
-                renderText(PaymentKit.toXml(xml));
-                return;
+                return PaymentKit.toXml(xml);
             }
         }
 //		}
-        renderText("");
+        return "";
     }
 }

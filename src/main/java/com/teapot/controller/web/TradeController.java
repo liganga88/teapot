@@ -7,6 +7,11 @@ import com.alipay.api.domain.AlipayTradeWapPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.alipay.config.AlipayConfig;
+import com.jpay.ext.kit.HttpKit;
+import com.jpay.ext.kit.PaymentKit;
+import com.jpay.weixin.api.WxPayApi;
+import com.jpay.weixin.api.WxPayApiConfigKit;
+import com.teapot.bean.H5ScencInfo;
 import com.teapot.contants.CouponTypeContants;
 import com.teapot.contants.PayTypeContants;
 import com.teapot.contants.SessionKeyContants;
@@ -17,15 +22,16 @@ import com.teapot.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -45,6 +51,9 @@ public class TradeController extends BaseController {
 
     @Autowired
     private CouponService couponService;
+
+    @Value("wxpay.notify_url")
+    private String wx_notify_url;
 
     /**
      * 下单处理
@@ -187,5 +196,145 @@ public class TradeController extends BaseController {
         }
         logger.info("支付宝异步回调结束:trade_no={},result={}", tradeNo, result);
         return result;
+    }
+
+    @RequestMapping(value = "{orderId}/wxpay")
+    public String wxpay(@PathVariable("orderId") Integer orderId){
+
+        TbOrder order = orderService.selectById(orderId);
+
+
+        /*HashMap<String, String> data = new HashMap<String, String>();
+        data.put("body", "功德金");
+        data.put("out_trade_no", alipayConfig.getTradePrefix() + order.getId());
+        data.put("device_info", "");
+        data.put("fee_type", "CNY");
+        Double money = (order.getMoney() / 100d);
+        data.put("total_fee", money.toString());
+        data.put("spbill_create_ip", getIpAddr());
+        data.put("notify_url", "http://test.letiantian.me/wxpay/notify");
+        data.put("trade_type", "MWEB");
+//        data.put("product_id", "12");
+        // data.put("time_expire", "20170112104120");
+
+        try {
+            Map<String, String> r = wxpay.unifiedOrder(data);
+            System.out.println(r);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+
+        String ip = getIpAddr();
+
+        H5ScencInfo sceneInfo = new H5ScencInfo();
+
+        H5ScencInfo.H5 h5_info = new H5ScencInfo.H5();
+        h5_info.setType("Wap");
+        //此域名必须在商户平台--"产品中心"--"开发配置"中添加
+        h5_info.setWap_url("https://pay.qq.com");
+        h5_info.setWap_name("腾讯充值");
+        sceneInfo.setH5_info(h5_info);
+
+        Map<String, String> params = WxPayApiConfigKit.getWxPayApiConfig()
+                .setAttach("IJPay H5支付测试  -By Javen")
+                .setBody("IJPay H5支付测试  -By Javen")
+                .setSpbillCreateIp(ip)
+                .setTotalFee("520")
+                .setTradeType(WxPayApi.TradeType.MWEB)
+                .setNotifyUrl(wx_notify_url)
+                .setOutTradeNo(String.valueOf(System.currentTimeMillis()))
+                .setSceneInfo(h5_info.toString())
+                .build();
+
+        String xmlResult = WxPayApi.pushOrder(false,params);
+//        log.info(xmlResult);
+        Map<String, String> result = PaymentKit.xmlToMap(xmlResult);
+
+        String return_code = result.get("return_code");
+        String return_msg = result.get("return_msg");
+        if (!PaymentKit.codeIsOK(return_code)) {
+            logger.error(return_msg);
+            return null;
+        }
+        String result_code = result.get("result_code");
+        if (!PaymentKit.codeIsOK(result_code)) {
+            logger.error(return_msg);
+            return null;
+        }
+        // 以下字段在return_code 和result_code都为SUCCESS的时候有返回
+
+        String prepay_id = result.get("prepay_id");
+        String mweb_url = result.get("mweb_url");
+
+        logger.info("prepay_id:" + prepay_id + " mweb_url:" + mweb_url);
+        return "redirect:" + mweb_url;
+    }
+
+    public void pay_notify() {
+        //获取所有的参数
+        StringBuffer sbf=new StringBuffer();
+
+        Enumeration<String> en=getParaNames();
+        while (en.hasMoreElements()) {
+            Object o= en.nextElement();
+            sbf.append(o.toString()+"="+getPara(o.toString()));
+        }
+
+        log.error("支付通知参数："+sbf.toString());
+
+        // 支付结果通用通知文档: https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_7
+        String xmlMsg = HttpKit.readData(getRequest());
+        System.out.println("支付通知="+xmlMsg);
+        Map<String, String> params = PaymentKit.xmlToMap(xmlMsg);
+
+//		String appid  = params.get("appid");
+//		//商户号
+//		String mch_id  = params.get("mch_id");
+        String result_code  = params.get("result_code");
+//		String openId      = params.get("openid");
+//		//交易类型
+//		String trade_type      = params.get("trade_type");
+//		//付款银行
+//		String bank_type      = params.get("bank_type");
+//		// 总金额
+//		String total_fee     = params.get("total_fee");
+//		//现金支付金额
+//		String cash_fee     = params.get("cash_fee");
+//		// 微信支付订单号
+//		String transaction_id      = params.get("transaction_id");
+//		// 商户订单号
+//		String out_trade_no      = params.get("out_trade_no");
+//		// 支付完成时间，格式为yyyyMMddHHmmss
+//		String time_end      = params.get("time_end");
+
+        /////////////////////////////以下是附加参数///////////////////////////////////
+
+        String attach      = params.get("attach");
+//		String fee_type      = params.get("fee_type");
+//		String is_subscribe      = params.get("is_subscribe");
+//		String err_code      = params.get("err_code");
+//		String err_code_des      = params.get("err_code_des");
+
+
+        // 注意重复通知的情况，同一订单号可能收到多次通知，请注意一定先判断订单状态
+        // 避免已经成功、关闭、退款的订单被再次更新
+//		Order order = Order.dao.getOrderByTransactionId(transaction_id);
+//		if (order==null) {
+        if(PaymentKit.verifyNotify(params, WxPayApiConfigKit.getWxPayApiConfig().getPaternerKey())){
+            if (("SUCCESS").equals(result_code)) {
+                //更新订单信息
+                log.warn("更新订单信息:"+attach);
+
+                //发送通知等
+
+                Map<String, String> xml = new HashMap<String, String>();
+                xml.put("return_code", "SUCCESS");
+                xml.put("return_msg", "OK");
+                renderText(PaymentKit.toXml(xml));
+                return;
+            }
+        }
+//		}
+        renderText("");
     }
 }

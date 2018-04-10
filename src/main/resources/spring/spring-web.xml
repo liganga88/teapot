@@ -65,5 +65,9 @@
     <mvc:resources location="classpath:/META-INF/resources/" mapping="swagger-ui.html"/>
     <mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/>-->
     <bean id="alipayConfig" class="com.alipay.config.AlipayConfig"></bean>
+    <bean id="wxPayConfig" class="com.wxpay.sdk.WXPayConfig"></bean>
+    <bean id="wxPay" class="com.wxpay.sdk.WXPay">
+        <constructor-arg index="0" ref="wxPayConfig"></constructor-arg>
+    </bean>
 
 </beans>

@@ -148,7 +148,7 @@
 				if (money > 0) {
 					Common.go("/trade/order?wishId=${wish.id}&payment=" + money)
 				} else {
-					Common.go("/wish/${wish.id}/preview.html");
+					Common.go("/wish/${wish.id}/resultA.html");
 				}
 			});
 		});
@@ -158,7 +158,7 @@
 			if (money > 0) {
 				Common.go("/trade/order?wishId=${wish.id}&payment=" + money)
 			} else {
-				Common.go("/wish/${wish.id}/preview.html");
+				Common.go("/wish/${wish.id}/resultA.html");
 			}
 		});
 	})

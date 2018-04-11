@@ -121,4 +121,16 @@ public class OrderServiceImpl implements OrderService {
         }
         return null;
     }
+
+    @Override
+    public TbOrder selectByPayNo(String payNo) {
+        TbOrderQuery query = new TbOrderQuery();
+        TbOrderQuery.Criteria criteria = query.createCriteria();
+        criteria.andPaynoEqualTo(payNo);
+        List<TbOrder> orders = orderDao.selectByExample(query);
+        if (orders.size() > 0) {
+            return orders.get(0);
+        }
+        return null;
+    }
 }

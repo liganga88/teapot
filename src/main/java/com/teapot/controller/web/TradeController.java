@@ -12,6 +12,7 @@ import com.jpay.ext.kit.PaymentKit;
 import com.jpay.weixin.api.WxPayApi;
 import com.jpay.weixin.api.WxPayApiConfigKit;
 import com.teapot.bean.H5ScencInfo;
+import com.teapot.bean.WxPayBean;
 import com.teapot.contants.CouponTypeContants;
 import com.teapot.contants.PayTypeContants;
 import com.teapot.contants.SessionKeyContants;

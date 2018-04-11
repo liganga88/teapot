@@ -31,6 +31,24 @@
                     }
                 });
             });
+
+            $(".btn-wxpay").click(function () {
+                var phone = $("input[name=phone]").val();
+                if (!phone) {
+                    alert("请输入手机号码");
+                    return;
+                }
+                phone = phone.replace(/ /g,"");
+                phone = phone.replace(/-/g,"");
+                $("input[name=phone]").val(phone);
+                Common.post("/customer/newByPhone", {phone: phone}, function (json) {
+                    if (json.code == Common.SUCC) {
+                        Common.go("/wxpay/${orderId}/wapPay");
+                    } else {
+                        alert(json.message);
+                    }
+                });
+            });
         });
     </script>
 </head>
@@ -55,7 +73,7 @@
             <ul class="EC col2img">
                 <li class="col mr10 btn-alipay"><img src="/static/images/zhifubao.png" height="34px"/>
                 </li>
-                <li class="col"><img src="/static/images/weizhifu.png" height="34px"/>
+                <li class="col btn-wxpay"><img src="/static/images/weizhifu.png" height="34px"/>
                 </li>
             </ul>
         </div>

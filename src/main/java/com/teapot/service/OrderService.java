@@ -19,4 +19,6 @@ public interface OrderService {
     List<TbOrder> selectTopOrder(Integer limit);
 
     TbOrder selectByWishId(Integer wishId);
+
+    TbOrder selectByPayNo(String payNo);
 }

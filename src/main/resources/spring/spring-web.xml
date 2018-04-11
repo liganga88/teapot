@@ -39,13 +39,13 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**" />
-            <mvc:exclude-mapping path="/admin/*"/>
+            <mvc:exclude-mapping path="/admin/**"/>
             <!--<mvc:exclude-mapping path="/swagger-ui.html" />-->
             <!--<mvc:exclude-mapping path="/app/customer/v1/login" />-->
             <bean class="com.teapot.interceptor.LoginInterceptor"></bean>
         </mvc:interceptor>
         <mvc:interceptor>
-            <mvc:mapping path="/admin/*" />
+            <mvc:mapping path="/admin/**" />
             <mvc:exclude-mapping path="/admin/login.html" />
             <mvc:exclude-mapping path="/admin/doLogin" />
             <mvc:exclude-mapping path="/admin/rank.html" />
@@ -59,15 +59,16 @@
             <mvc:mapping path="/wish/preview/result.html" />
             <bean class="com.teapot.interceptor.beforePreviewInterceptor"></bean>
         </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/wxpay/**" />
+            <bean class="com.teapot.interceptor.WxPayInterceptor"></bean>
+        </mvc:interceptor>
     </mvc:interceptors>
 
 <!--    <bean class="springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration" id="swagger2Config"/>
     <mvc:resources location="classpath:/META-INF/resources/" mapping="swagger-ui.html"/>
     <mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/>-->
     <bean id="alipayConfig" class="com.alipay.config.AlipayConfig"></bean>
-    <bean id="wxPayConfig" class="com.wxpay.sdk.WXPayConfig"></bean>
-    <bean id="wxPay" class="com.wxpay.sdk.WXPay">
-        <constructor-arg index="0" ref="wxPayConfig"></constructor-arg>
-    </bean>
+    <bean id="wxPayBean" class="com.teapot.bean.WxPayBean"></bean>
 
 </beans>

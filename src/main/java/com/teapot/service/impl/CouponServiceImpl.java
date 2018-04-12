@@ -44,15 +44,12 @@ public class CouponServiceImpl implements CouponService {
         return str2;
     }
 
-    private String getToken(){
+    private String getToken() {
         String token;
-        TbCouponQuery query = new TbCouponQuery();
-        TbCouponQuery.Criteria criteria = query.createCriteria();
+        List<String> oldTokens = couponDao.selectToken();
         while (true) {
             token = randomStr(6);
-            criteria.andTokenEqualTo(token);
-            List<TbCoupon> coupons = couponDao.selectByExample(query);
-            if (coupons.size() <= 0) {
+            if (!oldTokens.contains(token)) {
                 break;
             }
         }

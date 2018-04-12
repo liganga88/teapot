@@ -263,4 +263,8 @@
       orderId = #{orderid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectToken" resultType="java.lang.String" >
+    select token from tb_coupon
+    where token is not null
+  </select>
 </mapper>

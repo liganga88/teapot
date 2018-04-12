@@ -14,6 +14,16 @@
     <script type="text/javascript" src="/static/common/common.js"></script>
     <script type="text/javascript">
         $(function () {
+            if (/MicroMessenger/.test(window.navigator.userAgent)) {
+                $(".btn-alipay").hide();
+                $(".btn-wxpay").show();
+            } else if (/AlipayClient/.test(window.navigator.userAgent)) {
+                $(".btn-alipay").show();
+                $(".btn-wxpay").hide();
+            } else {
+                $(".btn-alipay").show();
+                $(".btn-wxpay").show();
+            }
             $(".btn-alipay").click(function () {
                 var phone = $("input[name=phone]").val();
                 if (!phone) {
@@ -63,7 +73,7 @@
             <h1 class="title ac fb"><span class="pl10">你的手机号：</span></h1>
 
             <div class="text mb5">
-                <input class="ac" name="phone" type="text" placeholder="手机号码">
+                <input class="ac" name="phone" type="tel" placeholder="手机号码">
                 <img class="p1" src="/static/images/opb1.png"/>
                 <img class="p2" src="/static/images/opb2.png"/>
                 <img class="p3" src="/static/images/opb3.png"/>

@@ -27,4 +27,6 @@ public interface TbCouponDao {
     int updateByPrimaryKeySelective(TbCoupon record);
 
     int updateByPrimaryKey(TbCoupon record);
+
+    List<String> selectToken();
 }

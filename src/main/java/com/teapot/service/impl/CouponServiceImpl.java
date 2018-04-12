@@ -127,4 +127,6 @@ public class CouponServiceImpl implements CouponService {
         List<TbCoupon> coupons = couponDao.selectByExample(query);
         return coupons;
     }
+
+
 }

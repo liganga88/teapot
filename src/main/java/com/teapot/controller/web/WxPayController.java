@@ -96,7 +96,7 @@ public class WxPayController extends WxPayApiController {
 		SnsAccessToken accessToken = SnsAccessTokenApi.getSnsAccessToken(wxPayBean.getAppId(), wxPayBean.getAppSecret(), code);
 		String openId = accessToken.getOpenid();
 		session.setAttribute(SessionKeyContants.SESSION_OPENID, openId);
-		return "redirect:/trade/" + orderId + "toPayment.html" ;
+		return "redirect:/trade/" + orderId + "/toPayment.html" ;
 	}
 	
 	/**
@@ -231,13 +231,11 @@ public class WxPayController extends WxPayApiController {
 	 * 公众号支付
 	 * @param request
 	 * @param response
-	 * @param code
 	 * @return
 	 */
 	@RequestMapping(value ="{orderId}/webPay",method = {RequestMethod.POST,RequestMethod.GET})
 	@ResponseBody
-	public AjaxResult webPay(@PathVariable("orderId") Integer orderId,HttpServletRequest request,HttpServletResponse response,
-							 @RequestParam("code") String code) {
+	public AjaxResult webPay(@PathVariable("orderId") Integer orderId,HttpServletRequest request,HttpServletResponse response) {
 
 		/*SnsAccessToken accessToken = SnsAccessTokenApi.getSnsAccessToken(wxPayBean.getAppId(), wxPayBean.getAppSecret(), code);
 		String openId = accessToken.getOpenid();*/

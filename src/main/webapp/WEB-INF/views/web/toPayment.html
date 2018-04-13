@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/static/common/com[1].css">
     <script type="text/javascript" src="/static/javascript/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="/static/common/common.js"></script>
+    <script type="text/javascript" src="/static/layer/layer.js"></script>
     <script type="text/javascript">
         var paytype;
         $(function () {
@@ -58,10 +59,7 @@
                 Common.post("/customer/newByPhone", {phone: phone}, function (json) {
                     if (json.code == Common.SUCC) {
                         if (paytype == "weixin") {
-                            Common.post("/wxpay/{orderId}/getCode",null,function(json){
-                                wxpay();
-                            });
-
+                            wxpay();
                         } else {
                             Common.go("/wxpay/${orderId}/wapPay");
                         }
@@ -114,6 +112,7 @@
 //                        self.location = "#(ctxPath)/success";
 
                     } else {
+                        alert(res.err_msg);
                         layer.msg("支付失败", {
                             shift : 6
                         });

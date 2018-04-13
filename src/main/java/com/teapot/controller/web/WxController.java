@@ -1,23 +1,19 @@
 package com.teapot.controller.web;
 
-import com.jpay.ext.kit.StrKit;
 import com.teapot.controller.BaseController;
-import com.weixin.sdk.handler.EventHandler;
-import com.weixin.sdk.kit.SignatureCheckKit;
-import me.chanjar.weixin.mp.api.WxMpMessageRouter;
-import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
-import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
-import org.apache.commons.lang3.StringUtils;
+import com.teapot.service.WechatService;
+import com.teapot.utils.SignUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.BufferedReader;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.PrintWriter;
 
 /**
  * Created by Administrator on 2018-4-13.
@@ -27,60 +23,61 @@ import java.io.InputStreamReader;
 public class WxController extends BaseController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-/*    @RequestMapping("/")
-    public void index() throws IOException {
-        if ("get".equalsIgnoreCase(getHttpServletRequest().getMethod())) {
-            get();
-            post();
-        } else {
-            post();
-        }
-    }*/
+//    @Value("${DNBX_TOKEN}")
+    private String DNBX_TOKEN = "";
 
-    @GetMapping(produces = "text/plain;charset=utf-8")
-    public String authGet(
-            @RequestParam(name = "signature",
-                    required = false) String signature,
-            @RequestParam(name = "timestamp",
-                    required = false) String timestamp,
-            @RequestParam(name = "nonce", required = false) String nonce,
-            @RequestParam(name = "echostr", required = false) String echostr) {
+    private static final Logger LOGGER = LoggerFactory.getLogger(WxController.class);
 
-        // 如果是服务器配置请求，则配置服务器并返回
-        if (StrKit.notBlank(echostr)) {
-            logger.debug("微信验证开始:signature:{},timestamp:{},nonce:{},echostr:{}", new String[]{signature,timestamp,nonce,echostr});
-            boolean isOk = SignatureCheckKit.me.checkSignature(signature, timestamp, nonce);
-            if (isOk) {
-                return echostr;
-            }else {
-                logger.error("验证失败：configServer");
-                return  "非法请求";
+    @Resource
+    WechatService wechatService;
+
+    /**
+     * 微信接入
+     * @param
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value="/connect",method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public void connectWeixin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // 将请求、响应的编码均设置为UTF-8（防止中文乱码）
+        request.setCharacterEncoding("UTF-8");  //微信服务器POST消息时用的是UTF-8编码，在接收时也要用同样的编码，否则中文会乱码；
+        response.setCharacterEncoding("UTF-8"); //在响应消息（回复消息给用户）时，也将编码方式设置为UTF-8，原理同上；
+        boolean isGet = request.getMethod().toLowerCase().equals("get");
+
+        PrintWriter out = response.getWriter();
+
+        try {
+            if (isGet) {
+                String signature = request.getParameter("signature");// 微信加密签名
+                String timestamp = request.getParameter("timestamp");// 时间戳
+                String nonce = request.getParameter("nonce");// 随机数
+                String echostr = request.getParameter("echostr");//随机字符串
+
+                // 通过检验signature对请求进行校验，若校验成功则原样返回echostr，表示接入成功，否则接入失败
+                if (SignUtil.checkSignature(DNBX_TOKEN, signature, timestamp, nonce)) {
+                    LOGGER.info("Connect the weixin server is successful.");
+                    response.getWriter().write(echostr);
+                } else {
+                    LOGGER.error("Failed to verify the signature!");
+                }
+            } else {
+                String respMessage = "异常消息！";
+
+                try {
+                    respMessage = wechatService.weixinPost(request);
+                    out.write(respMessage);
+                    LOGGER.info("The request completed successfully");
+                    LOGGER.info("to weixin server " + respMessage);
+                } catch (Exception e) {
+                    LOGGER.error("Failed to convert the message from weixin!");
+                }
+
             }
-
+        } catch (Exception e) {
+            LOGGER.error("Connect the weixin server is error.");
+        } finally {
+            out.close();
         }
-    }
-
-    @PostMapping(produces = "application/xml; charset=UTF-8")
-    public String post(@RequestBody String requestBody,
-                       @RequestParam("signature") String signature,
-                       @RequestParam("timestamp") String timestamp,
-                       @RequestParam("nonce") String nonce,
-                       @RequestParam(name = "encrypt_type",
-                               required = false) String encType,
-                       @RequestParam(name = "msg_signature",
-                               required = false) String msgSignature) throws IOException{
-   /*     String mp = getUrlPara("mp", "");
-        String signature = getPara("msg_signature");
-        String timestamp = getPara("timestamp");
-        String nonce = getPara("nonce");*/
-        BufferedReader in = new BufferedReader(new InputStreamReader(getHttpServletRequest().getInputStream()));
-        StringBuilder sb = new StringBuilder();
-        String s;
-        while ((s = in.readLine()) != null) {
-            sb.append(s);
-        }
-//        logger.info(mp + ":" + sb.toString());
-        String xml = EventHandler.wo.handler(requestBody, signature, timestamp, nonce, sb.toString());
-        renderText(xml);
     }
 }

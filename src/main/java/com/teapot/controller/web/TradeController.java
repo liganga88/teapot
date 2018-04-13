@@ -65,11 +65,18 @@ public class TradeController extends BaseController {
      * @return
      */
     @RequestMapping("order")
-    public String doOrder(@RequestParam("wishId") Integer wishId, @RequestParam("payment") Double payment, HttpSession session) {
+    public String doOrder(@RequestParam("wishId") Integer wishId, @RequestParam("payment") Double payment,
+                          @RequestParam(value = "bWeixin", required = false, defaultValue = "false") Boolean bWeixin, HttpSession session) {
         String tempId = (String) session.getAttribute(SessionKeyContants.SESSION_TEMP_CUSTOMER);
         TbOrder order = orderService.newOrder(wishId ,tempId, payment);
 
-        return "redirect:" + order.getId() + "/toPayment.html";
+        String url;
+        if (bWeixin) {
+            url = "/wxpay/" + order.getId() + "/getCode";
+        } else {
+            url = order.getId() + "/toPayment.html";
+        }
+        return "redirect:" + url;
     }
 
     @RequestMapping("{orderId}/toPayment.html")

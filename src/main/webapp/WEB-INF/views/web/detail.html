@@ -87,6 +87,8 @@
 		onBridgeReady();
 	}
 
+	var bWeixin;
+
 	//options
 	$(function(){
 		var options = $('.options')
@@ -102,6 +104,8 @@
 
 	//win
 	$(function(){
+
+		bWeixin = /MicroMessenger/.test(window.navigator.userAgent);
 		var w = $('.win')
 		var wm = $('.win .winMain')
 
@@ -147,7 +151,7 @@
 
 				}
 				if (money > 0) {
-					Common.go("/trade/order?wishId=${wish.id}&payment=" + money)
+					Common.go("/trade/order?wishId=${wish.id}&payment=" + money + "&bWeixin=" +bWeixin)
 				} else {
 					Common.go("/wish/${wish.id}/resultA.html");
 				}
@@ -157,7 +161,7 @@
 		$(".btn-noSend").on("click", function(){
 			var money = $("input[name=money]").val();
 			if (money > 0) {
-				Common.go("/trade/order?wishId=${wish.id}&payment=" + money)
+				Common.go("/trade/order?wishId=${wish.id}&payment=" + money + "&bWeixin=" +bWeixin)
 			} else {
 				Common.go("/wish/${wish.id}/resultA.html");
 			}

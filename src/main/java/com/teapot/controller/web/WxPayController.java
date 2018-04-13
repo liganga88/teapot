@@ -13,9 +13,13 @@ import com.teapot.bean.H5ScencInfo.H5;
 import com.teapot.bean.WxPayBean;
 import com.teapot.contants.CouponTypeContants;
 import com.teapot.contants.PayTypeContants;
+import com.teapot.contants.SessionKeyContants;
 import com.teapot.pojo.TbOrder;
 import com.teapot.service.CouponService;
 import com.teapot.service.OrderService;
+import com.teapot.utils.JsonUtils;
+import com.weixin.sdk.api.SnsAccessToken;
+import com.weixin.sdk.api.SnsAccessTokenApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -75,21 +80,39 @@ public class WxPayController extends WxPayApiController {
 	public String getKey(){
 		return WxPayApi.getsignkey(wxPayBean.getAppId(), wxPayBean.getPartnerKey());
 	}*/
+
+	@RequestMapping(value ="{orderId}/getCode",method = {RequestMethod.POST, RequestMethod.GET})
+	public String getCode(@PathVariable("orderId") Integer orderId){
+		StringBuilder url = new StringBuilder();
+		url.append("https://open.weixin.qq.com/connect/oauth2/authorize?")
+				.append("appid=").append(wxPayBean.getAppId())
+				.append("&redirect_uri=").append(wxPayBean.getDomain().concat("/wxpay/" + orderId + "/getOpenid"))
+				.append("&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect");
+		return "redirect:" + url.toString();
+	}
+
+	@RequestMapping(value ="{orderId}/getOpenid",method = {RequestMethod.POST, RequestMethod.GET})
+	public String getToken(@PathVariable("orderId") Integer orderId,@RequestParam("code") String code, HttpSession session){
+		SnsAccessToken accessToken = SnsAccessTokenApi.getSnsAccessToken(wxPayBean.getAppId(), wxPayBean.getAppSecret(), code);
+		String openId = accessToken.getOpenid();
+		session.setAttribute(SessionKeyContants.SESSION_OPENID, openId);
+		return "redirect:/trade/" + orderId + "toPayment.html" ;
+	}
 	
 	/**
 	 * 微信H5 支付
 	 * 注意：必须再web页面中发起支付且域名已添加到开发配置中
 	 */
-	@RequestMapping(value ="{orderId}/wapPay",method = {RequestMethod.POST, RequestMethod.GET})
-	public void wapPay(@PathVariable("orderId") Integer orderId,HttpServletRequest request,HttpServletResponse response){
+	@RequestMapping(value = "{orderId}/wapPay", method = {RequestMethod.POST, RequestMethod.GET})
+	public void wapPay(@PathVariable("orderId") Integer orderId, HttpServletRequest request, HttpServletResponse response) {
 		TbOrder order = orderService.selectById(orderId);
 		String ip = getIpAddr();
 		if (StrKit.isBlank(ip)) {
 			ip = "127.0.0.1";
 		}
-		
+
 		H5ScencInfo sceneInfo = new H5ScencInfo();
-		
+
 		H5 h5_info = new H5();
 		h5_info.setType("Wap");
 		//此域名必须在商户平台--"产品中心"--"开发配置"中添加
@@ -97,7 +120,7 @@ public class WxPayController extends WxPayApiController {
 		h5_info.setWap_url("http://m.zijinwenchuang.com");
 		h5_info.setWap_name("大明寺紫砂文化馆");
 		sceneInfo.setH5_info(h5_info);
-		
+
 		Map<String, String> params = WxPayApiConfigKit.getWxPayApiConfig()
 				.setBody("功德金")
 				.setSpbillCreateIp(ip)
@@ -107,31 +130,31 @@ public class WxPayController extends WxPayApiController {
 				.setOutTradeNo(wxPayBean.getPrefix() + order.getId())
 				.setSceneInfo(h5_info.toString())
 				.build();
-		
+
 		String xmlResult = WxPayApi.pushOrder(false, params);
-log.info(xmlResult);
+		log.info(xmlResult);
 		Map<String, String> result = PaymentKit.xmlToMap(xmlResult);
-		
+
 		String return_code = result.get("return_code");
 		String return_msg = result.get("return_msg");
 		if (!PaymentKit.codeIsOK(return_code)) {
-			log.error("return_code>"+return_code+" return_msg>"+return_msg);
+			log.error("return_code>" + return_code + " return_msg>" + return_msg);
 			throw new RuntimeException(return_msg);
 		}
 		String result_code = result.get("result_code");
 		if (!PaymentKit.codeIsOK(result_code)) {
-			log.error("result_code>"+result_code+" return_msg>"+return_msg);
+			log.error("result_code>" + result_code + " return_msg>" + return_msg);
 			throw new RuntimeException(return_msg);
 		}
 		// 以下字段在return_code 和result_code都为SUCCESS的时候有返回
-		
+
 		String prepay_id = result.get("prepay_id");
 		String mweb_url = result.get("mweb_url");
 
 		//付款后跳转的页面
 		String return_url = wxPayBean.getDomain() + "/wish/" + order.getWishid() + "/resultA.html";
 		try {
-			return_url = URLEncoder.encode(return_url,"UTF-8");
+			return_url = URLEncoder.encode(return_url, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -206,40 +229,43 @@ log.info(xmlResult);
 
 	/**
 	 * 公众号支付
-	 *//*
-	@RequestMapping(value ="/webPay",method = {RequestMethod.POST,RequestMethod.GET})
+	 * @param request
+	 * @param response
+	 * @param code
+	 * @return
+	 */
+	@RequestMapping(value ="{orderId}/webPay",method = {RequestMethod.POST,RequestMethod.GET})
 	@ResponseBody
-	public AjaxResult webPay(HttpServletRequest request,HttpServletResponse response,
-							 @RequestParam("total_fee") String total_fee) {
+	public AjaxResult webPay(@PathVariable("orderId") Integer orderId,HttpServletRequest request,HttpServletResponse response,
+							 @RequestParam("code") String code) {
 
+		/*SnsAccessToken accessToken = SnsAccessTokenApi.getSnsAccessToken(wxPayBean.getAppId(), wxPayBean.getAppSecret(), code);
+		String openId = accessToken.getOpenid();*/
 		AjaxResult result = new AjaxResult();
 
 		// openId，采用 网页授权获取 access_token API：SnsAccessTokenApi获取
-		String openId = (String) request.getSession().getAttribute("openId");
+		String openId = (String) request.getSession().getAttribute(SessionKeyContants.SESSION_OPENID);
 
 		if (StrKit.isBlank(openId)) {
 			result.addError("openId is null");
 			return result;
 		}
-		if (StrKit.isBlank(total_fee)) {
-			result.addError("请输入数字金额");
-			return result;
-		}
 
-		String ip = IpKit.getRealIp(request);
+		TbOrder order = orderService.selectById(orderId);
+
+		String ip = getIpAddr();
 		if (StrKit.isBlank(ip)) {
 			ip = "127.0.0.1";
 		}
 
 		Map<String, String> params = WxPayApiConfigKit.getWxPayApiConfig()
-				.setAttach("IJPay 公众号支付测试  -By Javen")
-				.setBody("IJPay 公众号支付测试  -By Javen")
+				.setBody("功德金")
 				.setOpenId(openId)
 				.setSpbillCreateIp(ip)
-				.setTotalFee(total_fee)
+				.setTotalFee(order.getMoney().toString())
 				.setTradeType(TradeType.JSAPI)
 				.setNotifyUrl(notify_url)
-				.setOutTradeNo(String.valueOf(System.currentTimeMillis()))
+				.setOutTradeNo(wxPayBean.getPrefix() + order.getId())
 				.build();
 
 		String xmlResult = WxPayApi.pushOrder(false,params);
@@ -263,9 +289,9 @@ log.info(xmlResult);
 
 		Map<String, String> packageParams = PaymentKit.prepayIdCreateSign(prepay_id);
 
-		String jsonStr = JSON.toJSONString(packageParams);
+		String jsonStr = JsonUtils.objectToJson(packageParams);
 		result.success(jsonStr);
 		return result;
-	}*/
+	}
 
 }

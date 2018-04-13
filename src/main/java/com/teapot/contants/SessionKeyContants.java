@@ -10,4 +10,5 @@ public interface SessionKeyContants {
     String VERIFY_CODE = "VERIFY_CODE";
     String SESSION_SMS_CODE = "sms_code";
     String SESSION_TEMP_PREVIEW = "temp_preview";
+    String SESSION_OPENID = "weixin_openid";
 }

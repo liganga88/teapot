@@ -13,16 +13,20 @@
     <script type="text/javascript" src="/static/javascript/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="/static/common/common.js"></script>
     <script type="text/javascript">
+        var paytype;
         $(function () {
             if (/MicroMessenger/.test(window.navigator.userAgent)) {
                 $(".btn-alipay").hide();
                 $(".btn-wxpay").show();
+                paytype="weixin";
             } else if (/AlipayClient/.test(window.navigator.userAgent)) {
                 $(".btn-alipay").show();
                 $(".btn-wxpay").hide();
+                paytype="alipay";
             } else {
                 $(".btn-alipay").show();
                 $(".btn-wxpay").show();
+                paytype="other";
             }
             $(".btn-alipay").click(function () {
                 var phone = $("input[name=phone]").val();
@@ -53,13 +57,70 @@
                 $("input[name=phone]").val(phone);
                 Common.post("/customer/newByPhone", {phone: phone}, function (json) {
                     if (json.code == Common.SUCC) {
-                        Common.go("/wxpay/${orderId}/wapPay");
+                        if (paytype == "weixin") {
+                            Common.post("/wxpay/{orderId}/getCode",null,function(json){
+                                wxpay();
+                            });
+
+                        } else {
+                            Common.go("/wxpay/${orderId}/wapPay");
+                        }
                     } else {
                         alert(json.message);
                     }
                 });
             });
         });
+
+        /* 微信刷卡支付 END*/
+        /* 微信公众号支付支付 */
+        function wxpay() {
+            $.post("/wxpay/${orderId}/webPay",null, function(res) {
+                if (res.code == 0) {
+                    var data = $.parseJSON(res.data);
+
+                    if (typeof WeixinJSBridge == "undefined") {
+                        if (document.addEventListener) {
+                            document.addEventListener('WeixinJSBridgeReady',
+                                    onBridgeReady(data), false);
+                        } else if (document.attachEvent) {
+                            document.attachEvent('WeixinJSBridgeReady',
+                                    onBridgeReady(data));
+                            document.attachEvent('onWeixinJSBridgeReady',
+                                    onBridgeReady(data));
+                        }
+                    } else {
+                        onBridgeReady(data);
+                    }
+                } else {
+                    if (res.code == 2) {
+                        layer.alert(res.message);
+                    } else {
+                        layer.msg("error：" + res.message, {
+                            shift : 6
+                        });
+                    }
+                }
+            });
+
+            function onBridgeReady(json) {
+                WeixinJSBridge.invoke('getBrandWCPayRequest', json, function(res) {
+                    // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                    if (res.err_msg == "get_brand_wcpay_request:ok") {
+                        layer.msg("支付成功", {
+                            shift : 6
+                        });
+                        Common.go("/wish.html")
+//                        self.location = "#(ctxPath)/success";
+
+                    } else {
+                        layer.msg("支付失败", {
+                            shift : 6
+                        });
+                    }
+                });
+            }
+        }
     </script>
 </head>
 

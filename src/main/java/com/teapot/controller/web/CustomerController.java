@@ -7,8 +7,10 @@ import com.teapot.controller.BaseController;
 import com.teapot.dto.OrderDto;
 import com.teapot.pojo.TbCustomer;
 import com.teapot.pojo.TbOrder;
+import com.teapot.pojo.TbWish;
 import com.teapot.service.CustomerService;
 import com.teapot.service.OrderService;
+import com.teapot.service.WishService;
 import com.teapot.utils.BeanUtils;
 import com.teapot.utils.SmsUtil;
 import org.apache.commons.lang3.RandomUtils;
@@ -40,6 +42,9 @@ public class CustomerController extends BaseController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private WishService wishService;
 
     @RequestMapping("rank.html")
     public String rank(Model model, HttpSession session){
@@ -161,5 +166,13 @@ public class CustomerController extends BaseController {
             logger.error("短信发送失败");
         }
         return JsonResult.ok();
+    }
+
+    @RequestMapping("myWish.html")
+    public String myWish(Model model, HttpSession session){
+        TbCustomer customer = (TbCustomer) session.getAttribute(SessionKeyContants.SESSION_CUR_CUSTOMER);
+        List<TbWish> wishs = wishService.selectByCustomerId(customer.getId());
+        model.addAttribute("wishs", wishs);
+        return "web/myWish";
     }
 }

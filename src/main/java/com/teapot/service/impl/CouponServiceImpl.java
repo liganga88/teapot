@@ -63,7 +63,7 @@ public class CouponServiceImpl implements CouponService {
 
         int num = 1;
         if (order.getMoney() >= 100000) {
-            num = 3;
+            num = 2;
         }
         for (int i = 0; i < num; i++) {
             TbCoupon coupon = new TbCoupon();

@@ -5,12 +5,24 @@ body { background-image: url(../images/bg_fill.png); background-repeat: repeat}
 h1,h2 { font-weight: lighter}
 h1 { font-size: 1.125em;}
 h2 { font-size: 0.875em;}
+::-webkit-input-placeholder { /* WebKit browsers */ 
+font-size:1.125em;
+} 
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */ 
+font-size:1.125em;
+} 
+::-moz-placeholder { /* Mozilla Firefox 19+ */ 
+font-size:1.125em;
+} 
+:-ms-input-placeholder { /* Internet Explorer 10+ */ 
+font-size:1.125em;
+}
 
 .iconfont { position: relative;top: 1px;display: inline-block;font-style: normal;line-height: 1;}
 
 /*header*/
 .header {}
-.header .logo { width: 50%; margin: 0 auto;}
+.header .logo { max-width: 50%; margin: 0 auto;}
 
 /*main*/
 .main { background-color: #fff; background-image: url(../images/b10.png); background-repeat: no-repeat;  background-position: bottom right; background-size: 100% auto; color: #504d42}
@@ -28,11 +40,13 @@ h2 { font-size: 0.875em;}
 .op .title .iconfont { top: 5px}
 .op .title i { color: #d6cdb9; font-size: 1.6em}
 .op .title .num {font-weight: bolder; color:#866d30}
+.op .title.redColor {color:#980b00;}
+.op .title.redColor i {color:#980b00;}
 
 .op .info { padding:0 40px;} 
 
 .op .edit { border: solid 1px #aca8a8; position: relative; line-height: 2em;}
-.op .edit textarea { width:78%; min-height: 6em; padding:10px 11%;}
+.op .edit textarea { display: block; width:78%; min-height: 6em; padding:10px 11%;}
 .op .edit .ll { width:78%; padding:10px 11%; position: absolute; top: 0; color:#999}
 
 .op .text { /*padding:0 40px;*/ border: solid 1px #aca8a8; position: relative; line-height: 40px;}
@@ -48,20 +62,27 @@ h2 { font-size: 0.875em;}
 .op .images {}
 .op .images img { position: static; width: 40%; margin: 0 auto}
 
-.op .button { display: block; height: 34px; line-height: 34px; background-color:#d6cdb9; border-radius: 3px; color:#fff; overflow: hidden;
+.op .button { display: block; height: 34px; line-height: 34px; background-color:#a79f8a; border-radius: 3px; color:#fff; overflow: hidden;
 background-image:url(../images/s1.png),  url(../images/s2.png);
  background-position: center left, center right;
 background-repeat: no-repeat, no-repeat}
 .op .button2 { display: block; height: 34px; line-height: 34px; background-color:#a79f8a; border-radius: 3px; color:#fff; overflow: hidden;}
-.op .button3 { display: block; height: 34px; line-height: 34px; margin: 4px 0; background-color:#a79f8a; border-radius: 3px; color:#fff; overflow: hidden;}
+.op .button3 { display: block; width: 90px; height: 34px; line-height: 34px; margin: 4px 0; background-color:#a79f8a; border-radius: 3px; color:#fff; overflow: hidden;}
 
 .op .options {}
-.op .options a { display: block; width: 50%; height: 21px; line-height: 21px; padding: 0 7px; margin-right: 10px; color:#fff; position: relative}
+.op .options a { display: block; width: 50%; height: 21px; line-height: 21px; padding: 0 7px; margin: 2px 0; margin-right: 20px; color:#fff; position: relative}
 .op .options a:last-child { margin-right: 0}
-.op .options a span { display: block; height: 21px; line-height: 21px; background-color: #d6cdb9;}
+.op .options a span { display: block; height: 21px; line-height: 21px; background-color: #a79f8a;}
 .op .options a::before ,.op .options a::after { content: " "; display: block; width: 7px; height: 21px; position: absolute; top: 0}
 .op .options a::before { left: 1px; background-image: url(../images/sma1.png)}
 .op .options a::after { right: 1px; background-image: url(../images/sma2.png)}
+.op .options a.kk {  height: 25px; line-height: 25px; padding: 0 20px; margin: 0; margin-right: 20px;}
+.op .options a.kk span { height: 25px; line-height: 25px; background-color: #980b00; color: #fff}
+.op .options a.kk::before ,.op .options a.kk::after { content: " "; display: block; width: 20px; height: 25px; position: absolute; top: 0;background-size: 100% auto;}
+.op .options a.kk::before { left: 1px; background-image: url(../images/n1-2-1.png)}
+.op .options a.kk::after { right: 1px; background-image: url(../images/n1-2-2.png)}
+.op div.h2 {font-size: 1.2em; font-weight: bolder; text-align: center;letter-spacing:6.5px}
+.op div.h3 {font-size: 1em; font-weight: bolder; text-align: center;}
 
 .op .line { height: 6px; background: url(../images/line.png) center repeat-x}
 
@@ -76,9 +97,30 @@ background-repeat: no-repeat, no-repeat}
 .op .col2img li { width: 50%; text-align: center}
 .op .col2img li img { position: static; display: inline-block}
 
+.op .myZFlist { padding-bottom: 30px;}
+.op .myZFlist li .title { padding: 5px 10px; margin-bottom: 1px; background-color: #a69c83;; color: #fff; overflow: hidden}
+.op .myZFlist li .title-sub { padding: 5px 10px; background-color: #c1b9a8; color: #fff}
+.op .myZFlist li p { padding: 10px;}
+
 /*footer*/
 .footer { margin-top: 30px;}
 .footer img {width: 40%; margin: 0 auto}
+
+/*default*/
+.default { position: relative}
+.default::before,.default::after { display: none}
+.default img.defaultBg { display: block; width: 100%; position: absolute; top: 0; z-index:0}
+.default .defaultInfo { width: 90%; padding: 60px 5%; padding-bottom: 20px; position: relative; z-index: 1}
+.default .defaultInfo h1 { margin-bottom: 20px; font-size: 1.75em; font-weight: bolder; text-align: center;color:#980b00}
+.default .defaultInfo h2 {font-size: 1.7em; font-weight: bolder; text-align: center;}
+.default .defaultInfo h3 {font-size: 1em; font-weight: bolder; text-align: center;}
+.default .defaultInfo p {margin-bottom: 0.75em;}
+.default .defaultBtn { text-align: center}
+.default .defaultBtn a.btn { display: inline-block; padding: 0 21px; position: relative; z-index: 1}
+.default .defaultBtn a.btn span { display: block; line-height: 26px; padding: 0 36px; background-color: #980b00; color: #fff}
+.default .defaultBtn a.btn::before ,.default .defaultBtn a.btn::after { content: " "; display: block; width: 21px; height: 26px; position: absolute; top: 0; background-size: 100% auto;}
+.default .defaultBtn a.btn::before { left: 0; background-image: url(../images/n1-2-1.png);}
+.default .defaultBtn a.btn::after { right: 0; background-image: url(../images/n1-2-2.png)}
 
 
 /*win*/

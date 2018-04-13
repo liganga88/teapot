@@ -16,42 +16,24 @@
 <body>
 <section class="main">
 	<div class="header mt20">
-		<img class="logo" src="/static/images/n1-4.png">
+		<img class="logo" src="/static/images/n1-3.png">
 	</div>
 	<div class="pl30 pr30">
 		<div class="op mt20">
-			<h1 class="title ac"><i class="iconfont icon-yunLeft"></i><span class="pl10 pr10">承墙当前排名</span><span class="num pr10">${myOrders[0].rank!0,numberFormat="000"}</span><i class="iconfont icon-yunRight"></i></h1>
-			<div>
-				<table class="rank" width="100%" cellpadding="0" cellspacing="0">
-					<%for(item in myOrders){%>
-					<tr>
-						<td>${item.rank,numberFormat="000"}</td>
-						<td>${item.created,'yyyy年MM月dd日'}</td>
-						<td>${item.hoper}</td>
-						<td>${item.money/100, numberFormat="##.##"}元</td>
-					</tr>
+			<h1 class="title ac"><i class="iconfont icon-yunLeft"></i><span class="pl10 pr10">我共送出<span class="ml10 mr10">${wishs.~size}</span>条祈福</span><i class="iconfont icon-yunRight"></i></h1>
+			<ul class="myZFlist">
+				<%for(item in wishs){%>
+				<li>
+					<div class="title oh"><span class="fl">${(itemLP.size - itemLP.index + 1), '000'}</span><span class="fr">祈福时间:<span>${item.created, 'yyyy年MM月dd日 HH点mm分'}</span></span></div>
+					<%if(isEmpty(item.smsphone)){%>
+					<div class="title-sub">未发送短信，默默祝福</div>
+					<%}else{%>
+					<div class="title-sub">短信成功发送给了：<span>${item.smsphone}</span></div>
 					<%}%>
-				</table>
-			</div>
-			<a class="button ac mt10 mb30" href="/customer/myWish.html">查看我送出的祝福</a>
-			<div class="pb30">
-				<table class="rank" width="100%" cellpadding="0" cellspacing="0">
-					<tr>
-						<th>序位</th>
-						<th>功德时间</th>
-						<th>功德姓名</th>
-						<th>功德金额</th>
-					</tr>
-					<%for(item in orders){%>
-					<tr>
-						<td>${item.rank,numberFormat="000"}</td>
-						<td>${item.created,'yyyy年MM月dd日'}</td>
-						<td>${item.hoper}</td>
-						<td>${item.money /100, numberFormat="##.##"}元</td>
-					</tr>
-					<%}%>
-				</table>
-			</div>
+					<p>${item.wish}</p>
+				</li>
+				<%}%>
+			</ul>
 		</div>
 	</div>
 </section>

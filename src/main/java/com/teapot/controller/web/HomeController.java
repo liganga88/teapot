@@ -38,12 +38,17 @@ public class HomeController extends BaseController {
     @Autowired
     private CouponService couponService;
 
+    @RequestMapping(value =  "/")
+    public String index() {
+        return "web/index";
+    }
+
     /**
      * �?ҳ��
      * @param model
      * @return
      */
-    @RequestMapping(value = {"/wish.html", "/"})
+    @RequestMapping(value = "/wish.html")
     public String wish(Model model) {
 
         return "web/wish";

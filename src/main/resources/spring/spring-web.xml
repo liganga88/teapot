@@ -52,7 +52,13 @@
             <bean class="com.teapot.interceptor.AdminInterceptor"></bean>
         </mvc:interceptor>
         <mvc:interceptor>
-            <mvc:mapping path="/customer/rank.html" />
+            <mvc:mapping path="/customer/**" />
+            <mvc:exclude-mapping path="/customer/allRank.html" />
+            <mvc:exclude-mapping path="/customer/search.html" />
+            <mvc:exclude-mapping path="/customer/checkPhone" />
+            <mvc:exclude-mapping path="/customer/checkPePhone" />
+            <mvc:exclude-mapping path="/customer/newByPhone" />
+            <mvc:exclude-mapping path="/customer/sendSms" />
             <bean class="com.teapot.interceptor.WebLoginInterceptor"></bean>
         </mvc:interceptor>
         <mvc:interceptor>

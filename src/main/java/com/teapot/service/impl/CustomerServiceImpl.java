@@ -2,10 +2,8 @@ package com.teapot.service.impl;
 
 import com.teapot.dao.TbCustomerDao;
 import com.teapot.dao.TbOrderDao;
-import com.teapot.pojo.TbCustomer;
-import com.teapot.pojo.TbCustomerQuery;
-import com.teapot.pojo.TbOrder;
-import com.teapot.pojo.TbOrderQuery;
+import com.teapot.dao.TbWishDao;
+import com.teapot.pojo.*;
 import com.teapot.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +23,8 @@ public class CustomerServiceImpl implements CustomerService {
     private TbCustomerDao customerDao;
     @Autowired
     private TbOrderDao orderDao;
+    @Autowired
+    private TbWishDao wishDao;
 
     @Override
     public TbCustomer selectByPhone(String phone) {
@@ -42,7 +42,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void newByPhone(String phone, String tempId) {
         TbCustomer customer = selectByPhone(phone);
-        if(customer == null){
+        if (customer == null) {
             customer = new TbCustomer();
             customer.setPhone(phone);
             customer.setState((byte) 0);
@@ -59,5 +59,13 @@ public class CustomerServiceImpl implements CustomerService {
         TbOrderQuery.Criteria criteria = query.createCriteria();
         criteria.andTempidEqualTo(tempId);
         orderDao.updateByExampleSelective(order, query);
+
+        TbWish wish = new TbWish();
+        wish.setCustomerid(cusutomerId);
+        TbWishQuery wishQuery = new TbWishQuery();
+        TbWishQuery.Criteria criteria1 = wishQuery.createCriteria();
+        criteria1.andTempidEqualTo(tempId);
+        wishDao.updateByExampleSelective(wish, wishQuery);
+
     }
 }

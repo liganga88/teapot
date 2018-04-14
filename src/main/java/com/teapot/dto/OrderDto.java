@@ -1,5 +1,7 @@
 package com.teapot.dto;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -173,5 +175,20 @@ public class OrderDto implements Serializable {
 
     public void setRank(Integer rank) {
         this.rank = rank;
+    }
+
+    public String getXhoper() {
+        int len = hoper.length();
+        if (StringUtils.isBlank(hoper)) {
+            return "";
+        } else {
+            StringBuilder s = new StringBuilder();
+            if (len > 1) {
+                for (int i = 0; i < len - 1; i++) {
+                    s.append("*");
+                }
+            }
+            return hoper.substring(0, 1) + s.toString();
+        }
     }
 }

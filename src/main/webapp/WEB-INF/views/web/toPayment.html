@@ -40,7 +40,7 @@
                 $("input[name=phone]").val(phone);
                 Common.post("/customer/newByPhone", {phone: phone}, function (json) {
                     if (json.code == Common.SUCC) {
-                        Common.go("/trade/${orderId}/alipay");
+                        Common.go("/trade/${order.id}/alipay");
                     } else {
                         alert(json.message);
                     }
@@ -61,7 +61,7 @@
                         if (paytype == "weixin") {
                             wxpay();
                         } else {
-                            Common.go("/wxpay/${orderId}/wapPay");
+                            Common.go("/wxpay/${order.id}/wapPay");
                         }
                     } else {
                         alert(json.message);
@@ -73,7 +73,7 @@
         /* 微信刷卡支付 END*/
         /* 微信公众号支付支付 */
         function wxpay() {
-            $.post("/wxpay/${orderId}/webPay",null, function(res) {
+            $.post("/wxpay/${order.id}/webPay",null, function(res) {
                 if (res.code == 0) {
                     var data = $.parseJSON(res.data);
 
@@ -108,11 +108,10 @@
                         layer.msg("支付成功", {
                             shift : 6
                         });
-                        Common.go("/wish.html")
+                        Common.go("/wish/${order.wishid}/resultA.html")
 //                        self.location = "#(ctxPath)/success";
 
                     } else {
-                        alert(res.err_msg);
                         layer.msg("支付失败", {
                             shift : 6
                         });
@@ -154,7 +153,7 @@
 </section>
 <script>
     function onBridgeReady() {
-        WeixinJSBridge.call('hideOptionMenu');
+//        WeixinJSBridge.call('hideOptionMenu');
     }
 
     if (typeof WeixinJSBridge == "undefined") {

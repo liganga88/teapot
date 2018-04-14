@@ -74,14 +74,16 @@ public class TradeController extends BaseController {
         if (bWeixin) {
             url = "/wxpay/" + order.getId() + "/getCode";
         } else {
-            url = order.getId() + "/toPayment.html";
+            url = "/toPayment.html?orderId=" + order.getId();
         }
         return "redirect:" + url;
     }
 
-    @RequestMapping("{orderId}/toPayment.html")
-    public String toPayment(@PathVariable("orderId") Integer orderId, Model model){
-        model.addAttribute("orderId", orderId);
+    @RequestMapping("toPayment.html")
+    public String toPayment(@RequestParam("orderId") Integer orderId, Model model){
+        TbOrder order = orderService.selectById(orderId);
+        model.addAttribute("order", order);
+
         return "web/toPayment";
     }
 

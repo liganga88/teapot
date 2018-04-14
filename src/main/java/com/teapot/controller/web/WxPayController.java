@@ -96,7 +96,7 @@ public class WxPayController extends WxPayApiController {
 		SnsAccessToken accessToken = SnsAccessTokenApi.getSnsAccessToken(wxPayBean.getAppId(), wxPayBean.getAppSecret(), code);
 		String openId = accessToken.getOpenid();
 		session.setAttribute(SessionKeyContants.SESSION_OPENID, openId);
-		return "redirect:/trade/" + orderId + "/toPayment.html" ;
+		return "redirect:/trade/toPayment.html?orderId=" + orderId ;
 	}
 	
 	/**

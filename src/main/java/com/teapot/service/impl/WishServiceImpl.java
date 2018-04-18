@@ -58,6 +58,17 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
+    public List<TbWish> selectBySmsPhoneBeforeDate(String phone, Date time) {
+        TbWishQuery query = new TbWishQuery();
+        query.setOrderByClause("id desc");
+        TbWishQuery.Criteria criteria = query.createCriteria();
+        criteria.andSmsphoneEqualTo(phone);
+        criteria.andCreatedGreaterThan(time);
+        List<TbWish> wishs = wishDao.selectByExample(query);
+        return wishs;
+    }
+
+    @Override
     public List<TbWish> selectByCustomerId(Integer customerId) {
         TbWishQuery query = new TbWishQuery();
         query.setOrderByClause("id desc");

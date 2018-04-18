@@ -2,6 +2,7 @@ package com.teapot.service;
 
 import com.teapot.pojo.TbWish;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,5 +14,6 @@ public interface WishService {
     void updateSmsPhone(Integer id, String phone);
     List<TbWish> selectAll();
     List<TbWish> selectBySmsPhone(String phone);
+    List<TbWish> selectBySmsPhoneBeforeDate(String phone, Date time);
     List<TbWish> selectByCustomerId(Integer customerId);
 }

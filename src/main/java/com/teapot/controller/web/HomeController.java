@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -89,7 +90,9 @@ public class HomeController extends BaseController {
     @RequestMapping(value = "/wish/preview/result.html")
     public String previewResult(Model model, HttpSession session){
         String phone = (String) session.getAttribute(SessionKeyContants.SESSION_TEMP_PREVIEW);
-        List<TbWish> wishs = wishService.selectBySmsPhone(phone);
+        long now = System.currentTimeMillis();
+        Date time = new Date(now - 24 * 60 * 60 * 1000);
+        List<TbWish> wishs = wishService.selectBySmsPhoneBeforeDate(phone, time);
         model.addAttribute("wishs", wishs);
         return "web/previewResult";
     }

@@ -1,10 +1,21 @@
 package com.teapot.controller.web;
 
+import com.teapot.bean.JsonResult;
+import com.teapot.bean.WxConfig;
+import com.teapot.contants.SessionKeyContants;
 import com.teapot.controller.BaseController;
+import com.weixin.sdk.api.SnsAccessToken;
+import com.weixin.sdk.api.SnsAccessTokenApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by Administrator on 2018-3-13.
@@ -13,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/weixin")
 public class WeixinController extends BaseController {
     private static Logger logger = LoggerFactory.getLogger(WeixinController.class);
+
+    @Autowired
+    private WxConfig wxConfig;
 
     /*@RequestMapping(value = "/{mp}", method = {RequestMethod.POST, RequestMethod.GET})
     public void index(@RequestParam(value = "signature", required = false) String signature,
@@ -61,5 +75,25 @@ public class WeixinController extends BaseController {
         logger.info(mp + ":" + sb.toString());
         String xml = EventHandler.wo.handler(mp, signature, timestamp, nonce, sb.toString());
         renderText(xml);
+    }*/
+
+/*    @RequestMapping(value = "goUrl", method = {RequestMethod.POST, RequestMethod.GET})
+    public String getCode(@RequestParam("type") String type){
+        StringBuilder result = new StringBuilder();
+        result.append("https://open.weixin.qq.com/connect/oauth2/authorize?")
+                .append("appid=").append(wxConfig.getAppid())
+                .append("&redirect_uri=").append(wxConfig.getRoot().concat("/weixin/getToken"))
+                .append("&response_type=code&scope=snsapi_base")
+                .append("&state=").append(type)
+                .append("#wechat_redirect");
+        return "redirect:" + result.toString();
+    }
+
+    @RequestMapping(value ="getToken",method = {RequestMethod.POST, RequestMethod.GET})
+    public String getToken(@PathVariable("orderId") Integer orderId,@RequestParam("code") String code, HttpSession session){
+        SnsAccessToken accessToken = SnsAccessTokenApi.getSnsAccessToken(wxPayBean.getAppId(), wxPayBean.getAppSecret(), code);
+        String openId = accessToken.getOpenid();
+        session.setAttribute(SessionKeyContants.SESSION_OPENID, openId);
+        return "redirect:/trade/toPayment.html?orderId=" + orderId ;
     }*/
 }

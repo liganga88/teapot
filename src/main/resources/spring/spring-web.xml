@@ -76,5 +76,6 @@
     <mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/>-->
     <bean id="alipayConfig" class="com.alipay.config.AlipayConfig"></bean>
     <bean id="wxPayBean" class="com.teapot.bean.WxPayBean"></bean>
+    <bean id="wxConfig" class="com.teapot.bean.WxConfig"></bean>
 
 </beans>

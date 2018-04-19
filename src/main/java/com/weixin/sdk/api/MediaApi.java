@@ -1,6 +1,7 @@
 package com.weixin.sdk.api;
 
 import com.teapot.utils.JsonUtils;
+import com.weixin.sdk.WeiXinConfig;
 import com.weixin.sdk.util.HttpUtils;
 
 import java.io.File;
@@ -292,6 +293,14 @@ public class MediaApi {
 
         String jsonResult = HttpUtils.post(url, JsonUtils.objectToJson(dataMap));
         return new ApiResult(jsonResult);
+    }
+
+    public static void main(String[] args) {
+//        WeiXinConfig.init(WeiXinConfig.APP_ID, WeiXinConfig.APP_SECRET,WeiXinConfig.FOCUS_URL,"", "");
+        ApiConfig apiConfig = new ApiConfig("",WeiXinConfig.APP_ID,WeiXinConfig.APP_SECRET);
+        ApiConfigKit.putApiConfig(apiConfig);
+        ApiResult result = batchGetMaterialNews(0, 20);
+        System.out.println(result);
     }
 
 }

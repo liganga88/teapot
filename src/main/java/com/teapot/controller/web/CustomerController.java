@@ -134,7 +134,7 @@ public class CustomerController extends BaseController {
     public JsonResult checkPePhone(@RequestParam("phone") String phone,
                                  @RequestParam("code") String code, HttpSession session) {
         String sessionCode = (String) session.getAttribute(SessionKeyContants.SESSION_SMS_CODE);
-        if (!sessionCode.equals(code)) {
+        if (sessionCode == null || !sessionCode.equals(code)) {
             return JsonResult.error("验证码不正确");
         }
         session.setAttribute(SessionKeyContants.SESSION_TEMP_PREVIEW, phone);

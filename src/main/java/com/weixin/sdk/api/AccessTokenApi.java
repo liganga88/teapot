@@ -120,7 +120,9 @@ public class AccessTokenApi {
         Map<String, String> params = new HashMap<String, String>();
         params.put("appid", appId);
         params.put("secret", appSecret);
-        String json = HttpUtils.get(url, params);
+//        String json = HttpUtils.get(url, params);
+        String strUrl = url + "&appid=" + appId + "&secret=" + appSecret;
+        String json = HttpUtils.get(strUrl);
         return new AccessToken(json);
     }
 

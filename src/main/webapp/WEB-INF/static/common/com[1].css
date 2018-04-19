@@ -18,6 +18,8 @@ font-size:1.125em;
 font-size:1.125em;
 }
 
+input[type="text"],textarea { font-size: 1.125em}
+
 .iconfont { position: relative;top: 1px;display: inline-block;font-style: normal;line-height: 1;}
 
 /*header*/
@@ -67,6 +69,7 @@ background-image:url(../images/s1.png),  url(../images/s2.png);
  background-position: center left, center right;
 background-repeat: no-repeat, no-repeat}
 .op .button2 { display: block; height: 34px; line-height: 34px; background-color:#a79f8a; border-radius: 3px; color:#fff; overflow: hidden;}
+.op .button2.red {background-color:#980b00;}
 .op .button3 { display: block; width: 90px; height: 34px; line-height: 34px; margin: 4px 0; background-color:#a79f8a; border-radius: 3px; color:#fff; overflow: hidden;}
 
 .op .options {}
@@ -109,9 +112,10 @@ background-repeat: no-repeat, no-repeat}
 /*default*/
 .default { position: relative}
 .default::before,.default::after { display: none}
+.default.hf::before,.default.hf::after { display: block; position: relative; z-index: 1}
 .default img.defaultBg { display: block; width: 100%; position: absolute; top: 0; z-index:0}
-.default .defaultInfo { width: 90%; padding: 60px 5%; padding-bottom: 20px; position: relative; z-index: 1}
-.default .defaultInfo h1 { margin-bottom: 20px; font-size: 1.75em; font-weight: bolder; text-align: center;color:#980b00}
+.default .defaultInfo { width: 90%; padding: 60px 5%; padding-bottom: 20px; position: relative; z-index: 2}
+.default .defaultInfo h1 { margin-bottom: 0; font-size: 1.75em; font-weight: bolder; text-align: center;color:#980b00}
 .default .defaultInfo h2 {font-size: 1.7em; font-weight: bolder; text-align: center;}
 .default .defaultInfo h3 {font-size: 1em; font-weight: bolder; text-align: center;}
 .default .defaultInfo p {margin-bottom: 0.75em;}

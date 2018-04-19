@@ -55,7 +55,10 @@ public class WeiXinConfig {
         return config.get("encodingAesKey");
     }
 
-    public static final String APP_ID = "wx26b9f44a940d8607";
-    public static final String APP_SECRET = "0fce21db98d7a5e6a19762eb0acaea5c";
+    public static final String APP_ID = "wxba0a77ef0b45e8da";
+    public static final String APP_SECRET = "2e9e978024b953b6df557af0622a59dd";
+
+//    public static final String APP_ID = "wx12e9ba24f14539d5";
+//    public static final String APP_SECRET = "a4f2ea3151c86e7165ce58f217c5f7c5";
     public static final String FOCUS_URL = "weixin://profile/gh_56f94717dcef";
 }

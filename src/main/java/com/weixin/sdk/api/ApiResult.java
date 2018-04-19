@@ -44,14 +44,11 @@ public class ApiResult implements Serializable {
     public ApiResult(String jsonStr) {
         this.json = jsonStr;
 
-        try {
-            Map<String, Object> temp = JsonUtils.jsonToPojo(jsonStr, Map.class);
-            this.attrs = temp;
+        Map<String, Object> temp = JsonUtils.jsonToPojo(jsonStr, Map.class);
+        this.attrs = temp;
 
-            refreshAccessTokenIfInvalid();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        refreshAccessTokenIfInvalid();
+
     }
 
     /**

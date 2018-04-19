@@ -32,6 +32,14 @@ public class Btn {
         return btn;
     }
 
+    public static Btn newMedia(String name, String media_id) {
+        Btn btn = new Btn();
+        btn.name = name;
+        btn.media_id = media_id;
+        btn.type = "media_id";
+        return btn;
+    }
+
     public String getUrl() {
         return url;
     }

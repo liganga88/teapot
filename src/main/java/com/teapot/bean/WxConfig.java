@@ -27,6 +27,9 @@ public class WxConfig {
     @Value("${wechat.mp.aesKey}")
     private String aeskey;
 
+    @Value("${wechat.mp.encryptMessage}")
+    private Boolean encryptMessage;
+
     public String getAppid() {
         return appid;
     }
@@ -47,13 +50,19 @@ public class WxConfig {
         return aeskey;
     }
 
+    public Boolean getEncryptMessage() {
+        return encryptMessage;
+    }
+
     @Override
     public String toString() {
         return "WxConfig{" +
                 "appid='" + appid + '\'' +
                 ", secret='" + secret + '\'' +
+                ", root='" + root + '\'' +
                 ", token='" + token + '\'' +
                 ", aeskey='" + aeskey + '\'' +
+                ", encryptMessage=" + encryptMessage +
                 '}';
     }
 

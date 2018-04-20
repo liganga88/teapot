@@ -48,6 +48,19 @@ public class EventHandler {
         return getListener(command).handle(command);
     }
 
+    public String handler(String msgSignature, String timestamp, String nonce, String postXML, Boolean encryptMessage) {
+        log.info("handler msg : " + postXML);
+        Command command = null;
+        if (encryptMessage) {
+            WXBizMsgCrypt crypt = cryptMap.values().iterator().next();
+            command = transform(crypt, msgSignature, timestamp, nonce, postXML);
+        } else {
+            command = transform(postXML);
+        }
+        log.info(command.toString());
+        return getListener(command).handle(command);
+    }
+
     public String handler(String mp, String msgSignature, String timestamp, String nonce, String postXML) {
         log.info("handler msg : " + postXML);
         WXBizMsgCrypt crypt = cryptMap.get(mp);
@@ -69,10 +82,19 @@ public class EventHandler {
     public Command transform(WXBizMsgCrypt crypt, String msgSignature, String timestamp, String nonce, String postXML) {
         try {
             String ss = crypt.decryptMsg(msgSignature, timestamp, nonce, postXML);
-            log.info("decrypt msg : " + ss);
+            Command command = transform(ss);
+            return command;
+
+        } catch (AesException e) {
+            throw new BusinessException("receive msg fail", e);
+        }
+    }
+
+    public Command transform(String postXML) {
+        try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
-            StringReader sr = new StringReader(ss);
+            StringReader sr = new StringReader(postXML);
             InputSource is = new InputSource(sr);
             Document document = db.parse(is);
             Element root = document.getDocumentElement();
@@ -165,9 +187,7 @@ public class EventHandler {
             throw new BusinessException("receive msg fail", e);
         } catch (ParserConfigurationException e) {
             throw new BusinessException("receive msg fail", e);
-        } catch (AesException e) {
-            throw new BusinessException("receive msg fail", e);
-        } catch (SAXException e) {
+        }  catch (SAXException e) {
             throw new BusinessException("receive msg fail", e);
         }
     }

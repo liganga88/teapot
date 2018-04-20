@@ -74,16 +74,12 @@ public class WeixinController extends BaseController {
                       @RequestParam(name = "encrypt_type",
                               required = false) String encType,
                       @RequestParam(name = "msg_signature",
-                              required = false) String msgSignature, HttpServletRequest request) throws IOException {
+                              required = false) String msgSignature) throws IOException {
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream()));
-        StringBuilder sb = new StringBuilder();
-        String s;
-        while ((s = in.readLine()) != null) {
-            sb.append(s);
-        }
-        logger.info(requestBody + ":" + sb.toString());
-        String xml = EventHandler.wo.handler(requestBody, msgSignature, timestamp, nonce, sb.toString());
+
+        logger.info("signature={}&timestamp={}&nonce={}&encrypt_type={}&msg_signature={}&body={}",
+                new String[]{signature,timestamp,nonce,encType,msgSignature,requestBody});
+        String xml = EventHandler.wo.handler(msgSignature, timestamp, nonce, requestBody, wxConfig.getEncryptMessage());
         return xml;
     }
 

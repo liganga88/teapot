@@ -142,9 +142,9 @@ public class MenuApi {
     public static void main(String[] args) {
 
         //大明寺
-//        AccessToken accessToken = AccessTokenApi.getAppAccessToken("wxba0a77ef0b45e8da", "2e9e978024b953b6df557af0622a59dd");
+        AccessToken accessToken = AccessTokenApi.getAppAccessToken("wxba0a77ef0b45e8da", "2e9e978024b953b6df557af0622a59dd");
         //测试平台
-        AccessToken accessToken = AccessTokenApi.getAppAccessToken("wx12e9ba24f14539d5", "a4f2ea3151c86e7165ce58f217c5f7c5");
+//        AccessToken accessToken = AccessTokenApi.getAppAccessToken("wx12e9ba24f14539d5", "a4f2ea3151c86e7165ce58f217c5f7c5");
 //        deleteMenu(accessToken.getAccessToken());
         List<Map<String, Object>> menus = new ArrayList<>();
         List<Btn> carBtns1 = new ArrayList<>();

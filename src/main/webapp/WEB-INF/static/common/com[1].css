@@ -26,6 +26,10 @@ input[type="text"],textarea { font-size: 1.125em}
 .header {}
 .header .logo { max-width: 50%; margin: 0 auto;}
 
+/*banner*/
+.banner {}
+.banner img { width: 100%;}
+
 /*main*/
 .main { background-color: #fff; background-image: url(../images/b10.png); background-repeat: no-repeat;  background-position: bottom right; background-size: 100% auto; color: #504d42}
 .main.bgNone { background: #fff none}
@@ -114,8 +118,8 @@ background-repeat: no-repeat, no-repeat}
 .default::before,.default::after { display: none}
 .default.hf::before,.default.hf::after { display: block; position: relative; z-index: 1}
 .default img.defaultBg { display: block; width: 100%; position: absolute; top: 0; z-index:0}
-.default .defaultInfo { width: 90%; padding: 60px 5%; padding-bottom: 20px; position: relative; z-index: 2}
-.default .defaultInfo h1 { margin-bottom: 0; font-size: 1.75em; font-weight: bolder; text-align: center;color:#980b00}
+.default .defaultInfo { width: 90%; padding: 20px 5%; padding-bottom: 20px; position: relative; z-index: 2}
+.default .defaultInfo h1 { font-size: 1.75em; font-weight: bolder; text-align: center;color:#980b00}
 .default .defaultInfo h2 {font-size: 1.7em; font-weight: bolder; text-align: center;}
 .default .defaultInfo h3 {font-size: 1em; font-weight: bolder; text-align: center;}
 .default .defaultInfo p {margin-bottom: 0.75em;}

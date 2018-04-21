@@ -69,6 +69,10 @@
             <mvc:mapping path="/wxpay/**" />
             <bean class="com.teapot.interceptor.WxPayInterceptor"></bean>
         </mvc:interceptor>
+        <!--<mvc:interceptor>-->
+            <!--<mvc:mapping path="/" />-->
+            <!--<bean class="com.teapot.interceptor.WxInterceptor"></bean>-->
+        <!--</mvc:interceptor>-->
     </mvc:interceptors>
 
 <!--    <bean class="springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration" id="swagger2Config"/>

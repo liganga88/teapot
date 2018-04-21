@@ -56,7 +56,7 @@ input[type="text"],textarea { font-size: 1.125em}
 .op .edit .ll { width:78%; padding:10px 11%; position: absolute; top: 0; color:#999}
 
 .op .text { /*padding:0 40px;*/ border: solid 1px #aca8a8; position: relative; line-height: 40px;}
-.op .text input[type="text"] { width: 100%; height: 40px;} 
+.op .text input[type="text"],input[type="tel"] { width: 100%; height: 40px;}
 .op .text.yuan::before { display: block; width: 3em; content: "元"; position: absolute; right: 0; z-index: 1} 
 
 .op img { position: absolute; background-color: #FFFFFF} 

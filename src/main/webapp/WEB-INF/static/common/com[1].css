@@ -57,7 +57,7 @@ input[type="text"],textarea { font-size: 1.125em}
 
 .op .text { /*padding:0 40px;*/ border: solid 1px #aca8a8; position: relative; line-height: 40px;}
 .op .text input[type="text"],input[type="tel"] { width: 100%; height: 40px;}
-.op .text.yuan::before { display: block; width: 3em; content: "元"; position: absolute; right: 0; z-index: 1} 
+.op .text.yuan::before { display: block; width: 3em; content: "元"; position: absolute; right: 0; z-index: 1}
 
 .op img { position: absolute; background-color: #FFFFFF} 
 .op .p1 { top: -1px; left: -1px}  
@@ -68,10 +68,11 @@ input[type="text"],textarea { font-size: 1.125em}
 .op .images {}
 .op .images img { position: static; width: 40%; margin: 0 auto}
 
-.op .button { display: block; height: 34px; line-height: 34px; background-color:#a79f8a; border-radius: 3px; color:#fff; overflow: hidden;
-background-image:url(../images/s1.png),  url(../images/s2.png);
- background-position: center left, center right;
-background-repeat: no-repeat, no-repeat}
+.op .button { display: block; height: 34px; line-height: 34px; margin-left: 27px; margin-right: 27px; color:#fff; background-color:#a79f8a; position: relative}
+.op .button::before,.op .button::after{ display: block; width: 27px; height: 34px; content: " "; position: absolute; background-size: 100% auto; top: 0;}
+.op .button::before{  background-image: url(../images/s2.png); left: -27px;}
+.op .button::after{ background-image: url(../images/s1.png); right: -27px}
+
 .op .button2 { display: block; height: 34px; line-height: 34px; background-color:#a79f8a; border-radius: 3px; color:#fff; overflow: hidden;}
 .op .button2.red {background-color:#980b00;}
 .op .button3 { display: block; width: 90px; height: 34px; line-height: 34px; margin: 4px 0; background-color:#a79f8a; border-radius: 3px; color:#fff; overflow: hidden;}
@@ -122,7 +123,7 @@ background-repeat: no-repeat, no-repeat}
 .default .defaultInfo h1 { font-size: 1.75em; font-weight: bolder; text-align: center;color:#980b00}
 .default .defaultInfo h2 {font-size: 1.7em; font-weight: bolder; text-align: center;}
 .default .defaultInfo h3 {font-size: 1em; font-weight: bolder; text-align: center;}
-.default .defaultInfo p {margin-bottom: 0.75em;}
+.default .defaultInfo p {margin-bottom: 0.25em;}
 .default .defaultBtn { text-align: center}
 .default .defaultBtn a.btn { display: inline-block; padding: 0 21px; position: relative; z-index: 1}
 .default .defaultBtn a.btn span { display: block; line-height: 26px; padding: 0 36px; background-color: #980b00; color: #fff}

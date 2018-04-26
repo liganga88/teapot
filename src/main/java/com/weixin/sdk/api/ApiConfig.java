@@ -30,6 +30,7 @@ public class ApiConfig implements Serializable {
     }
 
     public ApiConfig(String token, String appId, String appSecret) {
+        System.out.println("new ApiConfig");
         setToken(token);
         setAppId(appId);
         setAppSecret(appSecret);

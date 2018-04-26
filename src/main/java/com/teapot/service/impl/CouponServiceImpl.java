@@ -51,6 +51,8 @@ public class CouponServiceImpl implements CouponService {
             token = randomStr(6);
             if (!oldTokens.contains(token)) {
                 break;
+            } else {
+                token = null;
             }
         }
         return token;

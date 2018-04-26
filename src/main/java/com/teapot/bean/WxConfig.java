@@ -1,11 +1,5 @@
 package com.teapot.bean;
 
-import com.teapot.wx.listener.SubscribeListener;
-import com.teapot.wx.listener.TextMessageListener;
-import com.weixin.sdk.api.ApiConfig;
-import com.weixin.sdk.api.ApiConfigKit;
-import com.weixin.sdk.command.Command;
-import com.weixin.sdk.handler.EventHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -66,13 +60,13 @@ public class WxConfig {
                 '}';
     }
 
-    public void init() {
-        ApiConfig apiConfig = new ApiConfig(token, appid, secret);
-        ApiConfigKit.putApiConfig(apiConfig);
-
-        EventHandler.addCrypt("teapot", token, aeskey, appid);
-
-        EventHandler.wo.register(Command.EVENT_KEYS.SUBSCRIBE_EVENT, new SubscribeListener());
-        EventHandler.wo.register(Command.EVENT_KEYS.TEXT_MSG, new TextMessageListener());
-    }
+//    public void init() {
+//        ApiConfig apiConfig = new ApiConfig(token, appid, secret);
+//        ApiConfigKit.putApiConfig(apiConfig);
+//
+//        EventHandler.addCrypt("teapot", token, aeskey, appid);
+//
+//        EventHandler.wo.register(Command.EVENT_KEYS.SUBSCRIBE_EVENT, new SubscribeListener());
+//        EventHandler.wo.register(Command.EVENT_KEYS.TEXT_MSG, new TextMessageListener());
+//    }
 }

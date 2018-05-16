@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teapot.dao.TbTemplateMessageDao" >
+  <resultMap id="BaseResultMap" type="com.teapot.pojo.TbTemplateMessage" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="first" property="first" jdbcType="VARCHAR" />
+    <result column="keyword1" property="keyword1" jdbcType="VARCHAR" />
+    <result column="keyword2" property="keyword2" jdbcType="VARCHAR" />
+    <result column="keyword3" property="keyword3" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    <if test="fields == null" >
+      id, first, keyword1, keyword2, keyword3, remark, url, created
+    </if>
+    <if test="fields != null" >
+      ${fields}
+    </if>
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.teapot.pojo.TbTemplateMessageQuery" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_template_message
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="startRow != null" >
+      limit #{startRow} , #{pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    id,first,keyword1,keyword2,keyword3,remark,url,created
+    from tb_template_message
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_template_message
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.teapot.pojo.TbTemplateMessageQuery" >
+    delete from tb_template_message
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.teapot.pojo.TbTemplateMessage" >
+    insert into tb_template_message (id, first, keyword1, 
+      keyword2, keyword3, remark, 
+      url, created)
+    values (#{id,jdbcType=INTEGER}, #{first,jdbcType=VARCHAR}, #{keyword1,jdbcType=VARCHAR}, 
+      #{keyword2,jdbcType=VARCHAR}, #{keyword3,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.teapot.pojo.TbTemplateMessage" >
+    insert into tb_template_message
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="first != null" >
+        first,
+      </if>
+      <if test="keyword1 != null" >
+        keyword1,
+      </if>
+      <if test="keyword2 != null" >
+        keyword2,
+      </if>
+      <if test="keyword3 != null" >
+        keyword3,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="first != null" >
+        #{first,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword1 != null" >
+        #{keyword1,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword2 != null" >
+        #{keyword2,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword3 != null" >
+        #{keyword3,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.teapot.pojo.TbTemplateMessageQuery" resultType="java.lang.Integer" >
+    select count(*) from tb_template_message
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_template_message
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.first != null" >
+        first = #{record.first,jdbcType=VARCHAR},
+      </if>
+      <if test="record.keyword1 != null" >
+        keyword1 = #{record.keyword1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.keyword2 != null" >
+        keyword2 = #{record.keyword2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.keyword3 != null" >
+        keyword3 = #{record.keyword3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.url != null" >
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_template_message
+    set id = #{record.id,jdbcType=INTEGER},
+      first = #{record.first,jdbcType=VARCHAR},
+      keyword1 = #{record.keyword1,jdbcType=VARCHAR},
+      keyword2 = #{record.keyword2,jdbcType=VARCHAR},
+      keyword3 = #{record.keyword3,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.teapot.pojo.TbTemplateMessage" >
+    update tb_template_message
+    <set >
+      <if test="first != null" >
+        first = #{first,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword1 != null" >
+        keyword1 = #{keyword1,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword2 != null" >
+        keyword2 = #{keyword2,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword3 != null" >
+        keyword3 = #{keyword3,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.teapot.pojo.TbTemplateMessage" >
+    update tb_template_message
+    set first = #{first,jdbcType=VARCHAR},
+      keyword1 = #{keyword1,jdbcType=VARCHAR},
+      keyword2 = #{keyword2,jdbcType=VARCHAR},
+      keyword3 = #{keyword3,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

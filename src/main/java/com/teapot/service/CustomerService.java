@@ -8,4 +8,5 @@ import com.teapot.pojo.TbCustomer;
 public interface CustomerService {
     TbCustomer selectByPhone(String phone);
     void newByPhone(String phone, String tempId);
+    void updateOpenidById(Integer id, String openid);
 }

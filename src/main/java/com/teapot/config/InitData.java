@@ -30,15 +30,15 @@ public class InitData implements InitializingBean {
         initWeixin();
     }
 
-        public void initWeixin() {
-            System.out.println("initWeixin start");
-            ApiConfig apiConfig = new ApiConfig(wxConfig.getToken(), wxConfig.getAppid(), wxConfig.getSecret());
-            ApiConfigKit.putApiConfig(apiConfig);
+    public void initWeixin() {
+        System.out.println("initWeixin start");
+        ApiConfig apiConfig = new ApiConfig(wxConfig.getToken(), wxConfig.getAppid(), wxConfig.getSecret());
+        ApiConfigKit.putApiConfig(apiConfig);
 
-            EventHandler.addCrypt("teapot", wxConfig.getToken(), wxConfig.getAeskey(), wxConfig.getAppid());
+        EventHandler.addCrypt("teapot", wxConfig.getToken(), wxConfig.getAeskey(), wxConfig.getAppid());
 
-            EventHandler.wo.register(Command.EVENT_KEYS.SUBSCRIBE_EVENT, new SubscribeListener());
-            EventHandler.wo.register(Command.EVENT_KEYS.TEXT_MSG, new TextMessageListener());
-            System.out.println("initWeixin end");
+        EventHandler.wo.register(Command.EVENT_KEYS.SUBSCRIBE_EVENT, new SubscribeListener());
+        EventHandler.wo.register(Command.EVENT_KEYS.TEXT_MSG, new TextMessageListener());
+        System.out.println("initWeixin end");
     }
 }

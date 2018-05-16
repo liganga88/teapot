@@ -105,6 +105,7 @@ public class WeixinController extends BaseController {
         SnsAccessToken accessToken = SnsAccessTokenApi.getSnsAccessToken(wxConfig.getAppid(), wxConfig.getSecret(), code);
         String openId = accessToken.getOpenid();
         session.setAttribute(SessionKeyContants.SESSION_OPENID, openId);
+        logger.debug("获得openid:{}", openId);
         String url = "";
         //首页
         if ("p1".equals(state)) {

@@ -16,6 +16,7 @@ import com.teapot.contants.PayTypeContants;
 import com.teapot.contants.SessionKeyContants;
 import com.teapot.pojo.TbOrder;
 import com.teapot.service.CouponService;
+import com.teapot.service.CustomerService;
 import com.teapot.service.OrderService;
 import com.teapot.utils.JsonUtils;
 import com.weixin.sdk.api.SnsAccessToken;
@@ -48,6 +49,9 @@ public class WxPayController extends WxPayApiController {
 
 	@Autowired
 	private CouponService couponService;
+
+	@Autowired
+	private CustomerService customerService;
 	
 	private String notify_url;
 
@@ -250,6 +254,9 @@ public class WxPayController extends WxPayApiController {
 		}
 
 		TbOrder order = orderService.selectById(orderId);
+
+		// openId更新到数据库
+		customerService.updateOpenidById(order.getCustomerid(), openId);
 
 		String ip = getIpAddr();
 		if (StrKit.isBlank(ip)) {

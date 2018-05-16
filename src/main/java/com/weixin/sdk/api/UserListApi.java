@@ -21,4 +21,14 @@ public class UserListApi {
         return JsonUtils.jsonToPojo(result, UserList.class);
     }
 
+    public static UserList getUserList(String openId) {
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", AccessTokenApi.getAccessTokenStr());
+        if (openId != null && !openId.equals("")) {
+            params.put("next_openid", openId);
+        }
+        String result = HttpUtils.get(USER_LIST_API, params);
+        return JsonUtils.jsonToPojo(result, UserList.class);
+    }
+
 }

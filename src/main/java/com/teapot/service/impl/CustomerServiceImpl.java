@@ -68,4 +68,12 @@ public class CustomerServiceImpl implements CustomerService {
         wishDao.updateByExampleSelective(wish, wishQuery);
 
     }
+
+    @Override
+    public void updateOpenidById(Integer id, String openid) {
+        TbCustomer customer = new TbCustomer();
+        customer.setId(id);
+        customer.setOpenid(openid);
+        customerDao.updateByPrimaryKeySelective(customer);
+    }
 }

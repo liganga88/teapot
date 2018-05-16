@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0 minimal-ui"/>
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <title>扬州大明寺微信服务号群发系统</title>
+    <link rel="stylesheet" href="/static/common/admin/com[0].css">
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_592768_21pevblqumpr2j4i.css">
+    <link rel="stylesheet" href="/static/common/admin/com[1].css">
+    <script type="text/javascript" src="/static/javascript/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="/static/javascript/foundation-datepicker.min.js"></script>
+    <script type="text/javascript" src="/static/javascript/foundation-datepicker.zh-CN.js"></script>
+    <script type="text/javascript" src="/static/javascript/js[0].js"></script>
+    <script type="text/javascript" src="/static/javascript/jquery.form.js"></script>
+    <script type="text/javascript" src="/static/common/common.js"></script>
+
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo"><img src="/static/images/pic2.png" /></div>
+    </div>
+    <div class="bg"></div>
+    <div class="main">
+        <form id="form-send" class="content" action="send" method="post">
+            <div class="row">
+                <span>头部：</span>
+                <input type="text" name="first" />
+            </div>
+            <div class="row">
+                <span>标题：</span>
+                <input type="text" name="keyword1" />
+            </div>
+            <div class="row">
+                <span>状态：</span>
+                <input type="text" name="keyword2" />
+            </div>
+            <div class="row">
+                <span>时间：</span>
+                <input id="demo-1" type="text" name="keyword3" />
+                <i class="iconfont icon-rili"></i>
+            </div>
+            <div class="row">
+                <span>尾部：</span>
+                <textarea rows="3" name="remark"></textarea>
+            </div>
+            <div class="row">
+                <span>地址栏：</span>
+                <input type="text" name="url" />
+            </div>
+            <div class="row">
+                <a href="javascript:void(0);" class="btn-send">确认发布</a>
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript">
+        $('#demo-1').fdatepicker({language: 'zh-CN'});
+        $(function(){
+            Common.ajaxForm($("#form-send"), null, function(json){
+                if(json.code == Common.SUCC){
+                    alert("发送成功");
+                    Common.refresh();
+                }
+            });
+
+            $(".btn-send").click(function(){
+                $("#form-send").submit();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -64,11 +64,18 @@ public class AdminController extends BaseController {
             setCurUser(user);
             session.setMaxInactiveInterval(24 * 60 * 60);
 //            return JsonResult.ok();
-            return "redirect:rank.html";
+            return "redirect:/admin/tempMsg/index";
         } else {
 //            return JsonResult.error("用户名或密码错误");
             redirectAttributes.addFlashAttribute("message", "用户名或密码错误");
             return "redirect:login.html";
         }
+    }
+
+    @RequestMapping(value = {"/", "index.html"})
+    public String index(){
+
+
+        return "index";
     }
 }

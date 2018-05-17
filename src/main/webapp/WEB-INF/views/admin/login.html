@@ -19,27 +19,32 @@
 </div>
 <div class="bg"></div>
 <div class="main">
-    <!--<form >-->
-    <span >${message!}</span>
-        <form id="form-login" class="content" action="/admin/doLogin" method="post">
-            <div class="row">
-                <span>账号：</span>
-                <input type="text" name="username" />
-            </div>
-            <div class="row">
-                <span>密码：</span>
-                <input type="password" name="password" />
-            </div>
-            <div class="row">
-                <span>验证码：</span>
+    <form id="form-login" class="content" action="/admin/doLogin" method="post">
+        <h1 class="ac fcRed mb15"> ${message!} </h1>
+
+        <div class="row">
+            <span>账号：</span>
+            <input type="text" name="username"/>
+        </div>
+        <div class="row">
+            <span>密码：</span>
+            <input type="password" name="password"/>
+        </div>
+        <div class="row-2">
+            <span>验证码：</span>
+            <div class="yzmText">
                 <input type="text" name="passcode" />
+            </div>
+            <div class="yzmImg">
                 <img src="/verify/getcode?width=120&height=40"
-                     onclick="this.src='/verify/getcode?width=120&height=40&'+Math.random()"  /> <!-- width="80" style="cursor: pointer;" height="32" -->
-                <div class="row">
+                     onclick="this.src='/verify/getcode?width=120&height=40&'+Math.random()"/>
             </div>
-                <a href="javascript:void(0);" class="btn-submit">登录后台</a>
-            </div>
-        <!--</form>-->
+            <!-- width="80" style="cursor: pointer;" height="32" -->
+
+        </div>
+        <div class="row">
+            <a href="javascript:void(0);" class="btn-submit">登录后台</a>
+        </div>
     </form>
 </div>
 <!--<div class="container">

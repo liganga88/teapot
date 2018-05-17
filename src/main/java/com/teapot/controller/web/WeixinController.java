@@ -93,7 +93,7 @@ public class WeixinController extends BaseController {
         StringBuilder result = new StringBuilder();
         result.append("https://open.weixin.qq.com/connect/oauth2/authorize?")
                 .append("appid=").append(wxConfig.getAppid())
-                .append("&redirect_uri=").append(wxConfig.getRoot().concat("/weixin/getToken"))
+                .append("&redirect_uri=").append(wxConfig.getRoot().concat("/getToken"))
                 .append("&response_type=code&scope=snsapi_base")
                 .append("&state=").append(type)
                 .append("#wechat_redirect");

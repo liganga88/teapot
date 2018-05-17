@@ -57,7 +57,10 @@
         </form>
     </div>
     <script type="text/javascript">
-        $('#demo-1').fdatepicker({language: 'zh-CN'});
+        $('#demo-1').fdatepicker({
+            format: 'yyyy-mm-dd',
+            language: 'zh-CN'
+        });
         $(function(){
             Common.ajaxForm($("#form-send"), null, function(json){
                 if(json.code == Common.SUCC){

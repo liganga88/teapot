@@ -20,3 +20,36 @@ body { background: url(../../images/pic1.png) top center no-repeat; background-a
 .main .content .row-2 .yzmText input { display: block; width: 100%; height: 47px; line-height: 47px; font-size: 18px; text-indent: 1em; background-color: transparent;}
 .main .content .row-2 .yzmImg { position: absolute; top: 0; right: 0}
 .main .content .row-2 .yzmImg img { display: block; height: 49px}
+
+.main .content .loading { text-align: center}
+.main .content .loading img { display: inline-block; width: 96px;
+animation: loadingImg 2s linear infinite;
+-moz-animation: loadingImg 2s linear infinite;
+-webkit-animation: loadingImg 2s linear infinite;
+-o-animation: loadingImg 2s linear infinite;}
+
+
+@keyframes loadingImg
+{
+from {transform: rotate(0deg);-ms-transform: rotate(0deg);}
+to {transform: rotate(360deg);-ms-transform: rotate(360deg);}
+}
+
+@-moz-keyframes loadingImg
+{
+from {-moz-transform: rotate(0deg);}
+to {-moz-transform: rotate(360deg);}
+}
+
+@-webkit-keyframes loadingImg
+{
+from {-webkit-transform: rotate(0deg);}
+to {-webkit-transform: rotate(360deg);}
+}
+
+@-o-keyframes loadingImg
+{
+from {-o-transform: rotate(0deg);}
+to {-o-transform: rotate(360deg);}
+}
+

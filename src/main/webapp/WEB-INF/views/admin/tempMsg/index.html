@@ -51,6 +51,7 @@
                 <span>地址栏：</span>
                 <input type="text" name="url" />
             </div>
+            <div class="loading pb30 mb30" style="display: none;"><img src="/static/images/loding.png" /> </div>
             <div class="row">
                 <a href="javascript:void(0);" class="btn-send">确认发布</a>
             </div>
@@ -67,10 +68,13 @@
                     alert("发送成功");
                     Common.refresh();
                 }
+                $(".loading").hide();
             });
 
-            $(".btn-send").click(function(){
+            $(".btn-send").bind("click",function(){
+                $(".loading").show();
                 $("#form-send").submit();
+                $(".btn-send").unbind("click");
             });
         });
     </script>
